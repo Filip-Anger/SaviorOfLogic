@@ -16,6 +16,8 @@ public class GamePanel extends JPanel {
     private Timer timer;
     private Player player;
     private int[][] tileMap;
+    private InputMap inputMap;
+    private ActionMap actionMap;
 
     public GamePanel() {
         this.player = new Player();
@@ -23,19 +25,23 @@ public class GamePanel extends JPanel {
             player.update();
             repaint();
         });
-        InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-        inputMap.put(KeyStroke.getKeyStroke("W"), "moveUp");
-        inputMap.put(KeyStroke.getKeyStroke("S"), "moveDown");
-        inputMap.put(KeyStroke.getKeyStroke("A"), "moveLeft");
-        inputMap.put(KeyStroke.getKeyStroke("D"), "moveRight");
+        this.inputMap = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        this.actionMap = this.getActionMap();
 
-        ActionMap actionMap = getActionMap();
-        actionMap.put("moveUp", new AbstractAction() {
+
+        this.inputMap.put(KeyStroke.getKeyStroke("W"), "moveUp");
+        this.inputMap.put(KeyStroke.getKeyStroke("S"), "moveDown");
+        this.inputMap.put(KeyStroke.getKeyStroke("A"), "moveLeft");
+        this.inputMap.put(KeyStroke.getKeyStroke("D"), "moveRight");
+
+        this.actionMap.put("moveUp", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                this.player.setMovingUp(true);
+                player.setMovingUp(true);
             }
         });
+
+        this.timer.start();
     }
 
     @Override
