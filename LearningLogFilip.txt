@@ -1,0 +1,8 @@
+1. Grasping the basics of swing
+    To understand the main principles of swing I decided to ask AI chat bot (ChatGPT and Claude) to be my tutor.
+    No code just main ideas of swing and game desing in swing.
+    What I have learned: 
+        EDT (event dispatching thread) insted of repeating actions in a loop we schedule them for execution with Timer class
+        How does paint and repaing work - we always pass Graphics object, the "painting brush" given by swing - the ability to
+            make graphics, but controlled by swing - so when it is setVisible swing takes care of it
+        Separating game objects and game logics from rendering objects
