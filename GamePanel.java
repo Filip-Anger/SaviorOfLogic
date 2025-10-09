@@ -17,6 +17,9 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.Timer;
 
+/**MODEL. DATA without BEHAVIOUR should be here.
+ * Collect data from Player and provides it for TileMap 
+*/
 public class GamePanel extends JPanel {
     private Timer timer;
     private Player player;
@@ -32,28 +35,11 @@ public class GamePanel extends JPanel {
 
         // Update timer
         this.timer = new Timer(16, e -> {
-            player.update();
-            repaint();
+            this.update();
+            this.repaint();
         });
 
-        // Input map
-        this.inputMap = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-        this.inputMap.put(KeyStroke.getKeyStroke("W"), "moveUp");
-        this.inputMap.put(KeyStroke.getKeyStroke("S"), "moveDown");
-        this.inputMap.put(KeyStroke.getKeyStroke("A"), "moveLeft");
-        this.inputMap.put(KeyStroke.getKeyStroke("D"), "moveRight");
-
-        // Input handle
-        this.actionMap = this.getActionMap();
-        this.actionMap.put("moveUp", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                player.setMovingUp(true);
-            }
-        });
-
-
-
+        
 
         this.timer.start();
     }

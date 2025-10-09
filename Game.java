@@ -1,8 +1,10 @@
+import java.awt.BorderLayout;
 import javax.swing.JFrame;
-import java.awt.*;
 
-import netscape.javascript.JSException;
-
+/**PUPET MASTER.
+ * Creates a MODEL - GamePanel
+ * Calls 
+ */
 class Game {
     public static final int SCREEN_WIDTH = 800;
     public static final int SCREEN_HEIGHT = 600;

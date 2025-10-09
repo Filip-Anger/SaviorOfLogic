@@ -1,5 +1,12 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Desktop.Action;
+
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
+import javax.swing.KeyStroke;
 
 public class Player {
     int width;
@@ -11,14 +18,26 @@ public class Player {
     boolean movingDown;
     boolean movingLeft;
     boolean movingRight;
+    InputMap inputMap;
+    ActionMap actionMap;
 
     // Sprite??
 
-    public Player() {
+    public Player(InputMap frameInputMap, ActionMap frameActionMap) {
         this.width = 8;
         this.height = 16;
         this.x = Game.SCREEN_WIDTH / 2 - this.width / 2;
         this.y = Game.SCREEN_HEIGHT / 2 - this.height / 2;
+        // Input map
+        this.inputMap = frameInputMap;
+        this.inputMap.put(KeyStroke.getKeyStroke("W"), "moveUp");
+        this.inputMap.put(KeyStroke.getKeyStroke("S"), "moveDown");
+        this.inputMap.put(KeyStroke.getKeyStroke("A"), "moveLeft");
+        this.inputMap.put(KeyStroke.getKeyStroke("D"), "moveRight");
+
+        // Input handle
+        this.actionMap = frameActionMap;
+        this.actionMap.put("moveUp", setMovingUp(movingDown));
     }
 
     /**Called from GamePanel. */
@@ -36,7 +55,7 @@ public class Player {
         }
     }
 
-    void setMovingUp(boolean movingUp) {
+    Action setMovingUp(boolean movingUp) {
         this.movingUp = movingUp;
     }
     void setMovingDown(boolean movingDown);

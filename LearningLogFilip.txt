@@ -23,6 +23,6 @@
 
 My implementation
     I have to clearly separate LOGIC and RENDERING and MODEL
-    MODEL - tilemap, world offset
-    LOGIC - changing world offset based on input (if possible) ->> changing model
+    MODEL - tilemap, world offset >> GamePanel
+    LOGIC - changing world offset based on input (if possible) ->> changing model >> GameEngine
     RENDERING - based on MODEL, renders visual rep.
