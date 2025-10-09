@@ -6,3 +6,23 @@
         How does paint and repaing work - we always pass Graphics object, the "painting brush" given by swing - the ability to
             make graphics, but controlled by swing - so when it is setVisible swing takes care of it
         Separating game objects and game logics from rendering objects
+        Player input - using key binds instead of key listeners: works even if the component is not focused. InputMap, ActionMap
+
+
+2. Tiles, and moving the background
+    We have a matrix of tiles
+    We want to display tiles around player and move them on player input
+
+
+
+3. HANNA'S LECTURE
+    Game class is the PUPET MASTER
+    Separate DATA (MODEL) from LOGIC (physics/collision) and RENDERING
+    MINIMAL COLLECTION INTERFACE - use the least sufficient interface
+    dependenci INJECTION - let the pupet master decide how to use classes
+
+My implementation
+    I have to clearly separate LOGIC and RENDERING and MODEL
+    MODEL - tilemap, world offset
+    LOGIC - changing world offset based on input (if possible) ->> changing model
+    RENDERING - based on MODEL, renders visual rep.

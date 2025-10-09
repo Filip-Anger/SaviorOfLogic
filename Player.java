@@ -6,8 +6,6 @@ public class Player {
     int height;
     int x;
     int y;
-    int xVelocity;
-    int yVelocity;
     int hp;
     boolean movingUp;
     boolean movingDown;
@@ -21,8 +19,6 @@ public class Player {
         this.height = 16;
         this.x = Game.SCREEN_WIDTH / 2 - this.width / 2;
         this.y = Game.SCREEN_HEIGHT / 2 - this.height / 2;
-        this.xVelocity = 5;
-        this.yVelocity = 5;
     }
 
     /**Called from GamePanel. */
@@ -34,13 +30,22 @@ public class Player {
     /**Update the... well map based on input*/
     public void update() {
         if (this.movingUp && ! this.movingDown) {
-            this.y -= this.yVelocity;
             this.movingUp = false;
+        } else if (this.movingDown && ! this.movingUp) {
+            
         }
-        System.out.println(this.x);
     }
 
     void setMovingUp(boolean movingUp) {
         this.movingUp = movingUp;
+    }
+    void setMovingDown(boolean movingDown);
+
+    void setMovingLeft(boolean movingLeft);
+
+    void setMovingRight(boolean movingRight);
+
+    int[] getPosition() {
+        return new int[]{this.x, this.y}
     }
 }
