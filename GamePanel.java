@@ -26,7 +26,7 @@ public class GamePanel extends JPanel {
         this.player = new Player(inputMap, actionMap);
 
         // TileMap
-        this.tileMap = new TileMap(this.TILE_SIZE);
+        this.tileMap = new TileMap();
         // World offset
         this.offsetX = startX;
         this.offsetY = startY;
@@ -34,7 +34,7 @@ public class GamePanel extends JPanel {
         // Update timer
         this.timer = new Timer(16, e -> {
             this.logicUpdate();  // Change the model
-
+            System.out.println("Xoffset: " + this.offsetX + "    Yoffset: " + this.offsetY);
             this.repaint(); // Display the model
         });
 
