@@ -1,42 +1,41 @@
-import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.RenderingHints.Key;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.IIOImage;
-import javax.imageio.ImageIO;
-import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.KeyStroke;
 import javax.swing.Timer;
 
 /**MODEL. DATA without BEHAVIOUR should be here.
- * Collect data from Player and provides it for TileMap 
+ * Collect data from Player and provides it for TileMap
+ * Everything is drawn by paintComponent - using helper classes
 */
 public class GamePanel extends JPanel {
-    private Timer timer;
-    private Player player;
-    private int[][] tileMap;
-    private InputMap inputMap;
-    private ActionMap actionMap;
+    private final Timer timer;
+    private final Player player;
+    private final TileMap tileMap;
+    private int offsetX;
+    private int offsetY;
+
     public static final int TILE_SIZE = 16;
 
 
-    public GamePanel() {
+    public GamePanel(int startX, int startY) {
         // Player
-        this.player = new Player();
+        InputMap inputMap = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = this.getActionMap();
+        this.player = new Player(inputMap, actionMap);
+
+        // TileMap
+        this.tileMap = new TileMap(this.TILE_SIZE);
+        // World offset
+        this.offsetX = startX;
+        this.offsetY = startY;
 
         // Update timer
         this.timer = new Timer(16, e -> {
-            this.update();
-            this.repaint();
+            this.logicUpdate();  // Change the model
+
+            this.repaint(); // Display the model
         });
 
         
@@ -44,17 +43,23 @@ public class GamePanel extends JPanel {
         this.timer.start();
     }
 
+    private void logicUpdate() {
+        playerMovment();
+    }
+
+
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g); // Clean background
 
-        TileMap.draw(g); // HELPER class to make it organized
+        this.tileMap.draw(g, this.offsetX, this.offsetY); // HELPER class to make it organized
 
-        g.drawImage(this.tilePath, 100, 100, null);
         this.player.draw(g);
     }
 
-    private void updateGameLogic() {
-
+    private void playerMovment() {
+        this.offsetX += this.player.xUpdate();
+        this.offsetY += this.player.yUpdate();
     }
 }
