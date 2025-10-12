@@ -1,5 +1,9 @@
 import java.awt.Graphics;
-import java.awt.Graphics2D;
+
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
@@ -32,6 +36,15 @@ public class GamePanel extends JPanel {
         // Player
         InputMap inputMap = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap actionMap = this.getActionMap();
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e){
+                System.out.println(e.getX()+" "+ e.getY());
+                inventory.hoverItem(e.getX(), e.getY());
+            }
+
+        });
+
         this.player = new Player(inputMap, actionMap);
 
         // TileMap
@@ -58,15 +71,15 @@ public class GamePanel extends JPanel {
 
     private void logicUpdate() {
         playerState();
-        playerMovment();
+        
         switch (gameState) {
             case playState:
-                
+                playerMovment();
                 
                 break;
             
             case inventoryState:
-                System.out.println("hello");
+
                 break;
 
             case dialogueState:
@@ -85,14 +98,31 @@ public class GamePanel extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g); // Clean background
+            switch (gameState) {
+            case playState:
+                playerMovment();
+                
+                break;
+            
+            case inventoryState:
+                this.inventory.draw(g);
 
+                break;
+
+            case dialogueState:
+
+                break;
+        
+            default:
+                break;
+        }
         
         
         this.tileMap.draw(g, this.offsetX, this.offsetY); // HELPER class to make it organized
 
         this.player.draw(g);
 
-        this.inventory.draw(g);
+        
     }
 
     private void playerMovment() {
@@ -103,4 +133,6 @@ public class GamePanel extends JPanel {
     private void playerState(){
         this.gameState = this.player.stateUpdate();
     }
+    
+    //private void inventoryMovement() 
 }
