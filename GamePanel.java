@@ -60,9 +60,8 @@ public class GamePanel extends JPanel {
         // set the game state
         gameState = playState;
         // Update timer
-        this.timer = new Timer(16, e -> {
+        this.timer = new Timer(1600, e -> {
             this.logicUpdate();  // Change the model
-            System.out.println("Xoffset: " + this.offsetX + "    Yoffset: " + this.offsetY);
             this.repaint(); // Display the model
         });
 
@@ -117,11 +116,12 @@ public class GamePanel extends JPanel {
                 break;
         }
         
+        System.out.println("Xoffset: " + this.offsetX + "    Yoffset: " + this.offsetY);
         this.tileMap.draw(g, this.offsetX, this.offsetY); // HELPER class to make it organized
 
         this.player.draw(g);
 
-        this.inventory.draw(g);
+        // this.inventory.draw(g);
         
         
     }

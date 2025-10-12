@@ -31,10 +31,6 @@ public class TileMap {
         this.filesNames = new String[]{"water", "grass", "path", "tree", "enemy"};
         this.tiles = new BufferedImage[this.filesNames.length];
         try {
-            // this.tiles[0] = ImageIO.read(new File("Tileset/Tiles/water.png"));
-            // this.tiles[1] = ImageIO.read(new File("Tileset/Tiles/grass.png"));
-            // this.tiles[2] = ImageIO.read(new File("Tileset/Tiles/path.png"));
-            // this.tiles[3] = ImageIO.read(new File("Tileset/Tiles/tree.png"));
             for (int i = 0; i < this.filesNames.length; i++) {
                 this.tiles[i] = ImageIO.read(new File("Tileset/Tiles/" + filesNames[i] + ".png"));
 
@@ -45,20 +41,22 @@ public class TileMap {
     }
 
     public void draw(Graphics g, int xOffset, int yOffset) {
-        int yOffsetPix = yOffset / Game.SCREEN_HEIGHT;
-        int xOffsetPix = xOffset / Game.SCREEN_WIDTH;
-        for (int i = 0; i < Game.SCRREN_HEIGHT_PIX; i++) {
-            yCoord = yOffsetPix + i;
-            for (int j = 0; j < Game.SCRREN_WIDTH_PIX; j++) {
-                xCoord = xOffsetPix + j;
+        int yMatrixOff = yOffset / 16;
+        int xMatrixOff = xOffset / 16;
+        int xFracOff = xOffset % 16;
+        int yFracOff = yOffset % 16;
+        for (int i = 0; i < Game.SCRREN_HEIGHT_PIX + 1; i++) {
+            for (int j = 0; j < Game.SCRREN_WIDTH_PIX + 1; j++) {
+                g.drawImage(this.tiles[this.tileMapMatrix[yMatrixOff + i][xMatrixOff + j]],
+                     j * 16 - xFracOff, i * 16 - yFracOff, null);
                 // System.out.println("Xcoord: " + xCoord + "    Ycoord: " + yCoord);
-                if (yCoord < 0 || yCoord >= 500 || xCoord < 0 || xCoord >= 500) {
-                    g.drawImage(this.tiles[0], 
-                        j * 16 - xOffset, i * 16 - yOffset, null);
-                } else {
-                    g.drawImage(this.tiles[this.tileMapMatrix[yCoord][xCoord]], 
-                        j * 16 - xOffset, i * 16 - yOffset, null);
-                }
+                // if (yCoord < 0 || yCoord >= 500 || xCoord < 0 || xCoord >= 500) {
+                //     g.drawImage(this.tiles[0], 
+                //         j * 16 - xOffset, i * 16 - yOffset, null);
+                // } else {
+                //     g.drawImage(this.tiles[this.tileMapMatrix[yCoord][xCoord]], 
+                //         j * 16 - xOffset, i * 16 - yOffset, null);
+                // }
             }
         }
     }
