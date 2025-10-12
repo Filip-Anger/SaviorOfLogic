@@ -31,19 +31,28 @@ public class Player {
         this.velocity = 5;
         this.x = Game.SCREEN_WIDTH / 2 - this.width / 2;
         this.y = Game.SCREEN_HEIGHT / 2 - this.height / 2;
-        // Input map
+        // Input map: use pressed/released so movement is continuous while holding keys
         this.inputMap = frameInputMap;
-        this.inputMap.put(KeyStroke.getKeyStroke("W"), "moveUp");
-        this.inputMap.put(KeyStroke.getKeyStroke("S"), "moveDown");
-        this.inputMap.put(KeyStroke.getKeyStroke("A"), "moveLeft");
-        this.inputMap.put(KeyStroke.getKeyStroke("D"), "moveRight");
+        this.inputMap.put(KeyStroke.getKeyStroke("pressed W"), "moveUpPressed");
+        this.inputMap.put(KeyStroke.getKeyStroke("released W"), "moveUpReleased");
+        this.inputMap.put(KeyStroke.getKeyStroke("pressed S"), "moveDownPressed");
+        this.inputMap.put(KeyStroke.getKeyStroke("released S"), "moveDownReleased");
+        this.inputMap.put(KeyStroke.getKeyStroke("pressed A"), "moveLeftPressed");
+        this.inputMap.put(KeyStroke.getKeyStroke("released A"), "moveLeftReleased");
+        this.inputMap.put(KeyStroke.getKeyStroke("pressed D"), "moveRightPressed");
+        this.inputMap.put(KeyStroke.getKeyStroke("released D"), "moveRightReleased");
 
-        // Input handle
+
+        // Input handlers
         this.actionMap = frameActionMap;
-        this.actionMap.put("moveUp", new UpAction());
-        this.actionMap.put("moveDown", new DowAction());
-        this.actionMap.put("moveLeft", new LeftAction());
-        this.actionMap.put("moveRight", new RightAction());
+        this.actionMap.put("moveUpPressed", new UpPressAction());
+        this.actionMap.put("moveUpReleased", new UpReleaseAction());
+        this.actionMap.put("moveDownPressed", new DownPressAction()); // keep existing Down press class (typo kept)
+        this.actionMap.put("moveDownReleased", new DownReleaseAction());
+        this.actionMap.put("moveLeftPressed", new LeftPressAction());
+        this.actionMap.put("moveLeftReleased", new LeftReleaseAction());
+        this.actionMap.put("moveRightPressed", new RightPressAction());
+        this.actionMap.put("moveRightReleased", new RightReleaseAction());
     }
 
     /**Called from GamePanel. */
@@ -55,67 +64,85 @@ public class Player {
     /**TODO COLISION.
     */
     public int yUpdate() {
-        if (this.movingUp && ! this.movingDown) {
-            this.movingUp = false;
-            return -1 * this.velocity;
-        } else if (this.movingDown && ! this.movingUp) {
-            this.movingDown = false;
+        if (this.movingUp && !this.movingDown) {
+            return -this.velocity;
+        } else if (this.movingDown && !this.movingUp) {
             return this.velocity;
         }
-        else if (this.movingUp && this.movingDown) {
-            this.movingUp = false;
-            this.movingDown = false;
-        }
+        // both pressed or neither pressed -> no vertical movement
         return 0;
     }
 
     /**TODO COLISION.
     */
     public int xUpdate() {
-        if (this.movingLeft && ! this.movingRight) {
-            this.movingLeft = false;
-            return -1 * this.velocity;
-        } else if (this.movingRight && ! this.movingLeft) {
-            this.movingRight = false;
+        if (this.movingLeft && !this.movingRight) {
+            return -this.velocity;
+        } else if (this.movingRight && !this.movingLeft) {
             return this.velocity;
         }
-        else if (this.movingLeft && this.movingRight) {
-            this.movingLeft = false;
-            this.movingRight = false;
-        }
+        // both pressed or neither pressed -> no horizontal movement
         return 0;
     }
 
 
-    /**Key press action.*/
-    public class UpAction extends AbstractAction {
+    public class UpPressAction extends AbstractAction {
         @Override
         public void actionPerformed(ActionEvent e) {
             movingUp = true;
         }
     }
 
-    /**Key press action.*/
-    public class DowAction extends AbstractAction {
+
+    public class DownPressAction extends AbstractAction {
         @Override
         public void actionPerformed(ActionEvent e) {
             movingDown = true;
         }
     }
 
-    /**Key press action.*/
-    public class LeftAction extends AbstractAction {
+    
+    public class LeftPressAction extends AbstractAction {
         @Override
         public void actionPerformed(ActionEvent e) {
             movingLeft = true;
         }
     }
 
-    /**Key press action.*/
-    public class RightAction extends AbstractAction {
+
+    public class RightPressAction extends AbstractAction {
         @Override
         public void actionPerformed(ActionEvent e) {
             movingRight = true;
+        }
+    }
+
+
+    public class UpReleaseAction extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            movingUp = false;
+        }
+    }
+
+    public class DownReleaseAction extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            movingDown = false;
+        }
+    }
+
+    public class LeftReleaseAction extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            movingLeft = false;
+        }
+    }
+
+    public class RightReleaseAction extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            movingRight = false;
         }
     }
 }
