@@ -32,6 +32,8 @@ public class GamePanel extends JPanel {
     public final int inventoryState = 2;
     public final int dialogueState = 3;
 
+    public final int propItem = 0;
+
     public GamePanel(int startX, int startY) {
         // Player
         InputMap inputMap = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -71,10 +73,11 @@ public class GamePanel extends JPanel {
 
     private void logicUpdate() {
         playerState();
+        playerMovment();
         
         switch (gameState) {
             case playState:
-                playerMovment();
+                
                 
                 break;
             
@@ -99,13 +102,10 @@ public class GamePanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g); // Clean background
             switch (gameState) {
-            case playState:
-                playerMovment();
-                
-                break;
+            
             
             case inventoryState:
-                this.inventory.draw(g);
+                
 
                 break;
 
@@ -117,11 +117,12 @@ public class GamePanel extends JPanel {
                 break;
         }
         
-        
         this.tileMap.draw(g, this.offsetX, this.offsetY); // HELPER class to make it organized
 
         this.player.draw(g);
 
+        this.inventory.draw(g);
+        
         
     }
 
