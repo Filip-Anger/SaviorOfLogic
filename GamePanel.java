@@ -1,4 +1,6 @@
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
@@ -13,6 +15,7 @@ public class GamePanel extends JPanel {
     private final Timer timer;
     private final Player player;
     private final TileMap tileMap;
+    private final Inventory inventory;
     private int offsetX;
     private int offsetY;
 
@@ -37,7 +40,9 @@ public class GamePanel extends JPanel {
         this.offsetX = startX;
         this.offsetY = startY;
 
-        //set the game state
+        // Inventory
+        this.inventory = new Inventory();
+        // set the game state
         gameState = playState;
         // Update timer
         this.timer = new Timer(16, e -> {
@@ -53,9 +58,10 @@ public class GamePanel extends JPanel {
 
     private void logicUpdate() {
         playerState();
+        playerMovment();
         switch (gameState) {
             case playState:
-                playerMovment();
+                
                 
                 break;
             
@@ -80,11 +86,13 @@ public class GamePanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g); // Clean background
 
+        
+        
         this.tileMap.draw(g, this.offsetX, this.offsetY); // HELPER class to make it organized
 
         this.player.draw(g);
 
-        //this.invnetory.draw(g)
+        this.inventory.draw(g);
     }
 
     private void playerMovment() {
