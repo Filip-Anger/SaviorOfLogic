@@ -10,6 +10,8 @@ public class Player {
     boolean movingLeft;
     boolean movingRight;
 
+    int gameState;
+
     final InputMap inputMap;
     final ActionMap actionMap;
     final int width;
@@ -17,6 +19,11 @@ public class Player {
     final int x;
     final int y;
     final int velocity;
+    
+    final int titleState = 0;
+    final int playState = 1;
+    final int inventoryState = 2;
+    final int dialogueState = 3;
     
 
     // Sprite??
@@ -41,6 +48,7 @@ public class Player {
         this.inputMap.put(KeyStroke.getKeyStroke("released A"), "moveLeftReleased");
         this.inputMap.put(KeyStroke.getKeyStroke("pressed D"), "moveRightPressed");
         this.inputMap.put(KeyStroke.getKeyStroke("released D"), "moveRightReleased");
+        this.inputMap.put(KeyStroke.getKeyStroke("pressed I"), "InventoryPressed");
 
 
         // Input handlers
@@ -53,6 +61,7 @@ public class Player {
         this.actionMap.put("moveLeftReleased", new LeftReleaseAction());
         this.actionMap.put("moveRightPressed", new RightPressAction());
         this.actionMap.put("moveRightReleased", new RightReleaseAction());
+        this.actionMap.put("InventoryPressed", new Inventory());
     }
 
     /**Called from GamePanel. */
@@ -147,4 +156,6 @@ public class Player {
     }
 }
 
-
+    public class Inventory extends AbstractAction {
+        
+    }

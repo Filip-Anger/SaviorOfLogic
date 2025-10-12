@@ -18,6 +18,12 @@ public class GamePanel extends JPanel {
 
     public static final int TILE_SIZE = 16;
 
+    //Game state
+    public int gameState;
+    public final int titleState = 0;
+    public final int playState = 1;
+    public final int inventoryState = 2;
+    public final int dialogueState = 3;
 
     public GamePanel(int startX, int startY) {
         // Player
@@ -31,6 +37,8 @@ public class GamePanel extends JPanel {
         this.offsetX = startX;
         this.offsetY = startY;
 
+        //set the game state
+        gameState = playState;
         // Update timer
         this.timer = new Timer(16, e -> {
             this.logicUpdate();  // Change the model
@@ -44,7 +52,26 @@ public class GamePanel extends JPanel {
     }
 
     private void logicUpdate() {
-        playerMovment();
+        
+        switch (gameState) {
+            case playState:
+                playerMovment();
+                
+                break;
+            
+            case inventoryState:
+
+                break;
+
+            case dialogueState:
+
+                break;
+        
+            default:
+                break;
+        }
+        
+
     }
 
 
@@ -61,5 +88,9 @@ public class GamePanel extends JPanel {
     private void playerMovment() {
         this.offsetX += this.player.xUpdate();
         this.offsetY += this.player.yUpdate();
+    }
+
+    private void playerState(){
+        this.gameState = this.player.stateUpdate();
     }
 }
