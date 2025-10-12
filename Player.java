@@ -3,6 +3,8 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import javax.swing.*;
 
+
+
 /**TODO: Class description. */
 public class Player {
     boolean movingUp;
@@ -94,6 +96,10 @@ public class Player {
         return 0;
     }
 
+    public int stateUpdate(){
+        return gameState;
+    }
+
 
     public class UpPressAction extends AbstractAction {
         @Override
@@ -154,8 +160,16 @@ public class Player {
             movingRight = false;
         }
     }
+    public class Inventory extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent e){
+            if (gameState == inventoryState){
+                gameState = playState;
+            } else{
+                gameState = inventoryState;
+            }
+        }
+    }
 }
 
-    public class Inventory extends AbstractAction {
-        
-    }
+    

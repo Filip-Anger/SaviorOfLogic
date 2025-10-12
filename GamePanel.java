@@ -52,7 +52,7 @@ public class GamePanel extends JPanel {
     }
 
     private void logicUpdate() {
-        
+        playerState();
         switch (gameState) {
             case playState:
                 playerMovment();
@@ -60,7 +60,7 @@ public class GamePanel extends JPanel {
                 break;
             
             case inventoryState:
-
+                System.out.println("hello");
                 break;
 
             case dialogueState:
@@ -83,6 +83,8 @@ public class GamePanel extends JPanel {
         this.tileMap.draw(g, this.offsetX, this.offsetY); // HELPER class to make it organized
 
         this.player.draw(g);
+
+        //this.invnetory.draw(g)
     }
 
     private void playerMovment() {
