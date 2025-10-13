@@ -12,12 +12,12 @@ public class ItemSpawner {
         
         
     }
-    public void drawItems(Graphics g){
-        PropItem a = new PropItem(0, 100, 100, "test");
-        a.setSprite("A=>B");
+    public void drawItems(Graphics g, int offsetX, int offsetY){
+        PropItem a = new PropItem(0, 0, 0, "test");
+        a.setSprite("∀A=>B");
         for (Item i : this.visibleItems){
-            i.draw(g);
+            i.draw(g, offsetX, offsetY);
         }
-        a.draw(g);
+        
     }
 }

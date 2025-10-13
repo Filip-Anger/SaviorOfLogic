@@ -124,7 +124,7 @@ public class GamePanel extends JPanel {
 
         this.player.draw(g);
         
-        this.itemSpawner.drawItems(g);
+        this.itemSpawner.drawItems(g, this.offsetX, this.offsetY);
         // this.inventory.draw(g);
         
         

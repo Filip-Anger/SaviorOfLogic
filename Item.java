@@ -36,8 +36,9 @@ public abstract class Item {
         this.y = y;
     }
 
-    public void draw(Graphics g){
-        g.drawImage(this.sprite, this.x, this.y, null);
+    public void draw(Graphics g, int offsetX, int offsetY) {
+        //this.sw.drawSubWindow(g, getX()-20, getY()-20, this.sprite.getWidth()+40, this.sprite.getHeight()+40);
+        g.drawImage(sprite, getX(), getY(), null);
     }
 
 

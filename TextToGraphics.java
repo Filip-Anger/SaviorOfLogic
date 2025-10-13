@@ -1,4 +1,3 @@
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -13,8 +12,8 @@ public class TextToGraphics {
     public TextToGraphics(String fontName, int size){
         this.font = new Font(fontName, Font.PLAIN, size);
     }
-    public BufferedImage convert(String text){
-        
+    public BufferedImage convert(String text) {
+        // Create a temporary image to calculate dimensions
         BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = img.createGraphics();
         g2d.setFont(this.font);
@@ -22,24 +21,27 @@ public class TextToGraphics {
         int width = fm.stringWidth(text);
         int height = fm.getHeight();
         g2d.dispose();
+
+        // Create the final image with calculated dimensions
         img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         g2d = img.createGraphics();
-        g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
-        g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
-        g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
-        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 
+        // Draw the outline (black)
         g2d.setFont(font);
-        fm = g2d.getFontMetrics();
-        g2d.setColor(new Color(0,0,0, 0));
-        g2d.fillRect(0, 0, img.getWidth(), img.getHeight());
+        g2d.setColor(Color.BLACK);
+        int outlineThickness = 1; // Adjust for thicker outline
+        // Draw the text multiple times to create an outline effect
+        g2d.drawString(text, outlineThickness, fm.getAscent() + outlineThickness);
+        g2d.drawString(text, outlineThickness, fm.getAscent() - outlineThickness);
+        g2d.drawString(text, outlineThickness, fm.getAscent());
+        g2d.drawString(text, outlineThickness + 1, fm.getAscent());
+        g2d.drawString(text, outlineThickness - 1, fm.getAscent());
+
+        // Draw the main text (white)
         g2d.setColor(Color.WHITE);
         g2d.drawString(text, 0, fm.getAscent());
-        
+
         g2d.dispose();
         return img;
     }
