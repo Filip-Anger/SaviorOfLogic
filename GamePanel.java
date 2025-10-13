@@ -20,6 +20,7 @@ public class GamePanel extends JPanel {
     private final Player player;
     private final TileMap tileMap;
     private final Inventory inventory;
+    private final ItemSpawner itemSpawner;
     private int offsetX;
     private int offsetY;
 
@@ -55,6 +56,8 @@ public class GamePanel extends JPanel {
         this.offsetX = startX;
         this.offsetY = startY;
 
+        // ItemSpawner
+        this.itemSpawner = new ItemSpawner();
         // Inventory
         this.inventory = new Inventory();
         // set the game state
@@ -120,7 +123,8 @@ public class GamePanel extends JPanel {
         this.tileMap.draw(g, this.offsetX, this.offsetY); // HELPER class to make it organized
 
         this.player.draw(g);
-
+        
+        this.itemSpawner.drawItems(g);
         // this.inventory.draw(g);
         
         

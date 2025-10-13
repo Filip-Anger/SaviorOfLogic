@@ -1,4 +1,7 @@
 import java.awt.BorderLayout;
+
+import java.util.ArrayList;
+
 import javax.swing.JFrame;
 
 /**PUPET MASTER.
@@ -10,6 +13,9 @@ class Game {
     public static final int SCREEN_HEIGHT = 640;
     public static final int SCRREN_WIDTH_PIX = 50;
     public static final int SCRREN_HEIGHT_PIX = 40;
+
+    public ArrayList<Item> allItems = new ArrayList<Item>();
+    //hello still testing
     
 
     GamePanel gamePanel;
