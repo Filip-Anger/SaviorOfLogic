@@ -7,15 +7,15 @@ public abstract class Item {
     private int type;
     private int x;
     private int y;
-    private String name;
+    private String ID;
     private BufferedImage sprite;
     
     
-    public Item(int type, int x, int y, String name){
+    public Item(int type, int x, int y, String ID){
         this.type = type;
         this.x = x;
         this.y = y;
-        this.name = name;
+        this.ID = ID;
         
 
     }
@@ -27,7 +27,7 @@ public abstract class Item {
     public int getType() { return this.type; }
     public int getX() { return this.x; }
     public int getY() { return this.y; }
-    public String getName() { return this.name; }
+    public String getID() { return this.ID; }
     public BufferedImage getSprite() { return this.sprite; }
 
 
