@@ -22,4 +22,4 @@ git log -p	View commits + diffs	Good for debugging who changed what
 
 
 
-https://en.wikipedia.org/wiki/List_of_logic_symbolsq
+https://en.wikipedia.org/wiki/List_of_logic_symbols
