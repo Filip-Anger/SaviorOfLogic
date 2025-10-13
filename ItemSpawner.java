@@ -52,6 +52,7 @@ public class ItemSpawner {
         for (Item i : this.visibleItems){
             i.draw(g, offsetX, offsetY);
         }
+        a.draw(g, offsetX, offsetY);
         
     }
 
