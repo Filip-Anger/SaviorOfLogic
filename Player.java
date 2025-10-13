@@ -34,12 +34,12 @@ public class Player {
      * @param frameInputMap map from the parent swing object
      * @param frameActionMap map from the parent swing object
     */
-    public Player(InputMap frameInputMap, ActionMap frameActionMap) {
-        this.width = 8;
-        this.height = 16;
-        this.velocity = 5;
-        this.x = Game.SCREEN_WIDTH / 2 - this.width / 2;
-        this.y = Game.SCREEN_HEIGHT / 2 - this.height / 2;
+    public Player(int screenWidth, int screenHeight, int scale, InputMap frameInputMap, ActionMap frameActionMap) {
+        this.width = 8 * scale;
+        this.height = 16 * scale;
+        this.velocity = scale;
+        this.x = screenWidth / 2 - this.width / 2;
+        this.y = screenHeight / 2 - this.height / 2;
         // Input map: use pressed/released so movement is continuous while holding keys
         this.inputMap = frameInputMap;
         this.inputMap.put(KeyStroke.getKeyStroke("pressed W"), "moveUpPressed");

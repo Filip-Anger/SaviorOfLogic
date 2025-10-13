@@ -35,7 +35,7 @@ public class GamePanel extends JPanel {
 
     public final int propItem = 0;
 
-    public GamePanel(int startX, int startY) {
+    public GamePanel(int screenWidth, int screenHeight, int scale, int startX, int startY) {
         // Player
         InputMap inputMap = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap actionMap = this.getActionMap();
@@ -48,10 +48,10 @@ public class GamePanel extends JPanel {
 
         });
 
-        this.player = new Player(inputMap, actionMap);
+        this.player = new Player(screenWidth, screenHeight, scale, inputMap, actionMap);
 
         // TileMap
-        this.tileMap = new TileMap();
+        this.tileMap = new TileMap(screenWidth, screenHeight, scale);
         // World offset
         this.offsetX = startX;
         this.offsetY = startY;
@@ -63,7 +63,7 @@ public class GamePanel extends JPanel {
         // set the game state
         gameState = playState;
         // Update timer
-        this.timer = new Timer(16, e -> {
+        this.timer = new Timer(5, e -> {
             this.logicUpdate();  // Change the model
             this.repaint(); // Display the model
         });
