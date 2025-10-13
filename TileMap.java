@@ -45,10 +45,17 @@ public class TileMap {
         int xMatrixOff = xOffset / 16;
         int xFracOff = xOffset % 16;
         int yFracOff = yOffset % 16;
-        for (int i = 0; i < Game.SCRREN_HEIGHT_PIX + 1; i++) {
-            for (int j = 0; j < Game.SCRREN_WIDTH_PIX + 1; j++) {
-                g.drawImage(this.tiles[this.tileMapMatrix[yMatrixOff + i][xMatrixOff + j]],
-                     j * 16 - xFracOff, i * 16 - yFracOff, null);
+        for (int i = -1; i < Game.SCRREN_HEIGHT_PIX + 1; i++) {
+            for (int j = -1; j < Game.SCRREN_WIDTH_PIX + 1; j++) {
+                if (yMatrixOff + i < 0 || yMatrixOff + i >= 500
+                    || xMatrixOff + j < 0 || xMatrixOff + j >= 500) {
+                    g.drawImage(this.tiles[0],
+                        j * 16 - xFracOff, i * 16 - yFracOff, null);
+                } else {
+                    g.drawImage(this.tiles[this.tileMapMatrix[yMatrixOff + i][xMatrixOff + j]],
+                        j * 16 - xFracOff, i * 16 - yFracOff, null);
+                }
+                
                 // System.out.println("Xcoord: " + xCoord + "    Ycoord: " + yCoord);
                 // if (yCoord < 0 || yCoord >= 500 || xCoord < 0 || xCoord >= 500) {
                 //     g.drawImage(this.tiles[0], 
