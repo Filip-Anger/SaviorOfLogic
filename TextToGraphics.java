@@ -5,9 +5,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
+
 
 public class TextToGraphics {
     
@@ -15,7 +13,7 @@ public class TextToGraphics {
     public TextToGraphics(String fontName, int size){
         this.font = new Font(fontName, Font.PLAIN, size);
     }
-    public void convert(String text){
+    public BufferedImage convert(String text){
         
         BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = img.createGraphics();
@@ -37,15 +35,12 @@ public class TextToGraphics {
 
         g2d.setFont(font);
         fm = g2d.getFontMetrics();
-        g2d.setColor(new Color(0,0,0,50));
+        g2d.setColor(new Color(0,0,0, 0));
         g2d.fillRect(0, 0, img.getWidth(), img.getHeight());
-        g2d.setColor(Color.BLACK);
+        g2d.setColor(Color.WHITE);
         g2d.drawString(text, 0, fm.getAscent());
+        
         g2d.dispose();
-        try {
-            ImageIO.write(img, "png", new File(text+".png"));
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+        return img;
     }
 }

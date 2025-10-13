@@ -24,10 +24,11 @@ public abstract class Item {
         this.sprite = (BufferedImage)sprite;
     }
 
-    public int getType() { return type; }
-    public int getX() { return x; }
-    public int getY() { return y; }
-    public String getName() { return name; }
+    public int getType() { return this.type; }
+    public int getX() { return this.x; }
+    public int getY() { return this.y; }
+    public String getName() { return this.name; }
+    public BufferedImage getSprite() { return this.sprite; }
 
 
     public void moveTo(int x, int y){
