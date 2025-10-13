@@ -119,7 +119,7 @@ public class GamePanel extends JPanel {
                 break;
         }
         
-        System.out.println("Xoffset: " + this.offsetX + "    Yoffset: " + this.offsetY);
+        //System.out.println("Xoffset: " + this.offsetX + "    Yoffset: " + this.offsetY);
         this.tileMap.draw(g, this.offsetX, this.offsetY); // HELPER class to make it organized
 
         this.player.draw(g);
