@@ -1,3 +1,7 @@
+# TO FUCKING DO
+
+
+# FILIP STUFF
 Each of these goes in new branch!!!
 
 Not started
@@ -8,4 +12,9 @@ Character Sprite and walking animations
 Started
 Collision
 
+# MAREK STUFF
+
+Borders for the propos
+Key handling
+Inventory on off
 
