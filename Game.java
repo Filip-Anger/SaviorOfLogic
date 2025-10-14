@@ -9,6 +9,9 @@ import javax.swing.JFrame;
  * Calls 
  */
 class Game {
+    public static final int SCALE = 2;
+    public static final int WIDTH = 800;
+    public static final int HEIGHT = 640;
 
     public ArrayList<Item> allItems = new ArrayList<Item>();
     //hello still testing
@@ -17,13 +20,13 @@ class Game {
     GamePanel gamePanel;
     JFrame frame;
 
-    void start(int screenWidth, int screenHeight, int scale) {
+    void start() {
         this.frame = new JFrame("Savior of the Logic");
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.frame.setSize(screenWidth, screenHeight);
+        this.frame.setSize(WIDTH, HEIGHT);
         this.frame.setLayout(new BorderLayout());
 
-        this.gamePanel = new GamePanel(screenWidth, screenHeight, scale, 0, 0);
+        this.gamePanel = new GamePanel(0, 0);
         this.frame.add(this.gamePanel, BorderLayout.CENTER);
 
         this.frame.setVisible(true);
@@ -31,6 +34,6 @@ class Game {
     
     public static void main(String[] args) {
         Game game = new Game();
-        game.start(800, 640, 2);
+        game.start();
     }
 }
