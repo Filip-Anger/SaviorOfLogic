@@ -1,0 +1,2 @@
+1. Separate DATA from BEHAVIOUR
+2. One method one purpuse
