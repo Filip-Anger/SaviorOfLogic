@@ -4,6 +4,7 @@ import java.awt.Graphics;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.logging.XMLFormatter;
 
 
 import javax.swing.ActionMap;
@@ -24,6 +25,10 @@ public class GamePanel extends JPanel {
     private final ItemSpawner itemSpawner;
     private int offsetX;
     private int offsetY;
+    private final int playerX;
+    private final int playerY;
+    private final int playerSize;
+
 
     public static final int TILE_SIZE = 16;
 
@@ -50,9 +55,12 @@ public class GamePanel extends JPanel {
         });
 
         this.player = new Player(inputMap, actionMap);
+        this.playerX = this.player.getPlayerX();
+        this.playerY = this.player.getPlayerY();
+        this.playerSize = this.player.getSize();
 
         // TileMap
-        this.tileMap = new TileMap();
+        this.tileMap = new TileMap(this);
         // World offset
         this.offsetX = startX;
         this.offsetY = startY;
@@ -64,7 +72,7 @@ public class GamePanel extends JPanel {
         // set the game state
         gameState = playState;
         // Update timer
-        this.timer = new Timer(5, e -> {
+        this.timer = new Timer(16, e -> {
             this.logicUpdate();  // Change the model
             this.repaint(); // Display the model
         });
@@ -140,7 +148,7 @@ public class GamePanel extends JPanel {
             if (xInput > 0) {
                 xInput += 1;
             } else {
-                xInput -= 1;
+                xInput -= 1;    
             }
             if (yInput > 0) {
                 yInput += 1;
@@ -149,9 +157,25 @@ public class GamePanel extends JPanel {
             }
         }
         //TODO: COLLISION
-        this.offsetX += xInput;
-        this.offsetY += yInput;
+        // Left top corner
+        int posOnMapX = this.offsetX + this.playerX;
+        int posOnMapY = this.offsetY + this.playerY;
+        if (this.tileMap.canWalkOn(posOnMapX + xInput, posOnMapY + yInput, 
+            this.playerSize, this.playerSize)) {
+            this.offsetX += xInput;
+            this.offsetY += yInput;
+        } else {
+            // this.tileMap.snapToEdge(xInput, yInput, posOnMapX, posOnMapY);
+        }
 
+    }
+
+    public void setPlayerX(int playerX) {
+        this.offsetX = playerX - Game.WIDTH / 2 + this.playerSize / 2;
+    }
+
+    public void setPlayerY(int playerY) {
+        this.offsetY = playerY - Game.HEIGHT / 2 + this.playerSize / 2;
     }
 
     private void playerState(){

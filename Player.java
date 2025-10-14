@@ -16,8 +16,7 @@ public class Player {
 
     final InputMap inputMap;
     final ActionMap actionMap;
-    final int width;
-    final int height;
+    final int size;
     final int x;
     final int y;
     final int velocity;
@@ -35,11 +34,10 @@ public class Player {
      * @param frameActionMap map from the parent swing object
     */
     public Player(InputMap frameInputMap, ActionMap frameActionMap) {
-        this.width = 8 * Game.SCALE;
-        this.height = 16 * Game.SCALE;
-        this.velocity = Game.SCALE;
-        this.x = Game.WIDTH / 2 - this.width / 2;
-        this.y = Game.HEIGHT / 2 - this.height / 2;
+        this.size = Game.ORIGINAL_TILE;
+        this.velocity = 3 * Game.SCALE;
+        this.x = Game.WIDTH / 2 - this.size / 2;
+        this.y = Game.HEIGHT / 2 - this.size / 2;
         // Input map: use pressed/released so movement is continuous while holding keys
         this.inputMap = frameInputMap;
         this.inputMap.put(KeyStroke.getKeyStroke("pressed W"), "moveUpPressed");
@@ -69,7 +67,7 @@ public class Player {
     /**Called from GamePanel. */
     public void draw(Graphics g) {
         g.setColor(Color.RED);
-        g.fillRect(x, y, width, height);
+        g.fillRect(x, y, this.size, this.size);
     }
 
     /**TODO COLISION.
@@ -95,6 +93,19 @@ public class Player {
         // both pressed or neither pressed -> no horizontal movement
         return 0;
     }
+
+    public int getPlayerX() {
+        return this.x;
+    }
+
+    public int getPlayerY() {
+        return this.y;
+    }
+
+    public int getSize() {
+        return this.size;
+    }
+
 
     public int stateUpdate(){
         return gameState;

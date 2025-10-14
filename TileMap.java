@@ -3,7 +3,9 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 import javax.imageio.ImageIO;
 
 /** Tiles are loaded here, returned on request. */
@@ -12,15 +14,16 @@ public class TileMap {
     private String[] filesNames;
     private int[][] tileMapMatrix;
     private final int mapSize = 500;
-    private final int originalTileSize = 16;
     private final int scaledTile;
     private final int widthPixels;
     private final int heightPixels;
-
+    private Set<Integer> forbiddenTiles;
+    private GamePanel gamePanel;
 
     /** Load in all tiles. */
-    public TileMap() {
-        this.scaledTile = this.originalTileSize * Game.SCALE;
+    public TileMap(GamePanel gamePanel) {
+        this.gamePanel = gamePanel;
+        this.scaledTile = Game.ORIGINAL_TILE * Game.SCALE;
         this.widthPixels = Game.WIDTH / this.scaledTile;
         this.heightPixels = Game.HEIGHT / this.scaledTile;
 
@@ -28,12 +31,14 @@ public class TileMap {
         this.tileMapMatrix = new int[this.mapSize][this.mapSize];
         for (int y = 0; y < this.mapSize; y++) {
             for (int x = 0; x < this.mapSize; x++) {
-                this.tileMapMatrix[y][x] = 1 + random.nextInt(3); // Random between 1 and 3
+                this.tileMapMatrix[y][x] = random.nextInt(4); // Random between 1 and 3
             }
         }
 
         
         this.filesNames = new String[]{"water", "grass", "path", "tree", "enemy"};
+        this.forbiddenTiles = new HashSet<>();
+        this.forbiddenTiles.add(0);
         this.tiles = new BufferedImage[this.filesNames.length];
         try {
             for (int i = 0; i < this.filesNames.length; i++) {
@@ -51,6 +56,63 @@ public class TileMap {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean canWalkOn(int x1, int y1, int sizeX, int sizeY) {
+        if (x1 < 0 || y1 < 0) {
+            return false;
+        }
+        if (x1 + sizeX > this.mapSize * this.scaledTile 
+            || y1 + sizeY > this.mapSize * this.scaledTile) {
+            return false;
+        }
+        // Rounded down for the left top
+        int xCord1 = x1 / this.scaledTile;
+        int yCord1 = y1 / this.scaledTile;
+        if (this.forbiddenTiles.contains(this.tileMapMatrix[yCord1][xCord1])) {
+            return false;
+        }
+
+        // Top right >> x round UP
+        int xCord2 = (x1 + sizeX) / this.scaledTile;
+        int yCord2 = y1 / this.scaledTile;
+        if (this.forbiddenTiles.contains(this.tileMapMatrix[yCord2][xCord2])) {
+            return false;
+        }
+
+        int xCord3 = (x1 + sizeX) / this.scaledTile;
+        int yCord3 = (y1 + sizeY) / this.scaledTile;
+        if (this.forbiddenTiles.contains(this.tileMapMatrix[yCord3][xCord3])) {
+            return false;
+        }
+
+        // Top right >> x round UP
+        int xCord4 = x1 / this.scaledTile;
+        int yCord4 = (y1 + sizeY) / this.scaledTile;
+        if (this.forbiddenTiles.contains(this.tileMapMatrix[yCord4][xCord4])) {
+            return false;
+        }
+
+        // Bottom right >> 
+        return true;
+    }
+
+    public void snapToEdge(int velocityX, int velocityY, int x, int y) {
+        if (x % this.scaledTile != 0) {
+            if (velocityX > 0) {
+                this.gamePanel.setPlayerX((x / this.scaledTile + 1) * this.scaledTile);
+            } else if (velocityX < 0) {
+                this.gamePanel.setPlayerX((x  - (x % this.scaledTile)));
+            }
+        }
+        if (y % this.scaledTile != 0) {
+            if (velocityY > 0) {
+                this.gamePanel.setPlayerY((y / this.scaledTile + 1) * this.scaledTile);
+            } else if (velocityY < 0) {
+                this.gamePanel.setPlayerY((y  - (x % this.scaledTile)));
+            }
+        }
+        
     }
 
     public void draw(Graphics g, int xOffset, int yOffset) {

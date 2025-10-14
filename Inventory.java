@@ -10,11 +10,11 @@ import javax.swing.*;
 
 public class Inventory extends SubWindow{
 
-    public ArrayList<Item> items = new ArrayList<Item>();
+    public ArrayList<Item> items = new ArrayList<>();
 
     PointerInfo a = MouseInfo.getPointerInfo();
     public void draw(Graphics g){
-        drawSubWindow(g, 25, 25, Game.WIDTH-66, Game.HEIGHT-91); //i dont understan this fucking hell why is it not -50
+        drawSubWindow(g, 25, 25, Game.WIDTH - 66, Game.HEIGHT - 91); //i dont understan this fucking hell why is it not -50
     }
     public void hoverItem(int x, int y){
         
