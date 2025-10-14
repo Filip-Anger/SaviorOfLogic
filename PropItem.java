@@ -7,10 +7,10 @@ public class PropItem extends Item {
 
     private BufferedImage sprite;
     private int size = 20;
-    private SubWindow sw;
+    //private SubWindow sw;
     public PropItem(int type, int x, int y, String id) {
         super(type, x, y, id); 
-        this.sw = new SubWindow();
+        //this.sw = new SubWindow();
     }
 
     @Override
