@@ -15,4 +15,5 @@ Collision
 Borders for the propos
 Key handling
 Inventory on off
+PickUp propos
 

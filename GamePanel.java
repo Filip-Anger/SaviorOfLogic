@@ -72,7 +72,7 @@ public class GamePanel extends JPanel {
         // set the game state
         gameState = playState;
         // Update timer
-        this.timer = new Timer(16, e -> {
+        this.timer = new Timer(8, e -> {
             this.logicUpdate();  // Change the model
             this.repaint(); // Display the model
         });
