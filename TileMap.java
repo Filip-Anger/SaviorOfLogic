@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 import javax.imageio.ImageIO;
@@ -18,24 +17,33 @@ public class TileMap {
     private final int scaledTile;
     private final int widthPixels;
     private final int heightPixels;
-    // private final File mapFile;
-    // private  final Scanner sc;
+    private final File mapFile;
+    private  Scanner sc;
 
     private Set<Integer> forbiddenTiles;
     private GamePanel gamePanel;
 
     /** Load in all tiles. */
     public TileMap(GamePanel gamePanel) {
+        this.mapFile = new File("Tileset/Map.txt");
+
+        try {
+            this.sc = new Scanner(this.mapFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         this.gamePanel = gamePanel;
         this.scaledTile = Game.ORIGINAL_TILE * Game.SCALE;
         this.widthPixels = Game.WIDTH / this.scaledTile;
         this.heightPixels = Game.HEIGHT / this.scaledTile;
 
-        Random random = new Random();
         this.tileMapMatrix = new int[this.mapSize][this.mapSize];
         for (int y = 0; y < this.mapSize; y++) {
             for (int x = 0; x < this.mapSize; x++) {
-                this.tileMapMatrix[y][x] = random.nextInt(4); // Random between 1 and 3
+                if (sc.hasNext()) {
+                    this.tileMapMatrix[y][x] = sc.nextInt(); // Random between 1 and 3
+                }
             }
         }
 
