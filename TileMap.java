@@ -13,7 +13,8 @@ public class TileMap {
     private BufferedImage[] tiles; // grass, path, tree, water, enemy
     private String[] filesNames;
     private int[][] tileMapMatrix;
-    private final int mapSize = 40;
+    private final int mapHeight = 50;
+    private final int mapWidth = 200;
     private final int scaledTile;
     private final int widthPixels;
     private final int heightPixels;
@@ -25,7 +26,7 @@ public class TileMap {
 
     /** Load in all tiles. */
     public TileMap(GamePanel gamePanel) {
-        this.mapFile = new File("Tileset/Map.txt");
+        this.mapFile = new File("Tileset/map_new.txt");
 
         try {
             this.sc = new Scanner(this.mapFile);
@@ -38,9 +39,9 @@ public class TileMap {
         this.widthPixels = Game.WIDTH / this.scaledTile;
         this.heightPixels = Game.HEIGHT / this.scaledTile;
 
-        this.tileMapMatrix = new int[this.mapSize][this.mapSize];
-        for (int y = 0; y < this.mapSize; y++) {
-            for (int x = 0; x < this.mapSize; x++) {
+        this.tileMapMatrix = new int[this.mapHeight][this.mapWidth];
+        for (int y = 0; y < this.mapHeight; y++) {
+            for (int x = 0; x < this.mapWidth; x++) {
                 if (sc.hasNext()) {
                     this.tileMapMatrix[y][x] = sc.nextInt(); // Random between 1 and 3
                 }
@@ -74,8 +75,8 @@ public class TileMap {
         if (x1 < 0 || y1 < 0) {
             return false;
         }
-        if (x1 + sizeX > this.mapSize * this.scaledTile 
-            || y1 + sizeY > this.mapSize * this.scaledTile) {
+        if (x1 + sizeX > this.mapWidth * this.scaledTile 
+            || y1 + sizeY > this.mapHeight * this.scaledTile) {
             return false;
         }
         // Rounded down for the left top
@@ -134,8 +135,8 @@ public class TileMap {
         int yFracOff = yOffset % this.scaledTile;
         for (int i = -1; i < this.heightPixels + 1; i++) {
             for (int j = -1; j < this.widthPixels + 1; j++) {
-                if (yMatrixOff + i < 0 || yMatrixOff + i >= this.mapSize
-                    || xMatrixOff + j < 0 || xMatrixOff + j >= this.mapSize) {
+                if (yMatrixOff + i < 0 || yMatrixOff + i >= this.mapHeight
+                    || xMatrixOff + j < 0 || xMatrixOff + j >= this.mapWidth) {
                     g.drawImage(this.tiles[0],
                         j * this.scaledTile - xFracOff, i * this.scaledTile - yFracOff, null);
                 } else {
