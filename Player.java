@@ -35,7 +35,7 @@ public class Player {
     */
     public Player(InputMap frameInputMap, ActionMap frameActionMap) {
         this.size = Game.ORIGINAL_TILE * Game.SCALE;
-        this.velocity = Game.SCALE;
+        this.velocity = 3 * Game.SCALE;
         this.x = Game.WIDTH / 2 - this.size / 2;
         this.y = Game.HEIGHT / 2 - this.size / 2;
         // Input map: use pressed/released so movement is continuous while holding keys

@@ -26,3 +26,19 @@ My implementation
     MODEL - tilemap, world offset >> GamePanel
     LOGIC - changing world offset based on input (if possible) ->> changing model >> GameEngine
     RENDERING - based on MODEL, renders visual rep.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    QUESTIONS:
+        new TileMap(GamePanel this) >> is this ok / how else do I return 2 ints (x and y) > struct???

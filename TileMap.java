@@ -18,10 +18,11 @@ public class TileMap {
     private final int widthPixels;
     private final int heightPixels;
     private Set<Integer> forbiddenTiles;
-
+    private GamePanel gamePanel;
 
     /** Load in all tiles. */
-    public TileMap() {
+    public TileMap(GamePanel gamePanel) {
+        this.gamePanel = gamePanel;
         this.scaledTile = Game.ORIGINAL_TILE * Game.SCALE;
         this.widthPixels = Game.WIDTH / this.scaledTile;
         this.heightPixels = Game.HEIGHT / this.scaledTile;
@@ -96,8 +97,22 @@ public class TileMap {
         return true;
     }
 
-    public void moveToEdge() {
-        //TODO: when near corner, push all the way to edge
+    public void snapToEdge(int velocityX, int velocityY, int x, int y) {
+        if (x % this.scaledTile != 0) {
+            if (velocityX > 0) {
+                this.gamePanel.setPlayerX((x / this.scaledTile + 1) * this.scaledTile);
+            } else if (velocityX < 0) {
+                this.gamePanel.setPlayerX((x  - (x % this.scaledTile)));
+            }
+        }
+        if (y % this.scaledTile != 0) {
+            if (velocityY > 0) {
+                this.gamePanel.setPlayerY((y / this.scaledTile + 1) * this.scaledTile);
+            } else if (velocityY < 0) {
+                this.gamePanel.setPlayerY((y  - (x % this.scaledTile)));
+            }
+        }
+        
     }
 
     public void draw(Graphics g, int xOffset, int yOffset) {
