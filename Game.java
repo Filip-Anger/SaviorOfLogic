@@ -27,7 +27,7 @@ class Game {
         this.frame.setSize(WIDTH, HEIGHT);
         this.frame.setLayout(new BorderLayout());
 
-        this.gamePanel = new GamePanel(0, 0);
+        this.gamePanel = new GamePanel(-50, -50);
         this.frame.add(this.gamePanel, BorderLayout.CENTER);
 
         this.frame.setVisible(true);

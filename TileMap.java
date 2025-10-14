@@ -13,7 +13,7 @@ public class TileMap {
     private BufferedImage[] tiles; // grass, path, tree, water, enemy
     private String[] filesNames;
     private int[][] tileMapMatrix;
-    private final int mapSize = 500;
+    private final int mapSize = 40;
     private final int scaledTile;
     private final int widthPixels;
     private final int heightPixels;
