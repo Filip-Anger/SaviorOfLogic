@@ -1,3 +1,4 @@
+import com.sun.source.tree.YieldTree;
 import java.awt.Graphics;
 
 
@@ -131,8 +132,26 @@ public class GamePanel extends JPanel {
     }
 
     private void playerMovment() {
-        this.offsetX += this.player.xUpdate();
-        this.offsetY += this.player.yUpdate();
+        int xInput = this.player.xUpdate();
+        int yInput = this.player.yUpdate();
+        if (xInput != 0 && yInput != 0) {
+            xInput = Math.round((float) (xInput / Math.sqrt(2)));
+            yInput = Math.round((float) (yInput / Math.sqrt(2)));
+            if (xInput > 0) {
+                xInput += 1;
+            } else {
+                xInput -= 1;
+            }
+            if (yInput > 0) {
+                yInput += 1;
+            } else {
+                yInput -= 1;
+            }
+        }
+        //TODO: COLLISION
+        this.offsetX += xInput;
+        this.offsetY += yInput;
+
     }
 
     private void playerState(){
