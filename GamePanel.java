@@ -148,7 +148,7 @@ public class GamePanel extends JPanel {
             if (xInput > 0) {
                 xInput += 1;
             } else {
-                xInput -= 1;
+                xInput -= 1;    
             }
             if (yInput > 0) {
                 yInput += 1;
@@ -165,7 +165,7 @@ public class GamePanel extends JPanel {
             this.offsetX += xInput;
             this.offsetY += yInput;
         } else {
-            this.tileMap.snapToEdge(xInput, yInput, posOnMapX, posOnMapY);
+            // this.tileMap.snapToEdge(xInput, yInput, posOnMapX, posOnMapY);
         }
 
     }

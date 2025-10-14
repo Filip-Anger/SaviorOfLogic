@@ -34,7 +34,7 @@ public class Player {
      * @param frameActionMap map from the parent swing object
     */
     public Player(InputMap frameInputMap, ActionMap frameActionMap) {
-        this.size = Game.ORIGINAL_TILE * Game.SCALE;
+        this.size = Game.ORIGINAL_TILE;
         this.velocity = 3 * Game.SCALE;
         this.x = Game.WIDTH / 2 - this.size / 2;
         this.y = Game.HEIGHT / 2 - this.size / 2;

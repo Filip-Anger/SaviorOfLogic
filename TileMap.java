@@ -58,7 +58,7 @@ public class TileMap {
         }
     }
 
-    public boolean canWalkOn(int x1, int y1, int sizeX, int sizeY) {
+    public boolean canWalkOn(int x1, int y1, int sizeX, int sizeY, int veloci) {
         if (x1 < 0 || y1 < 0) {
             return false;
         }
