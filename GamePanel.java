@@ -4,6 +4,7 @@ import java.awt.Graphics;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.logging.XMLFormatter;
 
 
 import javax.swing.ActionMap;
@@ -24,6 +25,10 @@ public class GamePanel extends JPanel {
     private final ItemSpawner itemSpawner;
     private int offsetX;
     private int offsetY;
+    private final int playerX;
+    private final int playerY;
+    private final int playerSize;
+
 
     public static final int TILE_SIZE = 16;
 
@@ -50,6 +55,9 @@ public class GamePanel extends JPanel {
         });
 
         this.player = new Player(inputMap, actionMap);
+        this.playerX = this.player.getPlayerX();
+        this.playerY = this.player.getPlayerY();
+        this.playerSize = this.player.getSize();
 
         // TileMap
         this.tileMap = new TileMap();
@@ -149,8 +157,16 @@ public class GamePanel extends JPanel {
             }
         }
         //TODO: COLLISION
-        this.offsetX += xInput;
-        this.offsetY += yInput;
+        // Left top corner
+        int posOnMapX = this.offsetX + this.playerX + xInput;
+        int posOnMapY = this.offsetY + this.playerY + yInput;
+        if (this.tileMap.canWalkOn(posOnMapX, posOnMapY, 
+            this.playerSize, this.playerSize)) {
+            this.offsetX += xInput;
+            this.offsetY += yInput;
+        } else {
+            this.tileMap.moveToEdge();
+        }
 
     }
 

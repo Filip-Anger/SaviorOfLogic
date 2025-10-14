@@ -12,6 +12,7 @@ class Game {
     public static final int SCALE = 2;
     public static final int WIDTH = 800;
     public static final int HEIGHT = 640;
+    public static final int ORIGINAL_TILE = 16;
 
     public ArrayList<Item> allItems = new ArrayList<Item>();
     //hello still testing
