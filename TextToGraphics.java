@@ -36,11 +36,13 @@ public class TextToGraphics {
         g2d.setColor(Color.BLACK);
         int outlineThickness = 1; // Adjust for thicker outline
         // Draw the text multiple times to create an outline effect
+        /* 
         g2d.drawString(text, outlineThickness+5, fm.getAscent() + outlineThickness);
         g2d.drawString(text, outlineThickness+5, fm.getAscent() - outlineThickness);
         g2d.drawString(text, outlineThickness+5, fm.getAscent());
         g2d.drawString(text, outlineThickness + 6, fm.getAscent());
         g2d.drawString(text, outlineThickness +4, fm.getAscent());
+        */
 
         // Draw the main text (white)
         g2d.setColor(Color.WHITE);

@@ -7,3 +7,5 @@ Character Sprite and walking animations
 
 Started
 Collision
+
+
