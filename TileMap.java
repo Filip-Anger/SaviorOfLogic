@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.Set;
 import javax.imageio.ImageIO;
 
@@ -17,6 +18,9 @@ public class TileMap {
     private final int scaledTile;
     private final int widthPixels;
     private final int heightPixels;
+    // private final File mapFile;
+    // private  final Scanner sc;
+
     private Set<Integer> forbiddenTiles;
     private GamePanel gamePanel;
 
