@@ -33,11 +33,7 @@ public class GamePanel extends JPanel {
     public static final int TILE_SIZE = 16;
 
     //Game state
-    public int gameState;
-    public final int titleState = 0;
-    public final int playState = 1;
-    public final int inventoryState = 2;
-    public final int dialogueState = 3;
+    public boolean inventoryState = false;
 
     public final int propItem = 0;
 
@@ -69,8 +65,7 @@ public class GamePanel extends JPanel {
         this.itemSpawner = new ItemSpawner();
         // Inventory
         this.inventory = new Inventory();
-        // set the game state
-        gameState = playState;
+        
         // Update timer
         this.timer = new Timer(8, e -> {
             this.logicUpdate();  // Change the model
@@ -86,23 +81,7 @@ public class GamePanel extends JPanel {
         playerState();
         playerMovment();
         
-        switch (gameState) {
-            case playState:
-                
-                
-                break;
-            
-            case inventoryState:
-
-                break;
-
-            case dialogueState:
-
-                break;
         
-            default:
-                break;
-        }
         
 
     }
@@ -112,21 +91,7 @@ public class GamePanel extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g); // Clean background
-            switch (gameState) {
-            
-            
-            case inventoryState:
-                
-
-                break;
-
-            case dialogueState:
-
-                break;
         
-            default:
-                break;
-        }
         
         //System.out.println("Xoffset: " + this.offsetX + "    Yoffset: " + this.offsetY);
         this.tileMap.draw(g, this.offsetX, this.offsetY); // HELPER class to make it organized
@@ -134,7 +99,9 @@ public class GamePanel extends JPanel {
         this.player.draw(g);
         
         this.itemSpawner.drawItems(g, this.offsetX, this.offsetY);
-        // this.inventory.draw(g);
+        if (inventoryState){
+            this.inventory.draw(g);
+        }
         
         
     }
@@ -179,7 +146,7 @@ public class GamePanel extends JPanel {
     }
 
     private void playerState(){
-        this.gameState = this.player.stateUpdate();
+        this.inventoryState = this.player.stateUpdate();
     }
     
     //private void inventoryMovement() 
