@@ -1,21 +1,42 @@
-# FILIP STUFF
-Each of these goes in new branch!!!
+# Savior of Logic - Development TODO
+Press **Ctrl+Shift+V** TRUST ME!
+---
 
-Not started
-Measure time of repainting map
-Load map from file
-Think about velocity in type double - counting with doubles overall
-Character Sprite and walking animations
+## FILIP'S TASKS
 
-Started
-Collision
+### Working on
+- [ ] Collision detection  
 
-# MAREK STUFF
+### Not started yet
+- [ ] Measure time of repainting map
+- [ ] Load map from file
+- [ ] Think about velocity in type `double` - counting with doubles overall
+- [ ] Character sprite and walking animations
 
-Key handling
+---
 
-Today
-Borders for the propos
-Inventory on off
-PickUp propos
+## MAREK'S TASKS
 
+### Today (10.15.)
+- [ ] Borders for the propos
+- [X] Inventory on/off toggle
+- [ ] Pickup proos functionality
+
+### TO DO in future
+- [ ] Key handling refactor
+- [ ] Mouse interaction
+
+
+
+## Notes
+- Use feature branches for each task
+- Test thoroughly before merging
+
+## Workflow
+1. Create a new branch: `git checkout -b feature/task-name`
+2. Complete the task
+3. Create a pull request
+4. Review and merge
+
+
+**Last Updated:** 15.10.2025
