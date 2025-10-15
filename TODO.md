@@ -18,9 +18,9 @@ Press **Ctrl+Shift+V** TRUST ME!
 ## MAREK'S TASKS
 
 ### Today (10.15.)
-- [ ] Borders for the propos
+- [X] Borders for the propos
 - [X] Inventory on/off toggle
-- [ ] Pickup proos functionality
+- [ ] Pickup propos functionality
 
 ### TO DO in future
 - [ ] Key handling refactor
