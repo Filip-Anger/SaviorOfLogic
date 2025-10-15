@@ -12,7 +12,7 @@ public class Player {
     boolean movingLeft;
     boolean movingRight;
 
-    int gameState;
+    boolean inventoryState;
 
     final InputMap inputMap;
     final ActionMap actionMap;
@@ -21,10 +21,7 @@ public class Player {
     final int y;
     final int velocity;
     
-    final int titleState = 0;
-    final int playState = 1;
-    final int inventoryState = 2;
-    final int dialogueState = 3;
+
     
 
     // Sprite??
@@ -107,8 +104,8 @@ public class Player {
     }
 
 
-    public int stateUpdate(){
-        return gameState;
+    public boolean stateUpdate(){
+        return inventoryState;
     }
 
 
@@ -174,10 +171,10 @@ public class Player {
     public class Inventory extends AbstractAction {
         @Override
         public void actionPerformed(ActionEvent e){
-            if (gameState == inventoryState){
-                gameState = playState;
+            if (inventoryState){
+                inventoryState = false;
             } else{
-                gameState = inventoryState;
+                inventoryState = true;
             }
         }
     }
