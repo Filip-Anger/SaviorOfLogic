@@ -13,6 +13,7 @@ public class ItemSpawner {
     //load these 2
     private String[] inputStrings;
     public ArrayList<Item> allItems = new ArrayList<Item>();
+    //public ArrayList<ArrayList<Integer>> ItemsPos = new ArrayList<ArrayList<Integer>>();
     public ArrayList<Item> visibleItems = new ArrayList<Item>();
     //public ArrayList<Item> allProps = new ArrayList<Item>();
     private String tempInputString = "";
@@ -74,5 +75,14 @@ public class ItemSpawner {
                 visibleItems.add(i);
             }
         }
+    }
+    public Item getItem(int x, int y, int width, int height){
+        for(Item item : visibleItems){
+            if(item.getX() - x <= item.getWidth()+width && item.getY() - y <= item.getHeight()+height){
+                visibleItems.remove(item);
+                return item;
+            }
+        }
+        return null;
     }
 }
