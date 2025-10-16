@@ -88,8 +88,8 @@ public class GamePanel extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g); // Clean background
-        double betweenLast = (System.nanoTime() - this.lastFrameTime);
-        System.out.println("FPS: " + 1 / (betweenLast / Math.pow(10, 9)));
+        // double betweenLast = (System.nanoTime() - this.lastFrameTime);
+        // System.out.println("FPS: " + 1 / (betweenLast / Math.pow(10, 9)));
         
         this.tileMap.draw(g, this.offsetX, this.offsetY); // HELPER class to make it organized
 
@@ -129,9 +129,9 @@ public class GamePanel extends JPanel {
         int posOnMapY = this.offsetY + this.playerY;
 
         if (xInput != 0) {
-            this.offsetX += this.tileMap.canWalkOn(posOnMapX, posOnMapY, xInput, 0, this.playerSize);
+            this.offsetX += this.tileMap.tryAndMoveX(posOnMapX, posOnMapY, xInput, this.playerSize);
         } if ( yInput != 0) {
-            this.offsetY += this.tileMap.canWalkOn(posOnMapX, posOnMapY, 0, yInput, this.playerSize);
+            this.offsetY += this.tileMap.tryAndMoveY(posOnMapX, posOnMapY, yInput, this.playerSize);
         } 
 
     }

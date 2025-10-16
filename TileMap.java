@@ -88,60 +88,119 @@ public class TileMap {
             return ((pos / this.scaledTile) * this.scaledTile - pos); //(((pos / this.scaledTile) + 1) * this.scaledTile);
         }
     }
-    public int canWalkOn(int x1, int y1, int deltaX, int deltaY, int size) {
-        if (x1 < 0 || y1 < 0) {
-            return 0;
-        }
-        if (x1 + deltaX + size > this.mapWidth * this.scaledTile
-            || y1 + deltaY + size > this.mapHeight * this.scaledTile) {
-            return this.mapWidth * this.scaledTile - size;
-        }
-        
-        // Rounded down for the left top
-        int xCord1 = (x1 + deltaX) / this.scaledTile;
-        int yCord1 = (y1 + deltaY) / this.scaledTile;
-        if (this.forbiddenTiles.contains(this.tileMapMatrix[yCord1][xCord1])) {
-            return this.collisionHelper(deltaX, deltaY, x1, y1);
-        }
 
-        // Top right >> x round UP
-        xCord1 = (x1 + deltaX + size) / this.scaledTile;
-        if (this.forbiddenTiles.contains(this.tileMapMatrix[yCord1][xCord1])) {
-            return this.collisionHelper(deltaX, deltaY, x1 , y1);
-
+    /**@param deltaY NOT ZERO
+     * @return max possible deltaY
+    */
+    public int tryAndMoveY(int x, int y, int deltaY, int size) {
+        int cordXLeft = x / this.scaledTile;
+        int cordXRight = (x + size - 1) / this.scaledTile;
+        int cordYTop = (y + deltaY) / this.scaledTile;
+        int cordYBot = (y + deltaY + size - 1) / this.scaledTile;
+        if (cordYTop < 0) {
+            return (- y);
         }
-
-        yCord1 = (y1 + + deltaY + size) / this.scaledTile;
-        if (this.forbiddenTiles.contains(this.tileMapMatrix[yCord1][xCord1])) {
-            return this.collisionHelper(deltaX, deltaY, x1, y1);
+        if (cordYBot >= (this.mapHeight- 1) * this.scaledTile) {
+            return (this.mapHeight * (this.scaledTile - 1) - y);
         }
-
-        // Top right >> x round UP
-        xCord1 = (x1 + deltaX) / this.scaledTile;
-        if (this.forbiddenTiles.contains(this.tileMapMatrix[yCord1][xCord1])) {
-            return this.collisionHelper(deltaX, deltaY, x1, y1);
-        }
-        return (deltaX + deltaY);
-        // Bottom right >> 
-    }
-
-    public void snapToEdge(int velocityX, int velocityY, int x, int y) {
-        if (x % this.scaledTile != 0) {
-            if (velocityX > 0) {
-                this.gamePanel.setPlayerX((x / this.scaledTile + 1) * this.scaledTile);
-            } else if (velocityX < 0) {
-                this.gamePanel.setPlayerX((x  - (x % this.scaledTile)));
+        if (deltaY < 0) { // Go up - if edge snap to current square
+            if (this.forbiddenTiles.contains(this.tileMapMatrix[cordYTop][cordXLeft]) 
+            || this.forbiddenTiles.contains(this.tileMapMatrix[cordYTop][cordXRight])) {
+                return (cordYTop + 1) * this.scaledTile - y;
+            }
+        } else if(deltaY > 0) { // Go down, if edge snap to square bellow
+            if (this.forbiddenTiles.contains(this.tileMapMatrix[cordYBot][cordXLeft])
+            || this.forbiddenTiles.contains(this.tileMapMatrix[cordYBot][cordXRight])) {
+                return (cordYBot - 1) * this.scaledTile - y;
             }
         }
-        if (y % this.scaledTile != 0) {
-            if (velocityY > 0) {
-                this.gamePanel.setPlayerY((y / this.scaledTile + 1) * this.scaledTile);
-            } else if (velocityY < 0) {
-                this.gamePanel.setPlayerY((y  - (x % this.scaledTile)));
+        return deltaY;
+    }
+
+    public int tryAndMoveX(int x, int y, int deltaX, int size) {
+        int cordXLeft = (x + deltaX) / this.scaledTile;
+        int cordXRight = (x + deltaX + size - 1) / this.scaledTile;
+        int cordYTop = (y) / this.scaledTile;
+        int cordYBot = (y + size - 1) / this.scaledTile;
+         if (cordXLeft < 0) {
+            return (- x);
+        }
+        if (cordXRight >= (this.mapHeight - 1) * this.scaledTile) {
+            return (this.mapWidth * (this.scaledTile - 1) - x);
+        }
+        if (deltaX < 0) { // Go up - if edge snap to current square
+            if (this.forbiddenTiles.contains(this.tileMapMatrix[cordYTop][cordXLeft]) 
+            || this.forbiddenTiles.contains(this.tileMapMatrix[cordYBot][cordXLeft])) {
+                if ((x + deltaX) == cordXLeft) {
+                    return 0;
+                }
+                return (cordXLeft + 1) * this.scaledTile - x;
+            }
+        } else if(deltaX > 0) { // Go down, if edge snap to square bellow
+            if (this.forbiddenTiles.contains(this.tileMapMatrix[cordYTop][cordXRight])
+            || this.forbiddenTiles.contains(this.tileMapMatrix[cordYBot][cordXRight])) {
+                if ((x + deltaX) == cordXRight) {
+                    return 0;
+                }
+                return (cordXRight - 1) * this.scaledTile - x;
             }
         }
-        
+        return deltaX;
     }
+    // public int canWalkOn(int x1, int y1, int deltaX, int deltaY, int size) {
+    //     if (x1 < 0 || y1 < 0) {
+    //         return 0;
+    //     }
+    //     if (x1 + deltaX + size > this.mapWidth * this.scaledTile
+    //         || y1 + deltaY + size > this.mapHeight * this.scaledTile) {
+    //         return this.mapWidth * this.scaledTile - size;
+    //     }
+        
+    //     // Rounded down for the left top
+    //     int xCord1 = (x1 + deltaX) / this.scaledTile;
+    //     int yCord1 = (y1 + deltaY) / this.scaledTile;
+    //     if (this.forbiddenTiles.contains(this.tileMapMatrix[yCord1][xCord1])) {
+    //         return this.collisionHelper(deltaX, deltaY, x1, y1);
+    //     }
+
+    //     // Top right >> x round UP
+    //     xCord1 = (x1 + deltaX + size) / this.scaledTile;
+    //     if (this.forbiddenTiles.contains(this.tileMapMatrix[yCord1][xCord1])) {
+    //         return this.collisionHelper(deltaX, deltaY, x1 , y1);
+
+    //     }
+
+    //     yCord1 = (y1 + + deltaY + size) / this.scaledTile;
+    //     if (this.forbiddenTiles.contains(this.tileMapMatrix[yCord1][xCord1])) {
+    //         return this.collisionHelper(deltaX, deltaY, x1, y1);
+    //     }
+
+    //     // Top right >> x round UP
+    //     xCord1 = (x1 + deltaX) / this.scaledTile;
+    //     if (this.forbiddenTiles.contains(this.tileMapMatrix[yCord1][xCord1])) {
+    //         return this.collisionHelper(deltaX, deltaY, x1, y1);
+    //     }
+    //     return (deltaX + deltaY);
+    //     // Bottom right >> 
+    // }
+
+    // public void snapToEdge(int velocityX, int velocityY, int x, int y) {
+    //     if (x % this.scaledTile != 0) {
+    //         if (velocityX > 0) {
+    //             this.gamePanel.setPlayerX((x / this.scaledTile + 1) * this.scaledTile);
+    //         } else if (velocityX < 0) {
+    //             this.gamePanel.setPlayerX((x  - (x % this.scaledTile)));
+    //         }
+    //     }
+    //     if (y % this.scaledTile != 0) {
+    //         if (velocityY > 0) {
+    //             this.gamePanel.setPlayerY((y / this.scaledTile + 1) * this.scaledTile);
+    //         } else if (velocityY < 0) {
+    //             this.gamePanel.setPlayerY((y  - (x % this.scaledTile)));
+    //         }
+    //     }
+        
+    // }
 
     public void draw(Graphics g, int xOffset, int yOffset) {
         int yMatrixOff = yOffset / this.scaledTile;
