@@ -3,6 +3,7 @@ import java.awt.BorderLayout;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 /**PUPET MASTER.
  * Creates a MODEL - GamePanel
@@ -20,21 +21,30 @@ class Game {
 
     GamePanel gamePanel;
     JFrame frame;
+    
 
-    void start(int fps) {
-        this.frame = new JFrame("Savior of the Logic");
-        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.frame.setSize(WIDTH, HEIGHT);
-        this.frame.setLayout(new BorderLayout());
+    public Game(int fps) {
+        Runnable start = new Runnable() {
+            @Override
+            public void run() {
+                JFrame f = new JFrame("Savior of the Logic");
+                f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                f.setSize(WIDTH, HEIGHT);
+                f.setLayout(new BorderLayout());
 
-        this.gamePanel = new GamePanel(-50, -50, fps);
-        this.frame.add(this.gamePanel, BorderLayout.CENTER);
+                GamePanel gp = new GamePanel(-50, -50, fps);
+                // f.add(gp, BorderLayout.CENTER);
 
-        this.frame.setVisible(true);
-    }
+                f.setVisible(true);
+            }
+            
+        };
+        SwingUtilities.invokeLater(start);
+    }  
+
+
     
     public static void main(String[] args) {
-        Game game = new Game();
-        game.start(60);
+        Game game = new Game(60);
     }
 }
