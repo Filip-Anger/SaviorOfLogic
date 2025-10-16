@@ -29,7 +29,6 @@ public class GamePanel extends JPanel {
     private final int playerY;
     private final int playerSize;
     private long lastFrameTime;
-    private final int fps;
 
     public static final int TILE_SIZE = 16;
 
@@ -89,8 +88,8 @@ public class GamePanel extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g); // Clean background
-        double betweenLast = (System.nanoTime() - this.lastFrameTime);
-        System.out.println("FPS: " + 1 / (betweenLast / Math.pow(10, 9)));
+        // double betweenLast = (System.nanoTime() - this.lastFrameTime);
+        // System.out.println("FPS: " + 1 / (betweenLast / Math.pow(10, 9)));
         
         this.tileMap.draw(g, this.offsetX, this.offsetY); // HELPER class to make it organized
 
@@ -107,6 +106,7 @@ public class GamePanel extends JPanel {
     }
 
     private void playerMovment() {
+        this.player.movement();
         int xInput = this.player.xUpdate();
         int yInput = this.player.yUpdate();
         if (xInput != 0 && yInput != 0) {
@@ -127,13 +127,12 @@ public class GamePanel extends JPanel {
         // Left top corner
         int posOnMapX = this.offsetX + this.playerX;
         int posOnMapY = this.offsetY + this.playerY;
-        if (this.tileMap.canWalkOn(posOnMapX + xInput, posOnMapY + yInput, 
-            this.playerSize, this.playerSize)) {
-            this.offsetX += xInput;
-            this.offsetY += yInput;
-        } else {
-            // this.tileMap.snapToEdge(xInput, yInput, posOnMapX, posOnMapY);
-        }
+
+        if (xInput != 0) {
+            this.offsetX += this.tileMap.tryAndMoveX(posOnMapX, posOnMapY, xInput, this.playerSize);
+        } if ( yInput != 0) {
+            this.offsetY += this.tileMap.tryAndMoveY(posOnMapX, posOnMapY, yInput, this.playerSize);
+        } 
 
     }
 
