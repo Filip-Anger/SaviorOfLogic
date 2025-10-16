@@ -30,7 +30,11 @@ My implementation
 
 
 
-
+Working with threads:
+    In swing there is one "Swing thread" - event dispatching thread.
+    To prevent doing manipulating instance variables / data with mulpitple threads at once, everything is scheduled in the EDT
+    How:    repaint - schedules the repaint
+            invokeLater - schedules...
 
 
 

@@ -28,7 +28,8 @@ public class GamePanel extends JPanel {
     private final int playerX;
     private final int playerY;
     private final int playerSize;
-
+    private long lastFrameTime;
+    private final int fps;
 
     public static final int TILE_SIZE = 16;
 
@@ -37,7 +38,9 @@ public class GamePanel extends JPanel {
 
     public final int propItem = 0;
 
-    public GamePanel(int startX, int startY) {
+    public GamePanel(int startX, int startY, int fps) {
+        this.lastFrameTime = System.nanoTime();
+        this.fps = fps;
         // Player
         InputMap inputMap = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap actionMap = this.getActionMap();
@@ -67,13 +70,12 @@ public class GamePanel extends JPanel {
         this.inventory = new Inventory();
         
         // Update timer
-        this.timer = new Timer(8, e -> {
+        this.timer = new Timer((int) Math.round(1000.0 / fps), e -> {
             this.logicUpdate();  // Change the model
             this.repaint(); // Display the model
         });
 
         
-
         this.timer.start();
     }
 
@@ -83,10 +85,7 @@ public class GamePanel extends JPanel {
             addItem();
         }
         playerMovment();
-        
-        
-        
-
+    
     }
 
 
@@ -94,19 +93,21 @@ public class GamePanel extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g); // Clean background
+        double betweenLast = (System.nanoTime() - this.lastFrameTime);
+        System.out.println("FPS: " + 1 / (betweenLast / Math.pow(10, 9)));
         
-        
-        //System.out.println("Xoffset: " + this.offsetX + "    Yoffset: " + this.offsetY);
         this.tileMap.draw(g, this.offsetX, this.offsetY); // HELPER class to make it organized
+
 
         this.player.draw(g);
         
+
         this.itemSpawner.drawItems(g, this.offsetX, this.offsetY);
         if (inventoryState){
             this.inventory.draw(g);
         }
         
-        
+        this.lastFrameTime = System.nanoTime();
     }
 
     private void playerMovment() {
