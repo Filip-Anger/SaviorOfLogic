@@ -39,8 +39,6 @@ public class GamePanel extends JPanel {
     public final int propItem = 0;
 
     public GamePanel(int startX, int startY, int fps) {
-        this.lastFrameTime = System.nanoTime();
-        this.fps = fps;
         // Player
         InputMap inputMap = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap actionMap = this.getActionMap();
