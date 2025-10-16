@@ -20,18 +20,28 @@ class Game {
 
     GamePanel gamePanel;
     JFrame frame;
+    int fps;
+    
+    @Override
+    public void run() {
+        JFrame f = new JFrame("Savior of the Logic");
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setSize(WIDTH, HEIGHT);
+        f.setLayout(new BorderLayout());
+        GamePanel gp = new GamePanel(0, 0, this.fps);
+        f.add(gp, BorderLayout.CENTER);
 
-    void start() {
-        this.frame = new JFrame("Savior of the Logic");
-        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.frame.setSize(WIDTH, HEIGHT);
-        this.frame.setLayout(new BorderLayout());
+        this.frame = f;
+        this.gamePanel = gp;
+        f.setVisible(true);
+        
+        };
 
-        this.gamePanel = new GamePanel(20  , 100);
-        this.frame.add(this.gamePanel, BorderLayout.CENTER);
+    public Game(int fps) {
+        this.fps = fps;
+        SwingUtilities.invokeLater(this);
+    }  
 
-        this.frame.setVisible(true);
-    }
     
     public static void main(String[] args) {
         Game game = new Game();
