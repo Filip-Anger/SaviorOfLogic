@@ -3,7 +3,6 @@ import java.awt.BorderLayout;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 
 /**PUPET MASTER.
  * Creates a MODEL - GamePanel
@@ -45,6 +44,7 @@ class Game implements Runnable{
 
     
     public static void main(String[] args) {
-        Game game = new Game(60);
+        Game game = new Game();
+        game.start();
     }
 }
