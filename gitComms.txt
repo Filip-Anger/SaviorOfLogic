@@ -18,7 +18,7 @@ git reset	Unstage or move HEAD	Powerful for fixing mistakes
 git revert	Undo a specific commit safely	Keeps history clean
 git log -p	View commits + diffs	Good for debugging who changed what
 
-git merge (name of the branch to merge into current)
+
 
 
 

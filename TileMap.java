@@ -52,7 +52,6 @@ public class TileMap {
         this.filesNames = new String[]{"water", "grass", "path", "tree", "enemy"};
         this.forbiddenTiles = new HashSet<>();
         this.forbiddenTiles.add(0);
-        this.forbiddenTiles.add(3);
         this.tiles = new BufferedImage[this.filesNames.length];
         try {
             for (int i = 0; i < this.filesNames.length; i++) {

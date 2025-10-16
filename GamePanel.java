@@ -80,10 +80,8 @@ public class GamePanel extends JPanel {
     }
 
     private void logicUpdate() {
-        inventoryState();
-        if (player.isPickUpPressed()) {
-            addItem();
-        }
+        
+        playerState();
         playerMovment();
     
     }
@@ -149,14 +147,9 @@ public class GamePanel extends JPanel {
         this.offsetY = playerY - Game.HEIGHT / 2 + this.playerSize / 2;
     }
 
-    private void inventoryState(){
-        this.inventoryState = this.player.isInventoryOpen();
-    }
-    private void addItem(){
-        Item i = itemSpawner.getItem(offsetX + Game.WIDTH / 2 - this.playerSize / 2, offsetY + Game.HEIGHT / 2 - this.playerSize / 2, this.playerSize / 2, this.playerSize / 2);
-        if (i != null){
-            inventory.addItem(i);
-        }
+    private void playerState(){
+        this.inventoryState = this.player.stateUpdate();
     }
     
+    //private void inventoryMovement() 
 }
