@@ -8,7 +8,7 @@ import javax.swing.JFrame;
  * Creates a MODEL - GamePanel
  * Calls 
  */
-class Game {
+class Game implements Runnable{
     public static final int SCALE = 2;
     public static final int WIDTH = 800;
     public static final int HEIGHT = 640;
