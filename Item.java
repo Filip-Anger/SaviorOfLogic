@@ -9,10 +9,6 @@ public abstract class Item {
     private int y;
     private String ID;
     private BufferedImage sprite;
-    private int width = Game.ORIGINAL_TILE*Game.SCALE;
-    private int height = Game.ORIGINAL_TILE*Game.SCALE;
-
-    
     
     
     public Item(int type, int x, int y, String ID){
@@ -33,9 +29,6 @@ public abstract class Item {
     public int getY() { return this.y; }
     public String getID() { return this.ID; }
     public BufferedImage getSprite() { return this.sprite; }
-    public int getWidth() { return this.width; }
-    public int getHeight() { return this.height; }
-    
 
 
     public void moveTo(int x, int y){

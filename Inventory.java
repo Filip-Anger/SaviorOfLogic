@@ -19,8 +19,4 @@ public class Inventory extends SubWindow{
     public void hoverItem(int x, int y){
         
     }
-    public void addItem(Item item){
-        
-    }
-    
 }

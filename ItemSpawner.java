@@ -13,7 +13,6 @@ public class ItemSpawner {
     //load these 2
     private String[] inputStrings;
     public ArrayList<Item> allItems = new ArrayList<Item>();
-    //public ArrayList<ArrayList<Integer>> ItemsPos = new ArrayList<ArrayList<Integer>>();
     public ArrayList<Item> visibleItems = new ArrayList<Item>();
     //public ArrayList<Item> allProps = new ArrayList<Item>();
     private String tempInputString = "";
@@ -69,28 +68,11 @@ public class ItemSpawner {
                 visibleItems.add(i);
                 
             }else{
-                Item i = new PropItem(0, Integer.parseInt(itemData[3]), Integer.parseInt(itemData[4]), itemData[1]);
+                Item i = new PropItem(0, Integer.parseInt(itemData[3]), Integer.parseInt(itemData[3]), itemData[1]);
                 i.setSprite(itemData[2]);
                 allItems.add(i);
                 visibleItems.add(i);
             }
         }
-    }
-    public Item getItem(int x, int y, int width, int height){
-        for(Item item : visibleItems){
-            int itemWidth = item.getWidth()/2;
-            int itemHeight = item.getHeight()/2;
-            int itemX = item.getX() + itemWidth;
-            int itemY = item.getY() + itemHeight;
-
-            System.out.println(itemX + " " + (x + width) + " " + itemWidth + " " + width);
-
-            if(Math.abs(itemX - (x + width)) <= itemWidth + width && Math.abs(itemY - (y + height)) <= itemHeight + height){
-                visibleItems.remove(item);
-                // remove put into separate method
-                return item;
-            }
-        }
-        return null;
     }
 }
