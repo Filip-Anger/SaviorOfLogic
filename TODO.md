@@ -7,11 +7,12 @@ Press **Ctrl+Shift+V** TRUST ME!
 ### Working on
 - [ ] Collision detection  
 
-### Not started yet
+### Not started yets
 - [ ] Measure time of repainting map
 - [ ] Load map from file
 - [ ] Think about velocity in type `double` - counting with doubles overall
 - [ ] Character sprite and walking animations
+- [ ] Swing safe handeling: invokeLater for inintial construction (SwingWorker not needed)
 
 ---
 
