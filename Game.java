@@ -21,13 +21,13 @@ class Game {
     GamePanel gamePanel;
     JFrame frame;
 
-    void start() {
+    void start(int fps) {
         this.frame = new JFrame("Savior of the Logic");
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.frame.setSize(WIDTH, HEIGHT);
         this.frame.setLayout(new BorderLayout());
 
-        this.gamePanel = new GamePanel(-50, -50);
+        this.gamePanel = new GamePanel(-50, -50, fps);
         this.frame.add(this.gamePanel, BorderLayout.CENTER);
 
         this.frame.setVisible(true);
@@ -35,6 +35,6 @@ class Game {
     
     public static void main(String[] args) {
         Game game = new Game();
-        game.start();
+        game.start(60);
     }
 }
