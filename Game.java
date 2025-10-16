@@ -9,7 +9,7 @@ import javax.swing.SwingUtilities;
  * Creates a MODEL - GamePanel
  * Calls 
  */
-class Game {
+class Game implements Runnable {
     public static final int SCALE = 2;
     public static final int WIDTH = 800;
     public static final int HEIGHT = 640;
@@ -21,25 +21,26 @@ class Game {
 
     GamePanel gamePanel;
     JFrame frame;
+    int fps;
     
+    @Override
+    public void run() {
+        JFrame f = new JFrame("Savior of the Logic");
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setSize(WIDTH, HEIGHT);
+        f.setLayout(new BorderLayout());
+        GamePanel gp = new GamePanel(-50, -50, this.fps);
+        f.add(gp, BorderLayout.CENTER);
+
+        this.frame = f;
+        this.gamePanel = gp;
+        f.setVisible(true);
+        
+        };
 
     public Game(int fps) {
-        Runnable start = new Runnable() {
-            @Override
-            public void run() {
-                JFrame f = new JFrame("Savior of the Logic");
-                f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                f.setSize(WIDTH, HEIGHT);
-                f.setLayout(new BorderLayout());
-
-                GamePanel gp = new GamePanel(-50, -50, fps);
-                // f.add(gp, BorderLayout.CENTER);
-
-                f.setVisible(true);
-            }
-            
-        };
-        SwingUtilities.invokeLater(start);
+        this.fps = fps;
+        SwingUtilities.invokeLater(this);
     }  
 
 

@@ -76,17 +76,13 @@ public class GamePanel extends JPanel {
         });
 
         
-
         this.timer.start();
     }
 
     private void logicUpdate() {
         
-        long start = System.nanoTime();
         playerState();
         playerMovment();
-        long end = System.nanoTime();
-        System.out.println("Logic update: " + (end - start));        
     
     }
 
