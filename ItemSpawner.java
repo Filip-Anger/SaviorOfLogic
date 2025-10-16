@@ -69,7 +69,7 @@ public class ItemSpawner {
                 visibleItems.add(i);
                 
             }else{
-                Item i = new PropItem(0, Integer.parseInt(itemData[3]), Integer.parseInt(itemData[3]), itemData[1]);
+                Item i = new PropItem(0, Integer.parseInt(itemData[3]), Integer.parseInt(itemData[4]), itemData[1]);
                 i.setSprite(itemData[2]);
                 allItems.add(i);
                 visibleItems.add(i);
@@ -78,8 +78,16 @@ public class ItemSpawner {
     }
     public Item getItem(int x, int y, int width, int height){
         for(Item item : visibleItems){
-            if(item.getX() - x <= item.getWidth()+width && item.getY() - y <= item.getHeight()+height){
+            int itemWidth = item.getWidth()/2;
+            int itemHeight = item.getHeight()/2;
+            int itemX = item.getX() + itemWidth;
+            int itemY = item.getY() + itemHeight;
+
+            System.out.println(itemX + " " + (x + width) + " " + itemWidth + " " + width);
+
+            if(Math.abs(itemX - (x + width)) <= itemWidth + width && Math.abs(itemY - (y + height)) <= itemHeight + height){
                 visibleItems.remove(item);
+                // remove put into separate method
                 return item;
             }
         }

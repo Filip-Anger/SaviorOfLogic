@@ -29,4 +29,8 @@ public class PropItem extends Item {
         //this.sw.drawSubWindow(g, getX()-20, getY()-20, this.sprite.getWidth()+40, this.sprite.getHeight()+40);
         g.drawImage(sprite, getX()-offsetX, getY()-offsetY, null);
     }
+    @Override
+    public int getWidth() { return this.width; }
+    @Override
+    public int getHeight() { return this.height; }
 }

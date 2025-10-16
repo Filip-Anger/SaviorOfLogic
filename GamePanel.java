@@ -152,7 +152,7 @@ public class GamePanel extends JPanel {
         this.inventoryState = this.player.isInventoryOpen();
     }
     private void addItem(){
-        Item i = itemSpawner.getItem(playerX, playerY, player.getSize(), player.getSize());
+        Item i = itemSpawner.getItem(offsetX + Game.WIDTH / 2 - this.playerSize / 2, offsetY + Game.HEIGHT / 2 - this.playerSize / 2, this.playerSize / 2, this.playerSize / 2);
         if (i != null){
             inventory.addItem(i);
         }
