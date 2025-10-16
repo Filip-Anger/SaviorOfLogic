@@ -9,7 +9,7 @@ import javax.swing.SwingUtilities;
  * Creates a MODEL - GamePanel
  * Calls 
  */
-class Game implements Runnable {
+class Game implements Runnable{
     public static final int SCALE = 2;
     public static final int WIDTH = 800;
     public static final int HEIGHT = 640;
@@ -29,7 +29,7 @@ class Game implements Runnable {
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setSize(WIDTH, HEIGHT);
         f.setLayout(new BorderLayout());
-        GamePanel gp = new GamePanel(-50, -50, this.fps);
+        GamePanel gp = new GamePanel(0, 0, this.fps);
         f.add(gp, BorderLayout.CENTER);
 
         this.frame = f;
@@ -42,7 +42,6 @@ class Game implements Runnable {
         this.fps = fps;
         SwingUtilities.invokeLater(this);
     }  
-
 
     
     public static void main(String[] args) {
