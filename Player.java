@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.List;
 import java.awt.event.ActionEvent;
 import javax.swing.*;
 
@@ -13,6 +14,7 @@ public class Player {
     boolean movingRight;
 
     boolean inventoryState;
+    boolean PickUp = false;
 
     final InputMap inputMap;
     final ActionMap actionMap;
@@ -46,6 +48,8 @@ public class Player {
         this.inputMap.put(KeyStroke.getKeyStroke("pressed D"), "moveRightPressed");
         this.inputMap.put(KeyStroke.getKeyStroke("released D"), "moveRightReleased");
         this.inputMap.put(KeyStroke.getKeyStroke("pressed I"), "InventoryPressed");
+        this.inputMap.put(KeyStroke.getKeyStroke("pressed E"), "PickUpPressed");
+        this.inputMap.put(KeyStroke.getKeyStroke("released E"), "PickUpReleased");
 
 
         // Input handlers
@@ -59,6 +63,8 @@ public class Player {
         this.actionMap.put("moveRightPressed", new RightPressAction());
         this.actionMap.put("moveRightReleased", new RightReleaseAction());
         this.actionMap.put("InventoryPressed", new Inventory());
+        this.actionMap.put("PickUpPressed", new PickUpPress());
+        this.actionMap.put("PickUpReleased", new PickUpRelease());
     }
 
     /**Called from GamePanel. */
@@ -104,9 +110,8 @@ public class Player {
     }
 
 
-    public boolean stateUpdate(){
-        return inventoryState;
-    }
+    public boolean isInventoryOpen() { return inventoryState; }
+    public boolean isPickUpPressed() { return PickUp; }
 
 
     public class UpPressAction extends AbstractAction {
@@ -176,6 +181,18 @@ public class Player {
             } else{
                 inventoryState = true;
             }
+        }
+    }
+    public class PickUpPress extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            PickUp = true;
+        }
+    }
+    public class PickUpRelease extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            PickUp = false;
         }
     }
 }
