@@ -29,7 +29,6 @@ public class GamePanel extends JPanel {
     private final int playerY;
     private final int playerSize;
     private long lastFrameTime;
-    private final int fps;
 
     public static final int TILE_SIZE = 16;
 
