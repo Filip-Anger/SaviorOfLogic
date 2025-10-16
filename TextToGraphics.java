@@ -8,6 +8,9 @@ import java.awt.image.BufferedImage;
 
 public class TextToGraphics {
     
+    private int width;
+    private int height;
+
     SubWindow sw;
     private Font font;
     public TextToGraphics(String fontName, int size){
@@ -20,22 +23,23 @@ public class TextToGraphics {
         Graphics2D g2d = img.createGraphics();
         g2d.setFont(this.font);
         FontMetrics fm = g2d.getFontMetrics();
-        int width = fm.stringWidth(text);
-        int height = fm.getHeight();
+        this.width = fm.stringWidth(text)+30;
+        this.height = fm.getHeight()+30;
         g2d.dispose();
 
+        
         // Create the final image with calculated dimensions
-        img = new BufferedImage(width+30, height+30, BufferedImage.TYPE_INT_ARGB);
+        img = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_ARGB);
         g2d = img.createGraphics();
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         // Draw the outline (black)
-        this.sw.drawSubWindow(g2d, 0, 0, width+30, height+30);
+        this.sw.drawSubWindow(g2d, 0, 0, this.width, this.height);
         
 
         g2d.setFont(font);
         g2d.setColor(Color.BLACK);
-        int outlineThickness = 1; // Adjust for thicker outline
+         // Adjust for thicker outline
         // Draw the text multiple times to create an outline effect
         /* 
         g2d.drawString(text, outlineThickness+5, fm.getAscent() + outlineThickness);
@@ -52,4 +56,6 @@ public class TextToGraphics {
         g2d.dispose();
         return img;
     }
+    public int getWidth() { return this.width; }
+    public int getHeight() { return this.height; }
 }

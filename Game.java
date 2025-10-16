@@ -43,6 +43,14 @@ class Game implements Runnable {
         SwingUtilities.invokeLater(this);
     }  
 
+    void start() {
+        this.frame = new JFrame("Savior of the Logic");
+        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.frame.setSize(WIDTH, HEIGHT);
+        this.frame.setLayout(new BorderLayout());
+
+        this.gamePanel = new GamePanel(20  , 100);
+        this.frame.add(this.gamePanel, BorderLayout.CENTER);
 
     
     public static void main(String[] args) {
