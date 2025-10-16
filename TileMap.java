@@ -52,6 +52,7 @@ public class TileMap {
         this.filesNames = new String[]{"water", "grass", "path", "tree", "enemy"};
         this.forbiddenTiles = new HashSet<>();
         this.forbiddenTiles.add(0);
+        this.forbiddenTiles.add(3);
         this.tiles = new BufferedImage[this.filesNames.length];
         try {
             for (int i = 0; i < this.filesNames.length; i++) {
@@ -71,43 +72,57 @@ public class TileMap {
         }
     }
 
-    public boolean canWalkOn(int x1, int y1, int sizeX, int sizeY) {
+    private int collisionHelper(int deltaX, int deltaY, int x, int y) {
+        int delta;
+        int pos;
+        if (deltaX != 0) {
+            delta = deltaX;
+            pos = x;
+        } else {
+            delta = deltaY;
+            pos = y;
+        }
+        if (delta < 0) {
+                return ((pos / this.scaledTile) * this.scaledTile - pos);
+        } else {
+            return ((pos / this.scaledTile) * this.scaledTile - pos); //(((pos / this.scaledTile) + 1) * this.scaledTile);
+        }
+    }
+    public int canWalkOn(int x1, int y1, int deltaX, int deltaY, int size) {
         if (x1 < 0 || y1 < 0) {
-            return false;
+            return 0;
         }
-        if (x1 + sizeX > this.mapWidth * this.scaledTile 
-            || y1 + sizeY > this.mapHeight * this.scaledTile) {
-            return false;
+        if (x1 + deltaX + size > this.mapWidth * this.scaledTile
+            || y1 + deltaY + size > this.mapHeight * this.scaledTile) {
+            return this.mapWidth * this.scaledTile - size;
         }
+        
         // Rounded down for the left top
-        int xCord1 = x1 / this.scaledTile;
-        int yCord1 = y1 / this.scaledTile;
+        int xCord1 = (x1 + deltaX) / this.scaledTile;
+        int yCord1 = (y1 + deltaY) / this.scaledTile;
         if (this.forbiddenTiles.contains(this.tileMapMatrix[yCord1][xCord1])) {
-            return false;
+            return this.collisionHelper(deltaX, deltaY, x1, y1);
         }
 
         // Top right >> x round UP
-        int xCord2 = (x1 + sizeX) / this.scaledTile;
-        int yCord2 = y1 / this.scaledTile;
-        if (this.forbiddenTiles.contains(this.tileMapMatrix[yCord2][xCord2])) {
-            return false;
+        xCord1 = (x1 + deltaX + size) / this.scaledTile;
+        if (this.forbiddenTiles.contains(this.tileMapMatrix[yCord1][xCord1])) {
+            return this.collisionHelper(deltaX, deltaY, x1 , y1);
+
         }
 
-        int xCord3 = (x1 + sizeX) / this.scaledTile;
-        int yCord3 = (y1 + sizeY) / this.scaledTile;
-        if (this.forbiddenTiles.contains(this.tileMapMatrix[yCord3][xCord3])) {
-            return false;
+        yCord1 = (y1 + + deltaY + size) / this.scaledTile;
+        if (this.forbiddenTiles.contains(this.tileMapMatrix[yCord1][xCord1])) {
+            return this.collisionHelper(deltaX, deltaY, x1, y1);
         }
 
         // Top right >> x round UP
-        int xCord4 = x1 / this.scaledTile;
-        int yCord4 = (y1 + sizeY) / this.scaledTile;
-        if (this.forbiddenTiles.contains(this.tileMapMatrix[yCord4][xCord4])) {
-            return false;
+        xCord1 = (x1 + deltaX) / this.scaledTile;
+        if (this.forbiddenTiles.contains(this.tileMapMatrix[yCord1][xCord1])) {
+            return this.collisionHelper(deltaX, deltaY, x1, y1);
         }
-
+        return (deltaX + deltaY);
         // Bottom right >> 
-        return true;
     }
 
     public void snapToEdge(int velocityX, int velocityY, int x, int y) {
