@@ -84,6 +84,9 @@ public class GamePanel extends JPanel {
     }
 
     private void logicUpdate() {
+        if (player.pickUpUpdate()){
+            PickUpItem();
+        }
         
         playerState();
         playerMovment();
@@ -156,6 +159,13 @@ public class GamePanel extends JPanel {
 
     private void playerState(){
         // this.inventoryState = this.player.stateUpdate();
+    }
+
+    private void PickUpItem(){
+        Item i = itemSpawner.getItem(offsetX + Game.WIDTH / 2 - this.playerSizeX / 2, offsetY + Game.HEIGHT / 2 - this.playerSizeY / 2, this.playerSizeX / 2, this.playerSizeY / 2);
+        if (i != null){
+            inventory.addItem(i);
+        }
     }
     
     //private void inventoryMovement() 
