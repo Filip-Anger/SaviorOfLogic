@@ -5,13 +5,13 @@ Press **Ctrl+Shift+V** TRUST ME!
 ## FILIP'S TASKS
 
 ### Working on
-- [ ] Collision detection  
+- [X] Collision detection  
 
 ### Not started yet
-- [ ] Measure time of repainting map
-- [ ] Load map from file
+- [X] Measure time of repainting map
+- [X] Load map from file
 - [ ] Think about velocity in type `double` - counting with doubles overall
-- [ ] Character sprite and walking animations
+- [X] Character sprite and walking animations
 
 ---
 
