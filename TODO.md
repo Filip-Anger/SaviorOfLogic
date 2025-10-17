@@ -17,14 +17,15 @@ Press **Ctrl+Shift+V** TRUST ME!
 
 ## MAREK'S TASKS
 
-### Today (10.15.)
-- [X] Borders for the propos
-- [X] Inventory on/off toggle
-- [ ] Pickup propos functionality
+### 17.10
+- [ ] Inventory slots
+- [ ] Statue dialogue screen
+- [ ] Mouse drag
+
 
 ### TO DO in future
-- [ ] Key handling refactor
-- [ ] Mouse interaction
+- [ ] Door dialogue screen
+- [ ] NPC dialogue screen
 
 
 
@@ -39,4 +40,4 @@ Press **Ctrl+Shift+V** TRUST ME!
 4. Review and merge
 
 
-**Last Updated:** 15.10.2025
+**Last Updated:** 17.10.2025
