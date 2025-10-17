@@ -1,5 +1,6 @@
 
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -7,10 +8,11 @@ import java.nio.Buffer;
 import java.nio.file.Paths;
 import javax.imageio.ImageIO;
 import javax.sql.rowset.spi.XmlReader;
+import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 
-public class PlayerSprite extends Player {
+public class PlayerSprite extends Entiti {
     BufferedImage[] up;
     BufferedImage[] left;
     BufferedImage[] down;
@@ -20,20 +22,24 @@ public class PlayerSprite extends Player {
     private int lastAnimationFrame;
     private  int fpsPerFrame = 5;
 
-    public PlayerSprite(InputMap playerInputMap, ActionMap playerActionMap) {
-        super(playerInputMap, playerActionMap);
+    ActionMap playerActionMap;
+
+    public PlayerSprite(ActionMap actionMap) {
+        this.playerActionMap = actionMap;
+
         this.sizeX = 32;
         this.sizeY = 64;
         this.x = Game.WIDTH / 2 - this.sizeX / 2;
         this.y = Game.HEIGHT / 2 - this.sizeX / 2;
 
+
+        // Animation 
         this.lastAnimationFrame = 0;
         this.frames = 8;
         this.up = new BufferedImage[this.frames];
         this.left = new BufferedImage[this.frames];
         this.down = new BufferedImage[this.frames];
         this.right = new BufferedImage[this.frames];
-
         String pathStart = "Tileset/Player/";
         String pathEnd = ".png";
         for (int i = 0; i < frames * 4; i++) {
@@ -64,6 +70,15 @@ public class PlayerSprite extends Player {
                 }
             }   
         }
+        // Movement
+        this.playerActionMap.put("moveUpPressed", new UpPressAction());
+        this.playerActionMap.put("moveUpReleased", new UpReleaseAction());
+        this.playerActionMap.put("moveDownPressed", new DownPressAction()); 
+        this.playerActionMap.put("moveDownReleased", new DownReleaseAction());
+        this.playerActionMap.put("moveLeftPressed", new LeftPressAction());
+        this.playerActionMap.put("moveLeftReleased", new LeftReleaseAction());
+        this.playerActionMap.put("moveRightPressed", new RightPressAction());
+        this.playerActionMap.put("moveRightReleased", new RightReleaseAction());
     }
 
     public void drawAnimation(Graphics g, BufferedImage[] animationList) {
@@ -107,5 +122,63 @@ public class PlayerSprite extends Player {
         }
     }
     
+    public class UpPressAction extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            movingUp = true;
+        }
+    }
+
+
+    public class DownPressAction extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            movingDown = true;
+        }
+    }
+
     
+    public class LeftPressAction extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            movingLeft = true;
+        }
+    }
+
+
+    public class RightPressAction extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            movingRight = true;
+        }
+    }
+
+
+    public class UpReleaseAction extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            movingUp = false;
+        }
+    }
+
+    public class DownReleaseAction extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            movingDown = false;
+        }
+    }
+
+    public class LeftReleaseAction extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            movingLeft = false;
+        }
+    }
+
+    public class RightReleaseAction extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            movingRight = false;
+        }
+    }
 }
