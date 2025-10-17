@@ -122,6 +122,7 @@ public class TileMap {
         int cordXRight = (x + deltaX + sizeX - 1) / this.scaledTile;
         int cordYTop = (y) / this.scaledTile;
         int cordYBot = (y + sizeY - 1) / this.scaledTile;
+        int cordYMid = cordYBot - 1;
          if (cordXLeft < 0) {
             return (- x);
         }
@@ -129,8 +130,9 @@ public class TileMap {
             return (this.mapWidth * (this.scaledTile - 1) - x);
         }
         if (deltaX < 0) { // Go up - if edge snap to current square
-            if (this.forbiddenTiles.contains(this.tileMapMatrix[cordYTop][cordXLeft]) 
-            || this.forbiddenTiles.contains(this.tileMapMatrix[cordYBot][cordXLeft])) {
+            if (this.forbiddenTiles.contains(this.tileMapMatrix[cordYTop][cordXLeft])
+            || this.forbiddenTiles.contains(this.tileMapMatrix[cordYBot][cordXLeft])
+            || this.forbiddenTiles.contains(this.tileMapMatrix[cordYMid][cordXLeft])) {
                 // if ((x + deltaX) == cordXLeft) {
                 //     return 0;
                 // }
@@ -138,7 +140,8 @@ public class TileMap {
             }
         } else if(deltaX > 0) { // Go down, if edge snap to square bellow
             if (this.forbiddenTiles.contains(this.tileMapMatrix[cordYTop][cordXRight])
-            || this.forbiddenTiles.contains(this.tileMapMatrix[cordYBot][cordXRight])) {
+            || this.forbiddenTiles.contains(this.tileMapMatrix[cordYBot][cordXRight])
+            || this.forbiddenTiles.contains(this.tileMapMatrix[cordYMid][cordXRight])) {
                 if ((x + deltaX) == cordXRight) {
                     return 0;
                 }
