@@ -12,6 +12,9 @@ public abstract class Item {
     private int width = Game.ORIGINAL_TILE*Game.SCALE;
     private int height = Game.ORIGINAL_TILE*Game.SCALE;
 
+    private int subWidth = width+Game.SUBWINDOW_BONUS_SIZE;
+    private int subHeight = height+Game.SUBWINDOW_BONUS_SIZE;
+
     
     
     
@@ -35,6 +38,8 @@ public abstract class Item {
     public BufferedImage getSprite() { return this.sprite; }
     public int getWidth() { return this.width; }
     public int getHeight() { return this.height; }
+    public int getSubWidth() { return this.subWidth; }
+    public int getSubHeight() { return this.subHeight; }
     
 
 
@@ -45,8 +50,13 @@ public abstract class Item {
 
     public void draw(Graphics g, int offsetX, int offsetY) {
         //this.sw.drawSubWindow(g, getX()-20, getY()-20, this.sprite.getWidth()+40, this.sprite.getHeight()+40);
-        g.drawImage(sprite, getX(), getY(), null);
+        g.drawImage(sprite, getX()-offsetX, getY()-offsetY, null);
     }
+
+    public void drawInInv(Graphics g, int x, int y){
+        g.drawImage(sprite, x, y, null);
+    }
+    
 
 
 

@@ -14,6 +14,8 @@ class Game implements Runnable{
     public static final int WIDTH = 800;
     public static final int HEIGHT = 640;
     public static final int ORIGINAL_TILE = 16;
+    public static final int SUBWINDOW_BONUS_SIZE = 30;
+    
 
     public ArrayList<Item> allItems = new ArrayList<Item>();
     //hello still testing
