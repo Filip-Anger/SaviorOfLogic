@@ -14,6 +14,8 @@ public abstract class Player {
 
     boolean inventoryState;
 
+    boolean pickUp;
+
     final InputMap inputMap;
     final ActionMap actionMap;
     int sizeX;
@@ -49,6 +51,8 @@ public abstract class Player {
         this.inputMap.put(KeyStroke.getKeyStroke("pressed D"), "moveRightPressed");
         this.inputMap.put(KeyStroke.getKeyStroke("released D"), "moveRightReleased");
         this.inputMap.put(KeyStroke.getKeyStroke("pressed I"), "InventoryPressed");
+        this.inputMap.put(KeyStroke.getKeyStroke("pressed E"), "PickUpPressed");
+        this.inputMap.put(KeyStroke.getKeyStroke("released E"), "PickUpReleased");
 
 
         // Input handlers
@@ -62,6 +66,8 @@ public abstract class Player {
         this.actionMap.put("moveRightPressed", new RightPressAction());
         this.actionMap.put("moveRightReleased", new RightReleaseAction());
         this.actionMap.put("InventoryPressed", new Inventory());
+        this.actionMap.put("PickUpPressed", new PickUpPress());
+        this.actionMap.put("PickUpReleased", new PickUpRelease());
     }
 
     /**Called from GamePanel. */
@@ -119,6 +125,10 @@ public abstract class Player {
 
     public boolean stateUpdate(){
         return inventoryState;
+    }
+
+    public boolean pickUpUpdate(){
+        return pickUp;
     }
 
 
@@ -189,6 +199,20 @@ public abstract class Player {
             } else{
                 inventoryState = true;
             }
+        }
+    }
+
+    public class PickUpPress  extends AbstractAction{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            pickUp = true;
+        }
+    }
+
+    public class PickUpRelease  extends AbstractAction{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            pickUp = false;
         }
     }
 }
