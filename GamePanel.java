@@ -20,6 +20,7 @@ import javax.swing.Timer;
 public class GamePanel extends JPanel {
     private final Timer timer;
     private final Entiti player;
+    private final PlayerUpdate playerUpdate;
     private final TileMap tileMap;
     private final Inventory inventory;
     private final ItemSpawner itemSpawner;
@@ -55,7 +56,9 @@ public class GamePanel extends JPanel {
         });
 
         inputHandler = new AllInputHandler(inputMap, actionMap);
-        this.player = new PlayerSprite(actionMap);
+        PlayerSprite playerSprite = new PlayerSprite(actionMap);
+        this.player = playerSprite;
+        this.playerUpdate = playerSprite;
         this.playerX = this.player.getPlayerX();
         this.playerY = this.player.getPlayerY();
         this.playerSizeX = this.player.getSizeX();
@@ -84,11 +87,9 @@ public class GamePanel extends JPanel {
     }
 
     private void logicUpdate() {
-        if (player.pickUpUpdate()){
-            PickUpItem();
-        }
         
-        playerState();
+        
+        playerStateUpdate();
         playerMovment();
     
     }
@@ -157,8 +158,12 @@ public class GamePanel extends JPanel {
         this.offsetY = playerY - Game.HEIGHT / 2 + this.playerSizeY / 2;
     }
 
-    private void playerState(){
-        // this.inventoryState = this.player.stateUpdate();
+    private void playerStateUpdate(){
+        this.inventoryState = this.playerUpdate.invStateUpdate();
+        if (this.playerUpdate.pickUpUpdate()){
+            PickUpItem();
+        }
+
     }
 
     private void PickUpItem(){

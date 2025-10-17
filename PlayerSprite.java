@@ -12,7 +12,7 @@ import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 
-public class PlayerSprite extends Entiti {
+public class PlayerSprite extends Entiti implements PlayerUpdate {
     BufferedImage[] up;
     BufferedImage[] left;
     BufferedImage[] down;
@@ -23,6 +23,9 @@ public class PlayerSprite extends Entiti {
     private  int fpsPerFrame = 5;
 
     ActionMap playerActionMap;
+
+    private boolean pickUp;
+    private boolean inventoryState;
 
     public PlayerSprite(ActionMap actionMap) {
         this.playerActionMap = actionMap;
@@ -79,6 +82,10 @@ public class PlayerSprite extends Entiti {
         this.playerActionMap.put("moveLeftReleased", new LeftReleaseAction());
         this.playerActionMap.put("moveRightPressed", new RightPressAction());
         this.playerActionMap.put("moveRightReleased", new RightReleaseAction());
+        //this.playerActionMap.put("InventoryPressed", new Inventory());
+        this.playerActionMap.put("PickUpPressed", new PickUpPress());
+        this.playerActionMap.put("PickUpReleased", new PickUpRelease());
+        
     }
 
     public void drawAnimation(Graphics g, BufferedImage[] animationList) {
@@ -121,7 +128,15 @@ public class PlayerSprite extends Entiti {
             this.lastDirection = "Idle";
         }
     }
-    
+    @Override
+    public boolean invStateUpdate(){
+        return inventoryState;
+    }
+    @Override
+    public boolean pickUpUpdate(){
+        return pickUp;
+    }
+
     public class UpPressAction extends AbstractAction {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -179,6 +194,20 @@ public class PlayerSprite extends Entiti {
         @Override
         public void actionPerformed(ActionEvent e) {
             movingRight = false;
+        }
+    }
+
+    public class PickUpPress  extends AbstractAction{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            pickUp = true;
+        }
+    }
+
+    public class PickUpRelease  extends AbstractAction{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            pickUp = false;
         }
     }
 }
