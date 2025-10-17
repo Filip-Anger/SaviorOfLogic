@@ -92,11 +92,11 @@ public class TileMap {
     /**@param deltaY NOT ZERO
      * @return max possible deltaY
     */
-    public int tryAndMoveY(int x, int y, int deltaY, int size) {
+    public int tryAndMoveY(int x, int y, int deltaY, int sizeX, int sizeY) {
         int cordXLeft = x / this.scaledTile;
-        int cordXRight = (x + size - 1) / this.scaledTile;
+        int cordXRight = (x + sizeX - 1) / this.scaledTile;
         int cordYTop = (y + deltaY) / this.scaledTile;
-        int cordYBot = (y + deltaY + size - 1) / this.scaledTile;
+        int cordYBot = (y + deltaY + sizeY - 1) / this.scaledTile;
         if (cordYTop < 0) {
             return (- y);
         }
@@ -111,17 +111,17 @@ public class TileMap {
         } else if(deltaY > 0) { // Go down, if edge snap to square bellow
             if (this.forbiddenTiles.contains(this.tileMapMatrix[cordYBot][cordXLeft])
             || this.forbiddenTiles.contains(this.tileMapMatrix[cordYBot][cordXRight])) {
-                return (cordYBot - 1) * this.scaledTile - y;
+                return (cordYBot - sizeY / this.scaledTile) * this.scaledTile - y;
             }
         }
         return deltaY;
     }
 
-    public int tryAndMoveX(int x, int y, int deltaX, int size) {
+    public int tryAndMoveX(int x, int y, int deltaX, int sizeX, int sizeY) {
         int cordXLeft = (x + deltaX) / this.scaledTile;
-        int cordXRight = (x + deltaX + size - 1) / this.scaledTile;
+        int cordXRight = (x + deltaX + sizeX - 1) / this.scaledTile;
         int cordYTop = (y) / this.scaledTile;
-        int cordYBot = (y + size - 1) / this.scaledTile;
+        int cordYBot = (y + sizeY - 1) / this.scaledTile;
          if (cordXLeft < 0) {
             return (- x);
         }
@@ -131,9 +131,9 @@ public class TileMap {
         if (deltaX < 0) { // Go up - if edge snap to current square
             if (this.forbiddenTiles.contains(this.tileMapMatrix[cordYTop][cordXLeft]) 
             || this.forbiddenTiles.contains(this.tileMapMatrix[cordYBot][cordXLeft])) {
-                if ((x + deltaX) == cordXLeft) {
-                    return 0;
-                }
+                // if ((x + deltaX) == cordXLeft) {
+                //     return 0;
+                // }
                 return (cordXLeft + 1) * this.scaledTile - x;
             }
         } else if(deltaX > 0) { // Go down, if edge snap to square bellow
@@ -142,7 +142,7 @@ public class TileMap {
                 if ((x + deltaX) == cordXRight) {
                     return 0;
                 }
-                return (cordXRight - 1) * this.scaledTile - x;
+                return (cordXRight - sizeX / this.scaledTile) * this.scaledTile - x;
             }
         }
         return deltaX;

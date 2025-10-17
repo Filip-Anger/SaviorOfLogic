@@ -6,7 +6,7 @@ import javax.swing.*;
 
 
 /**TODO: Class description. */
-public class Player {
+public abstract class Player {
     boolean movingUp;
     boolean movingDown;
     boolean movingLeft;
@@ -16,9 +16,10 @@ public class Player {
 
     final InputMap inputMap;
     final ActionMap actionMap;
-    final int size;
-    final int x;
-    final int y;
+    int sizeX;
+    int sizeY;
+    int x;
+    int y;
     final int velocity;
     
 
@@ -31,10 +32,12 @@ public class Player {
      * @param frameActionMap map from the parent swing object
     */
     public Player(InputMap frameInputMap, ActionMap frameActionMap) {
-        this.size = Game.ORIGINAL_TILE * Game.SCALE;
         this.velocity = 3 * Game.SCALE;
-        this.x = Game.WIDTH / 2 - this.size / 2;
-        this.y = Game.HEIGHT / 2 - this.size / 2;
+        System.out.println(sizeX);
+        System.out.println(sizeY);
+        this.x = Game.WIDTH / 2 - this.sizeX / 2;
+        this.y = Game.HEIGHT / 2 - this.sizeX / 2;
+
         // Input map: use pressed/released so movement is continuous while holding keys
         this.inputMap = frameInputMap;
         this.inputMap.put(KeyStroke.getKeyStroke("pressed W"), "moveUpPressed");
@@ -62,9 +65,9 @@ public class Player {
     }
 
     /**Called from GamePanel. */
-    public void draw(Graphics g) {
+    public void draw(Graphics g, int xMovment, int yMovment) {
         g.setColor(Color.RED);
-        g.fillRect(x, y, this.size, this.size);
+        g.fillRect(x, y, this.sizeX, this.sizeY);
     }
 
     /**TODO COLISION.
@@ -105,8 +108,12 @@ public class Player {
         return this.y;
     }
 
-    public int getSize() {
-        return this.size;
+    public int getSizeX() {
+        return this.sizeX;
+    }
+
+    public int getSizeY() {
+        return this.sizeY;
     }
 
 
