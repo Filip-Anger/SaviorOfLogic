@@ -82,7 +82,7 @@ public class ItemSpawner {
             int itemX = item.getX() + itemWidth;
             int itemY = item.getY() + itemHeight;
 
-            System.out.println(itemX + " " + (x + width) + " " + itemWidth + " " + width);
+            //System.out.println(itemX + " " + (x + width) + " " + itemWidth + " " + width);
 
             if(Math.abs(itemX - (x + width)) <= itemWidth + width && Math.abs(itemY - (y + height)) <= itemHeight + height){
                 visibleItems.remove(item);
