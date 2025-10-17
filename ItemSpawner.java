@@ -49,11 +49,13 @@ public class ItemSpawner {
             addItem(i.split(";"));
         }
         
+        
     }
     public void drawItems(Graphics g, int offsetX, int offsetY){
         for (Item i : this.visibleItems){
             i.draw(g, offsetX, offsetY);
         }
+        //this.allItems.get(0).drawInInv(g, 0, 0);
         
     }
 
@@ -67,6 +69,7 @@ public class ItemSpawner {
                 allItems.add(i);
                 visibleItems.add(i);
                 
+                
             }else{
                 Item i = new PropItem(0, Integer.parseInt(itemData[3]), Integer.parseInt(itemData[4]), itemData[1]);
                 i.setSprite(itemData[2]);
@@ -77,14 +80,14 @@ public class ItemSpawner {
     }
     public Item getItem(int x, int y, int width, int height){
         for(Item item : visibleItems){
-            int itemWidth = item.getWidth()/2;
-            int itemHeight = item.getHeight()/2;
+            int itemWidth = item.getSubWidth()/2;
+            int itemHeight = item.getSubHeight()/2;
             int itemX = item.getX() + itemWidth;
             int itemY = item.getY() + itemHeight;
 
             //System.out.println(itemX + " " + (x + width) + " " + itemWidth + " " + width);
 
-            if(Math.abs(itemX - (x + width)) <= itemWidth + width && Math.abs(itemY - (y + height)) <= itemHeight + height){
+            if(Math.abs(itemX - (x + width)) <= itemWidth + width && Math.abs(itemY - (y + height)) <= itemHeight + height-20){ //-20 to adjust, looks bettter
                 visibleItems.remove(item);
                 // remove put into separate method
                 return item;
