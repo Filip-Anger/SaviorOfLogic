@@ -18,7 +18,6 @@ public class AllInputHandler {
         this.inputMap.put(KeyStroke.getKeyStroke("pressed D"), "moveRightPressed");
         this.inputMap.put(KeyStroke.getKeyStroke("released D"), "moveRightReleased");
         this.inputMap.put(KeyStroke.getKeyStroke("pressed I"), "InventoryPressed");
-        this.inputMap.put(KeyStroke.getKeyStroke("pressed I"), "InventoryPressed");
         this.inputMap.put(KeyStroke.getKeyStroke("pressed E"), "PickUpPressed");
         this.inputMap.put(KeyStroke.getKeyStroke("released E"), "PickUpReleased");
     
