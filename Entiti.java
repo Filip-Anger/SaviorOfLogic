@@ -16,7 +16,7 @@ public abstract class Entiti {
     int sizeY;
     int x;
     int y;
-    final int velocity;
+    int velocity;
     
     /** Constructor.
      * 
@@ -24,11 +24,6 @@ public abstract class Entiti {
      * @param frameActionMap map from the parent swing object
     */
     public Entiti() {
-        this.velocity = 3 * Game.SCALE;
-        System.out.println(sizeX);
-        System.out.println(sizeY);
-        this.x = Game.WIDTH / 2 - this.sizeX / 2;
-        this.y = Game.HEIGHT / 2 - this.sizeX / 2;
 
     }
 
@@ -69,10 +64,12 @@ public abstract class Entiti {
     }
 
     public int getSizeX() {
+        System.out.println("Size x is: " + this.sizeX);
         return this.sizeX;
     }
 
     public int getSizeY() {
+        System.out.println(this.sizeY);
         return this.sizeY;
     }
 

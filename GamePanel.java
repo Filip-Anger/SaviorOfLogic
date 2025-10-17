@@ -19,8 +19,7 @@ import javax.swing.Timer;
 */
 public class GamePanel extends JPanel {
     private final Timer timer;
-    private final Entiti player;
-    private final PlayerUpdate playerUpdate;
+    private final PlayerSprite player;
     private final TileMap tileMap;
     private final Inventory inventory;
     private final ItemSpawner itemSpawner;
@@ -58,11 +57,10 @@ public class GamePanel extends JPanel {
         inputHandler = new AllInputHandler(inputMap, actionMap);
         PlayerSprite playerSprite = new PlayerSprite(actionMap);
         this.player = playerSprite;
-        this.playerUpdate = playerSprite;
-        this.playerX = this.player.getPlayerX();
-        this.playerY = this.player.getPlayerY();
         this.playerSizeX = this.player.getSizeX();
         this.playerSizeY = this.player.getSizeY();
+        this.playerX = Game.WIDTH / 2 - playerSizeX / 2;
+        this.playerY = Game.HEIGHT / 2 - playerSizeY / 3 * 2;
 
 
         // TileMap
@@ -142,10 +140,12 @@ public class GamePanel extends JPanel {
 
         if (xInput != 0) {
             this.playerMovmentX = this.tileMap.tryAndMoveX(posOnMapX, posOnMapY, xInput, this.playerSizeX, this.playerSizeY);
+            this.offsetX += this.playerMovmentX;
+            posOnMapX = this.offsetX + this.playerX;
+
         } if ( yInput != 0) {
             this.playerMovmentY += this.tileMap.tryAndMoveY(posOnMapX, posOnMapY, yInput, this.playerSizeX, this.playerSizeY);
         }
-        this.offsetX += this.playerMovmentX;
         this.offsetY += this.playerMovmentY;
 
     }
@@ -159,8 +159,8 @@ public class GamePanel extends JPanel {
     }
 
     private void playerStateUpdate(){
-        this.inventoryState = this.playerUpdate.invStateUpdate();
-        if (this.playerUpdate.pickUpUpdate()){
+        this.inventoryState = this.player.invStateUpdate();
+        if (this.player.pickUpUpdate()){
             PickUpItem();
         }
 

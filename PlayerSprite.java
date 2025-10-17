@@ -23,17 +23,17 @@ public class PlayerSprite extends Entiti implements PlayerUpdate {
     private  int fpsPerFrame = 5;
 
     ActionMap playerActionMap;
-
     private boolean pickUp;
     private boolean inventoryState;
 
     public PlayerSprite(ActionMap actionMap) {
         this.playerActionMap = actionMap;
 
-        this.sizeX = 32;
+        this.velocity = 3 * Game.SCALE;
+        this.sizeX = 32;       
         this.sizeY = 64;
         this.x = Game.WIDTH / 2 - this.sizeX / 2;
-        this.y = Game.HEIGHT / 2 - this.sizeX / 2;
+        this.y = Game.HEIGHT / 2 - this.sizeY / 2;
 
 
         // Animation 
