@@ -25,9 +25,13 @@ public class GamePanel extends JPanel {
     private final ItemSpawner itemSpawner;
     private int offsetX;
     private int offsetY;
+    private int playerMovmentX = 0;
+    private int playerMovmentY = 0;
     private final int playerX;
     private final int playerY;
-    private final int playerSize;
+    private final int playerSizeX;
+    private final int playerSizeY;
+
     private long lastFrameTime;
 
     public static final int TILE_SIZE = 16;
@@ -50,10 +54,12 @@ public class GamePanel extends JPanel {
 
         });
 
-        this.player = new Player(inputMap, actionMap);
+        this.player = new PlayerSprite(inputMap, actionMap);
         this.playerX = this.player.getPlayerX();
         this.playerY = this.player.getPlayerY();
-        this.playerSize = this.player.getSize();
+        this.playerSizeX = this.player.getSizeX();
+        this.playerSizeY = this.player.getSizeY();
+
 
         // TileMap
         this.tileMap = new TileMap(this);
@@ -94,7 +100,9 @@ public class GamePanel extends JPanel {
         this.tileMap.draw(g, this.offsetX, this.offsetY); // HELPER class to make it organized
 
 
-        this.player.draw(g);
+        this.player.draw(g, this.playerMovmentX, this.playerMovmentY);
+        this.playerMovmentX = 0;
+        this.playerMovmentY = 0;
         
 
         this.itemSpawner.drawItems(g, this.offsetX, this.offsetY);
@@ -129,19 +137,21 @@ public class GamePanel extends JPanel {
         int posOnMapY = this.offsetY + this.playerY;
 
         if (xInput != 0) {
-            this.offsetX += this.tileMap.tryAndMoveX(posOnMapX, posOnMapY, xInput, this.playerSize);
+            this.playerMovmentX = this.tileMap.tryAndMoveX(posOnMapX, posOnMapY, xInput, this.playerSizeX, this.playerSizeY);
         } if ( yInput != 0) {
-            this.offsetY += this.tileMap.tryAndMoveY(posOnMapX, posOnMapY, yInput, this.playerSize);
-        } 
+            this.playerMovmentY += this.tileMap.tryAndMoveY(posOnMapX, posOnMapY, yInput, this.playerSizeX, this.playerSizeY);
+        }
+        this.offsetX += this.playerMovmentX;
+        this.offsetY += this.playerMovmentY;
 
     }
 
     public void setPlayerX(int playerX) {
-        this.offsetX = playerX - Game.WIDTH / 2 + this.playerSize / 2;
+        this.offsetX = playerX - Game.WIDTH / 2 + this.playerSizeX / 2;
     }
 
     public void setPlayerY(int playerY) {
-        this.offsetY = playerY - Game.HEIGHT / 2 + this.playerSize / 2;
+        this.offsetY = playerY - Game.HEIGHT / 2 + this.playerSizeY / 2;
     }
 
     private void playerState(){
