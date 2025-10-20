@@ -31,9 +31,9 @@ public class PlayerSprite extends Entiti implements PlayerUpdate {
 
         this.velocity = 3 * Game.SCALE;
         this.sizeX = 32;       
-        this.sizeY = 64;
+        this.sizeY = 32;
         this.x = Game.WIDTH / 2 - this.sizeX / 2;
-        this.y = Game.HEIGHT / 2 - this.sizeY / 2;
+        this.y = Game.HEIGHT / 2 - 3/2 * this.sizeX;
 
 
         // Animation 
@@ -89,7 +89,7 @@ public class PlayerSprite extends Entiti implements PlayerUpdate {
     }
 
     public void drawAnimation(Graphics g, BufferedImage[] animationList) {
-        g.drawImage(animationList[(this.lastAnimationFrame / this.fpsPerFrame) % this.frames], this.x, this.y, null);
+        g.drawImage(animationList[(this.lastAnimationFrame / this.fpsPerFrame) % this.frames], this.x, this.y - 20, null);
         this.lastAnimationFrame += 1;
     }
 
@@ -124,7 +124,7 @@ public class PlayerSprite extends Entiti implements PlayerUpdate {
                 this.lastDirection = "Up";
             }
         } else {
-            g.drawImage(this.down[0], this.x, this.y, null);
+            g.drawImage(this.down[0], this.x, this.y - 20, null);
             this.lastDirection = "Idle";
         }
     }
