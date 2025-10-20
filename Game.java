@@ -35,7 +35,7 @@ class Game implements Runnable{
         this.frame.setSize(WIDTH, HEIGHT);
         this.frame.setLayout(new BorderLayout());
 
-        this.gamePanel = new GamePanel(200  , 100, 60);
+        this.gamePanel = new GamePanel(200  , 300, 60);
         this.frame.add(this.gamePanel, BorderLayout.CENTER);
 
         this.frame.setVisible(true);

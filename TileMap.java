@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -55,9 +56,14 @@ public class TileMap {
         this.forbiddenTiles.add(3);
         this.tiles = new BufferedImage[this.filesNames.length];
         try {
+            BufferedImage originalT;
             for (int i = 0; i < this.filesNames.length; i++) {
-                BufferedImage originalT = 
-                    ImageIO.read(new File("Tileset/Tiles/" + filesNames[i] + ".png"));
+                if (i == 1) {
+                    originalT = ImageIO.read(new File("Tileset/Map64/tile159.png"));
+                } else {
+                    originalT = 
+                        ImageIO.read(new File("Tileset/Tiles/" + filesNames[i] + ".png"));
+                }
                 BufferedImage scaledTGraphics = 
                     new BufferedImage(this.scaledTile, this.scaledTile, originalT.getType());
                 Graphics2D temp2d = scaledTGraphics.createGraphics();
@@ -67,6 +73,7 @@ public class TileMap {
                 this.tiles[i] = scaledTGraphics;
 
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
