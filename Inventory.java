@@ -19,27 +19,26 @@ public class Inventory extends SubWindow{
 
     PointerInfo a = MouseInfo.getPointerInfo();
     public void draw(Graphics g){
-        drawSubWindow(g, 25, 25, Game.WIDTH-66, Game.HEIGHT/2-Game.ORIGINAL_TILE*Game.SCALE-8); //i dont understan this fucking hell why is it not -50
-        invWidth = Game.WIDTH-66 - 25;
-        invHeight = Game.HEIGHT/2-Game.ORIGINAL_TILE*Game.SCALE-8-25;
+        drawSubWindow(g, 25, 25, Game.WIDTH/2-Game.ORIGINAL_TILE*Game.SCALE-8, Game.HEIGHT-75); //i dont understan this fucking hell why is it not -50
+        invWidth = Game.WIDTH/2-Game.ORIGINAL_TILE*Game.SCALE-8-25;
+        invHeight = Game.HEIGHT-75-25;
         int remainingWidth = invWidth;
         int remainingHeight = invHeight;
-        int x = 55;
+        int x = 60;
         int y = 55;
         for (Item item: items){
-            int itemSlotSize = item.getWidth() + slotOffset;
+            int itemSlotSize = item.getInvWidth() + slotOffset;
             if (itemSlotSize < remainingWidth){
                 remainingWidth -= itemSlotSize;
                 item.drawInInv(g, x, y);
                 x += itemSlotSize;
                 
             }else{
-                System.out.println(x + " " + y);
-                if (item.getHeight()+5 < remainingHeight){
-                    remainingHeight -= (item.getHeight()+5);
+                if (item.getInvHeight()+5 < remainingHeight){
+                    remainingHeight -= (item.getInvHeight()+5);
                     remainingWidth = invWidth;
-                    x = 55;
-                    y +=item.getHeight()+5;
+                    x = 60;
+                    y +=item.getInvHeight()+5;
                     item.drawInInv(g, x, y);
                     x += itemSlotSize;
                     remainingWidth -= itemSlotSize;

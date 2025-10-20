@@ -36,8 +36,8 @@ public abstract class Item {
     public int getY() { return this.y; }
     public String getID() { return this.ID; }
     public BufferedImage getSprite() { return this.sprite; }
-    public int getWidth() { return this.width; }
-    public int getHeight() { return this.height; }
+    public int getInvWidth() { return this.width; }
+    public int getInvHeight() { return this.height; }
     public int getSubWidth() { return this.subWidth; }
     public int getSubHeight() { return this.subHeight; }
     
