@@ -25,6 +25,8 @@ public class PlayerSprite extends Entiti implements PlayerUpdate {
     ActionMap playerActionMap;
     private boolean pickUp;
     private boolean inventoryState;
+    private int speedingUp;
+    private final int initialSpeed = 60;
 
     public PlayerSprite(ActionMap actionMap) {
         this.playerActionMap = actionMap;
@@ -34,6 +36,8 @@ public class PlayerSprite extends Entiti implements PlayerUpdate {
         this.sizeY = 32;
         this.x = Game.WIDTH / 2 - this.sizeX / 2;
         this.y = Game.HEIGHT / 2 - 3/2 * this.sizeX;
+        this.speedingUp = initialSpeed;
+
 
 
         // Animation 
@@ -88,11 +92,16 @@ public class PlayerSprite extends Entiti implements PlayerUpdate {
         
     }
 
-    public void drawAnimation(Graphics g, BufferedImage[] animationList) {
+    public void drawMovement(Graphics g, BufferedImage[] animationList) {
         g.drawImage(animationList[(this.lastAnimationFrame / this.fpsPerFrame) % this.frames], this.x, this.y - 20, null);
         this.lastAnimationFrame += 1;
+        if (this.speedingUp < 100) {
+            this.speedingUp += 1;
+        }
     }
-
+    public int getSpeed() {
+        return this.speedingUp;
+    }
     @Override
     public void draw(Graphics g, int xMovment, int yMovment) {
         if (xMovment != 0 ) {
@@ -100,13 +109,13 @@ public class PlayerSprite extends Entiti implements PlayerUpdate {
                 if (this.lastDirection != "Right") { // Start going right
                     this.lastAnimationFrame = 0;
                 }
-                this.drawAnimation(g, this.right);
+                this.drawMovement(g, this.right);
                 this.lastDirection = "Right";
             } else {
                 if (this.lastDirection != "Left") {
                     this.lastAnimationFrame = 0;
                 }
-                this.drawAnimation(g, this.left);
+                this.drawMovement(g, this.left);
                 this.lastDirection = "Left";
             }
         } else if (yMovment != 0) {
@@ -114,19 +123,21 @@ public class PlayerSprite extends Entiti implements PlayerUpdate {
                 if (this.lastDirection != "Down") {
                     this.lastAnimationFrame = 0;
                 }
-                this.drawAnimation(g, this.down);
+                this.drawMovement(g, this.down);
                 this.lastDirection = "Down";
             } else {
                 if (this.lastDirection != "Up") {
                     this.lastAnimationFrame = 0;
                 }
-                this.drawAnimation(g, this.up);
+                this.drawMovement(g, this.up);
                 this.lastDirection = "Up";
             }
         } else {
             g.drawImage(this.down[0], this.x, this.y - 20, null);
             this.lastDirection = "Idle";
+            speedingUp = initialSpeed;
         }
+    
     }
     @Override
     public boolean invStateUpdate(){
