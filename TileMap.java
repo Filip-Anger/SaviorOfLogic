@@ -93,9 +93,9 @@ public class TileMap {
      * @return max possible deltaY
     */
     public int tryAndMoveY(int x, int y, int deltaY, int sizeX, int sizeY) {
-        int cordXLeft = x / this.scaledTile;
+        int cordXLeft = (x + 1) / this.scaledTile;
         int cordXRight = (x + sizeX - 1) / this.scaledTile;
-        int cordYTop = (y + deltaY) / this.scaledTile;
+        int cordYTop = (y + 1 + deltaY) / this.scaledTile;
         int cordYBot = (y + deltaY + sizeY - 1) / this.scaledTile;
         if (cordYTop < 0) {
             return (- y);
@@ -106,7 +106,7 @@ public class TileMap {
         if (deltaY < 0) { // Go up - if edge snap to current square
             if (this.forbiddenTiles.contains(this.tileMapMatrix[cordYTop][cordXLeft]) 
             || this.forbiddenTiles.contains(this.tileMapMatrix[cordYTop][cordXRight])) {
-                return (cordYTop + 1) * this.scaledTile - y;
+                return (cordYTop + sizeY / this.scaledTile) * this.scaledTile - y;
             }
         } else if(deltaY > 0) { // Go down, if edge snap to square bellow
             if (this.forbiddenTiles.contains(this.tileMapMatrix[cordYBot][cordXLeft])
@@ -118,9 +118,9 @@ public class TileMap {
     }
 
     public int tryAndMoveX(int x, int y, int deltaX, int sizeX, int sizeY) {
-        int cordXLeft = (x + deltaX) / this.scaledTile;
+        int cordXLeft = (x + 1 + deltaX) / this.scaledTile;
         int cordXRight = (x + deltaX + sizeX - 1) / this.scaledTile;
-        int cordYTop = (y) / this.scaledTile;
+        int cordYTop = (y + 1) / this.scaledTile;
         int cordYBot = (y + sizeY - 1) / this.scaledTile;
         int cordYMid = cordYBot - 1;
          if (cordXLeft < 0) {
@@ -131,8 +131,7 @@ public class TileMap {
         }
         if (deltaX < 0) { // Go up - if edge snap to current square
             if (this.forbiddenTiles.contains(this.tileMapMatrix[cordYTop][cordXLeft])
-            || this.forbiddenTiles.contains(this.tileMapMatrix[cordYBot][cordXLeft])
-            || this.forbiddenTiles.contains(this.tileMapMatrix[cordYMid][cordXLeft])) {
+            || this.forbiddenTiles.contains(this.tileMapMatrix[cordYBot][cordXLeft])) {
                 // if ((x + deltaX) == cordXLeft) {
                 //     return 0;
                 // }
@@ -140,8 +139,7 @@ public class TileMap {
             }
         } else if(deltaX > 0) { // Go down, if edge snap to square bellow
             if (this.forbiddenTiles.contains(this.tileMapMatrix[cordYTop][cordXRight])
-            || this.forbiddenTiles.contains(this.tileMapMatrix[cordYBot][cordXRight])
-            || this.forbiddenTiles.contains(this.tileMapMatrix[cordYMid][cordXRight])) {
+            || this.forbiddenTiles.contains(this.tileMapMatrix[cordYBot][cordXRight])) {
                 if ((x + deltaX) == cordXRight) {
                     return 0;
                 }

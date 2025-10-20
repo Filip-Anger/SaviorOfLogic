@@ -27,12 +27,10 @@ public class GamePanel extends JPanel {
     private int offsetY;
     private int playerMovmentX = 0;
     private int playerMovmentY = 0;
-    private final int playerX;
-    private final int playerY;
-    private final int playerSizeX;
-    private final int playerSizeY;
     private AllInputHandler inputHandler;
     private long lastFrameTime;
+    private DebugDrawer debugDrawer;
+
 
     public static final int TILE_SIZE = 16;
 
@@ -54,14 +52,11 @@ public class GamePanel extends JPanel {
 
         });
 
+        this.debugDrawer = new DebugDrawer();
+
         inputHandler = new AllInputHandler(inputMap, actionMap);
         PlayerSprite playerSprite = new PlayerSprite(actionMap);
         this.player = playerSprite;
-        this.playerSizeX = this.player.getSizeX();
-        this.playerSizeY = this.player.getSizeY();
-        this.playerX = Game.WIDTH / 2 - playerSizeX / 2;
-        this.playerY = Game.HEIGHT / 2 - playerSizeY / 3 * 2;
-
 
         // TileMap
         this.tileMap = new TileMap(this);
@@ -102,7 +97,7 @@ public class GamePanel extends JPanel {
         
         this.tileMap.draw(g, this.offsetX, this.offsetY); // HELPER class to make it organized
 
-
+        // this.player.drawHitbox(g);
         this.player.draw(g, this.playerMovmentX, this.playerMovmentY);
         this.playerMovmentX = 0;
         this.playerMovmentY = 0;
@@ -112,6 +107,7 @@ public class GamePanel extends JPanel {
         if (inventoryState){
             this.inventory.draw(g);
         }
+        this.debugDrawer.drawDebug(g, this.player.getX(), this.player.getY());
         
         this.lastFrameTime = System.nanoTime();
     }
@@ -133,29 +129,22 @@ public class GamePanel extends JPanel {
                 yInput -= 1;
             }
         }
-        //TODO: COLLISION
-        // Left top corner
-        int posOnMapX = this.offsetX + this.playerX;
-        int posOnMapY = this.offsetY + this.playerY;
+        // Acceleration
+        int posOnMapX = this.offsetX + this.player.getX();
+        int posOnMapY = this.offsetY + this.player.getY();
 
         if (xInput != 0) {
-            this.playerMovmentX = this.tileMap.tryAndMoveX(posOnMapX, posOnMapY, xInput, this.playerSizeX, this.playerSizeY);
+            xInput = xInput * this.player.getSpeed() / 100;
+            this.playerMovmentX = this.tileMap.tryAndMoveX(posOnMapX, posOnMapY, xInput, this.player.getSizeX(), this.player.getSizeY());
             this.offsetX += this.playerMovmentX;
-            posOnMapX = this.offsetX + this.playerX;
+            posOnMapX = this.offsetX + this.player.getX();
 
-        } if ( yInput != 0) {
-            this.playerMovmentY += this.tileMap.tryAndMoveY(posOnMapX, posOnMapY, yInput, this.playerSizeX, this.playerSizeY);
+        } if (yInput != 0) {
+            yInput = yInput * this.player.getSpeed() / 100;
+            this.playerMovmentY += this.tileMap.tryAndMoveY(posOnMapX, posOnMapY, yInput, this.player.getSizeX(), this.player.getSizeY());
         }
         this.offsetY += this.playerMovmentY;
 
-    }
-
-    public void setPlayerX(int playerX) {
-        this.offsetX = playerX - Game.WIDTH / 2 + this.playerSizeX / 2;
-    }
-
-    public void setPlayerY(int playerY) {
-        this.offsetY = playerY - Game.HEIGHT / 2 + this.playerSizeY / 2;
     }
 
     private void playerStateUpdate(){
@@ -167,7 +156,8 @@ public class GamePanel extends JPanel {
     }
 
     private void PickUpItem(){
-        Item i = itemSpawner.getItem(offsetX + Game.WIDTH / 2 - this.playerSizeX / 2, offsetY + Game.HEIGHT / 2 - this.playerSizeY / 2, this.playerSizeX / 2, this.playerSizeY / 2);
+
+        Item i = itemSpawner.getItem(offsetX + this.player.getX(), offsetY + this.player.getY(), this.player.getSizeX(), this.player.getSizeY());
         if (i != null){
             inventory.addItem(i);
         }

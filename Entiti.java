@@ -23,16 +23,17 @@ public abstract class Entiti {
      * @param frameInputMap map from the parent swing object
      * @param frameActionMap map from the parent swing object
     */
-    public Entiti() {
-
-    }
 
     /**Called from GamePanel. */
     public void draw(Graphics g, int xMovment, int yMovment) {
         g.setColor(Color.RED);
-        g.fillRect(x, y, this.sizeX, this.sizeY);
+        g.fillRect(this.x, this.y, this.sizeX, this.sizeY);
     }
 
+    public void drawHitbox(Graphics g) {
+        g.setColor(Color.RED);
+        g.fillRect(this.x, this.y, this.sizeX, this.sizeY);
+    }
 
     public int yUpdate() {
         if (this.movingUp && !this.movingDown) {
@@ -55,21 +56,19 @@ public abstract class Entiti {
         return 0;
     }
 
-    public int getPlayerX() {
+    public int getX() {
         return this.x;
     }
 
-    public int getPlayerY() {
+    public int getY() {
         return this.y;
     }
 
     public int getSizeX() {
-        System.out.println("Size x is: " + this.sizeX);
         return this.sizeX;
     }
 
     public int getSizeY() {
-        System.out.println(this.sizeY);
         return this.sizeY;
     }
 
