@@ -6,27 +6,31 @@ import java.awt.image.BufferedImage;
 public class PropItem extends Item {
 
     private BufferedImage sprite;
+    private BufferedImage invSprite;
     private int size = 20;
     private SubWindow sw;
-    private int width;
-    private int height;
+    private int invWidth;
+    private int invHeight;
     private int subWidth;
     private int subHeight;
+    private TextToGraphics t;
     
 
     public PropItem(int type, int x, int y, String id) {
         super(type, x, y, id); 
         this.sw = new SubWindow();
+        this.t  = new TextToGraphics("Arial Unicode MS", size);
     }
 
     @Override
     public void setSprite(Object sprite) {
-        TextToGraphics t = new TextToGraphics("Arial Unicode MS", size);
+        
         this.sprite = t.convert((String) sprite);
-        this.width = t.getWidth();
-        this.height = t.getHeight();
-        this.subWidth = this.width + Game.SUBWINDOW_BONUS_SIZE;
-        this.subHeight = this.height + Game.SUBWINDOW_BONUS_SIZE;
+        this.subWidth = t.getWidth() + Game.SUBWINDOW_BONUS_SIZE;
+        this.subHeight = t.getHeight() + Game.SUBWINDOW_BONUS_SIZE;
+        this.invSprite = t.convertWithDash((String) sprite);
+        this.invWidth = t.getWidth();
+        this.invHeight = t.getHeight();
     }
 
     @Override
@@ -38,17 +42,18 @@ public class PropItem extends Item {
 
     @Override
     public void drawInInv(Graphics g, int x, int y){
-        g.drawImage(sprite, x-15, y-15, null);
+        
+        g.drawImage(invSprite, x-15, y-15, null);
     }
 
     @Override
-    public int getWidth() {
-        return this.width;
+    public int getInvWidth() {
+        return this.invWidth;
     }
 
     @Override
-    public int getHeight() {
-        return this.height;
+    public int getInvHeight() {
+        return this.invHeight;
     }
 
     @Override
