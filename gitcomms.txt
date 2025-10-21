@@ -21,5 +21,5 @@ git log -p	View commits + diffs	Good for debugging who changed what
 git merge (name of the branch to merge into current)
 
 
-
+rebase  Change the commit from which the branch splitted(from older version of dev to new version of dev)
 https://en.wikipedia.org/wiki/List_of_logic_symbols

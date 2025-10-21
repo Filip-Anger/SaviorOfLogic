@@ -24,16 +24,15 @@ Matematicka rovnica?
 
 ## MAREK'S TASKS
 
-### 17.10
-- [ ] Inventory slots
-- [ ] Statue dialogue screen
+### Wokring on
 - [ ] Mouse drag
 
 
-### TO DO in future
+### Not started yet
 - [ ] Door dialogue screen
 - [ ] NPC dialogue screen
-
+- [ ] Wordle 
+- [ ] Matematicka rovnica?
 
 
 ## Notes
@@ -47,4 +46,4 @@ Matematicka rovnica?
 4. Review and merge
 
 
-**Last Updated:** 17.10.2025
+**Last Updated:** 21.10.2025
