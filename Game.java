@@ -18,9 +18,6 @@ class Game implements Runnable{
     public static final int SUBWINDOW_BONUS_SIZE = 30;
     
 
-    public ArrayList<Item> allItems = new ArrayList<Item>();
-    //hello still testing
-    
 
     GamePanel gamePanel;
     JFrame frame;
