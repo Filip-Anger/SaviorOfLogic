@@ -142,10 +142,11 @@ public class GamePanel extends JPanel {
         else if (proofSubmitter.IsNear(this.player.getAbsotulePosition(), this.player.getSize())){
             submitterState = true;
         } else { 
-         Item i = itemSpawner.getItem(this.player.getAbsotulePosition(), this.player.getSize());
+        Item i = itemSpawner.getItem(this.player.getAbsotulePosition(), this.player.getSize());
         if (i != null){
             inventory.addItem(i);
         }
     }
     //private void inventoryMovement() 
+    }
 }

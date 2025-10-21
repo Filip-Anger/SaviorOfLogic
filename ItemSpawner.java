@@ -84,10 +84,10 @@ public class ItemSpawner {
             int itemHeight = item.getSubHeight()/2; //middle of item
             int itemX = item.getX() + itemWidth; //middle of item
             int itemY = item.getY() + itemHeight; //middle of item
-            int playerWidth = width/2; //middle of player
-            int playerHeight = height/2; //middle of player
-            int playerX = x + playerWidth; //middle of player
-            int playerY = y + playerHeight; //middle of player
+            int playerWidth = size.x()/2; //middle of player
+            int playerHeight = size.y()/2; //middle of player
+            int playerX = playerPos.x() + playerWidth; //middle of player
+            int playerY = playerPos.y() + playerHeight; //middle of player
             //System.out.println(itemX + " " + (x + width) + " " + itemWidth + " " + width);
 
             
