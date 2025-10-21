@@ -4,6 +4,7 @@ import java.awt.Graphics;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.util.logging.XMLFormatter;
 
 
@@ -30,6 +31,7 @@ public class GamePanel extends JPanel {
     private ProofSubmitter proofSubmitter;
     private DebugDrawer debugDrawer;
     private Pair newPlayerPos;
+    private boolean wasDragging = false;
 
 
     public static final int TILE_SIZE = 16;
@@ -45,6 +47,7 @@ public class GamePanel extends JPanel {
         Pair offset = new Pair(startX, startY);
         InputMap inputMap = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap actionMap = this.getActionMap();
+        /*
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e){
@@ -53,11 +56,15 @@ public class GamePanel extends JPanel {
             }
 
         });
-
+        */
         this.debugDrawer = new DebugDrawer();
 
         inputHandler = new AllInputHandler(inputMap, actionMap);
-        
+
+        this.addMouseListener(inputHandler.new ClickListener());
+        this.addMouseListener(inputHandler.new ReleaseListener());
+        this.addMouseMotionListener(inputHandler.new DragListener());
+
         this.player = new PlayerSprite(actionMap, offset);
         this.newPlayerPos = player.getAbsotulePosition();
         // TileMap
@@ -106,11 +113,21 @@ public class GamePanel extends JPanel {
 
         this.itemSpawner.drawItems(g, this.newPlayerPos.subtractAndGive(this.player.getScreenPosition()));
 
-        if (submitterState){
-            this.proofSubmitter.draw(g);
-        }
         if (inventoryState){
             this.inventory.draw(g);
+        }
+        if (submitterState){
+            this.proofSubmitter.draw(g);
+            if (inputHandler.isDragging()){
+                this.wasDragging = true;
+
+                //System.out.println("Dragging");
+                this.inventory.dragItem(g, this.inputHandler.getMouseClickX(), this.inputHandler.getMouseClickY(), this.inputHandler.getMouseDragX(), this.inputHandler.getMouseDragY());
+            }
+            else if (this.wasDragging){
+                this.wasDragging = false;
+                //this.inventory.dropItem(this.inputHandler.getMouseDragX(), this.inputHandler.getMouseDragY());
+            }
         }
         // this.debugDrawer.drawDebug(g, this.player.getScreenPosition());
         // this.player.drawDebug(g);
@@ -137,10 +154,12 @@ public class GamePanel extends JPanel {
 
         if (submitterState){
             submitterState = false;
+            inventoryState = false;
 
         }
         else if (proofSubmitter.IsNear(this.player.getAbsotulePosition(), this.player.getSize())){
             submitterState = true;
+            inventoryState = true;
         } else { 
         Item i = itemSpawner.getItem(this.player.getAbsotulePosition(), this.player.getSize());
         if (i != null){
@@ -149,4 +168,5 @@ public class GamePanel extends JPanel {
     }
     //private void inventoryMovement() 
     }
+    
 }
