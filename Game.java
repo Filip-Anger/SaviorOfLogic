@@ -10,7 +10,7 @@ import javax.swing.SwingUtilities;
  * Calls 
  */
 class Game implements Runnable{
-    public static final int SCALE = 2;
+    public static final int SCALE = 4;
     public static final int WIDTH = 800;
     public static final int HEIGHT = 640;
     public static final int MAP_RESOLTION = 16;

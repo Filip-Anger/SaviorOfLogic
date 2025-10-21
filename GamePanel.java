@@ -108,7 +108,7 @@ public class GamePanel extends JPanel {
             this.inventory.draw(g);
         }
         this.debugDrawer.drawDebug(g, this.player.getX(), this.player.getY());
-        this.player.drawDebug(g);
+        // this.player.drawDebug(g);
         // this.lastFrameTime = System.nanoTime();
     }
 
