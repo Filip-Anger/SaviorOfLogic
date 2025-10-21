@@ -17,6 +17,7 @@ class Game implements Runnable{
     public static final int SPRITE_RESOLUTION = 32;
     public static final int SUBWINDOW_BONUS_SIZE = 30;
     public static final int PLAYER_ACCELERATION = 50;
+    public static final int PROXIMITY_DIS = 10;
     
 
 

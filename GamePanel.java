@@ -27,6 +27,7 @@ public class GamePanel extends JPanel {
     private int playerMovmentY = 0;
     private AllInputHandler inputHandler;
     private long lastFrameTime;
+    private ProofSubmitter proofSubmitter;
     private DebugDrawer debugDrawer;
     private Pair newPlayerPos;
 
@@ -35,6 +36,7 @@ public class GamePanel extends JPanel {
 
     //Game state
     public boolean inventoryState = false;
+    public boolean submitterState = false;
 
     public final int propItem = 0;
 
@@ -66,6 +68,8 @@ public class GamePanel extends JPanel {
         this.itemSpawner = new ItemSpawner();
         // Inventory
         this.inventory = new Inventory();
+
+        this.proofSubmitter = new ProofSubmitter();
         
         // Update timer
         this.timer = new Timer((int) Math.round(1000.0 / fps), e -> {
@@ -101,6 +105,10 @@ public class GamePanel extends JPanel {
         
 
         this.itemSpawner.drawItems(g, this.newPlayerPos.subtractAndGive(this.player.getScreenPosition()));
+
+        if (submitterState){
+            this.proofSubmitter.draw(g);
+        }
         if (inventoryState){
             this.inventory.draw(g);
         }
@@ -124,11 +132,16 @@ public class GamePanel extends JPanel {
 
     private void PickUpItem(){
 
-        Item i = itemSpawner.getItem(this.player.getAbsotulePosition(), this.player.getSize());
+        if (submitterState){
+            submitterState = false;
+        }
+        else if (proofSubmitter.IsNear(this.player.getAbsotulePosition(), this.player.getSize())){
+            submitterState = true;
+        } else { 
+         Item i = itemSpawner.getItem(this.player.getAbsotulePosition(), this.player.getSize());
         if (i != null){
             inventory.addItem(i);
         }
     }
-    
     //private void inventoryMovement() 
 }
