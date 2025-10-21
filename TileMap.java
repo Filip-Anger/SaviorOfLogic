@@ -116,7 +116,7 @@ public class TileMap {
         int cordXRight = (position.x() + deltaX + size.x() - 1) / this.scaledTile;
         int cordYTop = (position.y()) / this.scaledTile;
         int cordYBot = (position.y() + size.y() - 1) / this.scaledTile;
-         if (cordXLeft < 0) {
+         if (position.x() + deltaX < 0) {
             position.setX(0);
         }
         else if (cordXRight >= (this.mapHeight - 1) * this.scaledTile) {

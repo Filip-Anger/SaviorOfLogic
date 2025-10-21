@@ -1,3 +1,6 @@
+
+import java.security.PublicKey;
+
 public class Pair {
     private int x;
     private int y;
@@ -44,5 +47,8 @@ public class Pair {
 
     public Pair subtractAndGive (Pair other) {
         return new Pair(this.x() - other.x(), this.y() - other.y());
+    }
+    public Pair AddAndGive (Pair other) {
+        return new Pair(this.x() + other.x(), this.y() + other.y());
     }
 }
