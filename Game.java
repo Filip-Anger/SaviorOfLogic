@@ -13,7 +13,8 @@ class Game implements Runnable{
     public static final int SCALE = 2;
     public static final int WIDTH = 800;
     public static final int HEIGHT = 640;
-    public static final int ORIGINAL_TILE = 16;
+    public static final int MAP_RESOLTION = 16;
+    public static final int SPRITE_RESOLUTION = 32;
     public static final int SUBWINDOW_BONUS_SIZE = 30;
     
 
@@ -37,7 +38,7 @@ class Game implements Runnable{
         this.frame.setSize(WIDTH, HEIGHT);
         this.frame.setLayout(new BorderLayout());
 
-        this.gamePanel = new GamePanel(200  , 100, 60);
+        this.gamePanel = new GamePanel(400  , 100, 60);
         this.frame.add(this.gamePanel, BorderLayout.CENTER);
 
         this.frame.setVisible(true);

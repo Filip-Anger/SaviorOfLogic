@@ -108,40 +108,23 @@ public class GamePanel extends JPanel {
             this.inventory.draw(g);
         }
         this.debugDrawer.drawDebug(g, this.player.getX(), this.player.getY());
-        
-        this.lastFrameTime = System.nanoTime();
+        this.player.drawDebug(g);
+        // this.lastFrameTime = System.nanoTime();
     }
 
     private void playerMovment() {
-        int xInput = this.player.xUpdate();
-        int yInput = this.player.yUpdate();
-        if (xInput != 0 && yInput != 0) {
-            xInput = Math.round((float) (xInput / Math.sqrt(2)));
-            yInput = Math.round((float) (yInput / Math.sqrt(2)));
-            if (xInput > 0) {
-                xInput += 1;
-            } else {
-                xInput -= 1;    
-            }
-            if (yInput > 0) {
-                yInput += 1;
-            } else {
-                yInput -= 1;
-            }
-        }
+        Pair input = this.player.movement();
         // Acceleration
         int posOnMapX = this.offsetX + this.player.getX();
         int posOnMapY = this.offsetY + this.player.getY();
 
-        if (xInput != 0) {
-            xInput = xInput * this.player.getSpeed() / 100;
-            this.playerMovmentX = this.tileMap.tryAndMoveX(posOnMapX, posOnMapY, xInput, this.player.getSizeX(), this.player.getSizeY());
+        if (input.x() != 0) {
+            this.playerMovmentX = this.tileMap.tryAndMoveX(posOnMapX, posOnMapY, input.x(), this.player.getSizeX(), this.player.getSizeY());
             this.offsetX += this.playerMovmentX;
             posOnMapX = this.offsetX + this.player.getX();
 
-        } if (yInput != 0) {
-            yInput = yInput * this.player.getSpeed() / 100;
-            this.playerMovmentY += this.tileMap.tryAndMoveY(posOnMapX, posOnMapY, yInput, this.player.getSizeX(), this.player.getSizeY());
+        } if (input.y() != 0) {
+            this.playerMovmentY += this.tileMap.tryAndMoveY(posOnMapX, posOnMapY, input.y(), this.player.getSizeX(), this.player.getSizeY());
         }
         this.offsetY += this.playerMovmentY;
 

@@ -71,25 +71,6 @@ public abstract class Entiti {
     public int getSizeY() {
         return this.sizeY;
     }
-
-
-    // public boolean stateUpdate(){
-    //     return inventoryState;
-    // }
-
-
-    // this.actionMap.put("InventoryPressed", new Inventory());
-    
-    // public class Inventory extends AbstractAction {
-    //     @Override
-    //     public void actionPerformed(ActionEvent e){
-    //         if (inventoryState){
-    //             inventoryState = false;
-    //         } else{
-    //             inventoryState = true;
-    //         }
-    //     }
-    // }
 }
 
     

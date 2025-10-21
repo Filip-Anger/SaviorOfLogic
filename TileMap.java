@@ -35,7 +35,7 @@ public class TileMap {
         }
 
         this.gamePanel = gamePanel;
-        this.scaledTile = Game.ORIGINAL_TILE * Game.SCALE;
+        this.scaledTile = Game.MAP_RESOLTION * Game.SCALE;
         this.widthPixels = Game.WIDTH / this.scaledTile;
         this.heightPixels = Game.HEIGHT / this.scaledTile;
 
@@ -93,9 +93,9 @@ public class TileMap {
      * @return max possible deltaY
     */
     public int tryAndMoveY(int x, int y, int deltaY, int sizeX, int sizeY) {
-        int cordXLeft = (x + 1) / this.scaledTile;
+        int cordXLeft = (x) / this.scaledTile;
         int cordXRight = (x + sizeX - 1) / this.scaledTile;
-        int cordYTop = (y + 1 + deltaY) / this.scaledTile;
+        int cordYTop = (y + deltaY) / this.scaledTile;
         int cordYBot = (y + deltaY + sizeY - 1) / this.scaledTile;
         if (cordYTop < 0) {
             return (- y);
@@ -118,11 +118,10 @@ public class TileMap {
     }
 
     public int tryAndMoveX(int x, int y, int deltaX, int sizeX, int sizeY) {
-        int cordXLeft = (x + 1 + deltaX) / this.scaledTile;
+        int cordXLeft = (x + deltaX) / this.scaledTile;
         int cordXRight = (x + deltaX + sizeX - 1) / this.scaledTile;
-        int cordYTop = (y + 1) / this.scaledTile;
+        int cordYTop = (y) / this.scaledTile;
         int cordYBot = (y + sizeY - 1) / this.scaledTile;
-        int cordYMid = cordYBot - 1;
          if (cordXLeft < 0) {
             return (- x);
         }
@@ -132,9 +131,9 @@ public class TileMap {
         if (deltaX < 0) { // Go up - if edge snap to current square
             if (this.forbiddenTiles.contains(this.tileMapMatrix[cordYTop][cordXLeft])
             || this.forbiddenTiles.contains(this.tileMapMatrix[cordYBot][cordXLeft])) {
-                // if ((x + deltaX) == cordXLeft) {
-                //     return 0;
-                // }
+                if ((x + deltaX) == cordXLeft) {
+                    return 0;
+                }
                 return (cordXLeft + 1) * this.scaledTile - x;
             }
         } else if(deltaX > 0) { // Go down, if edge snap to square bellow
@@ -208,8 +207,8 @@ public class TileMap {
         int xMatrixOff = xOffset / this.scaledTile;
         int xFracOff = xOffset % this.scaledTile;
         int yFracOff = yOffset % this.scaledTile;
-        for (int i = -1; i < this.heightPixels + 1; i++) {
-            for (int j = -1; j < this.widthPixels + 1; j++) {
+        for (int i = -1; i < this.heightPixels + 2; i++) {
+            for (int j = -1; j < this.widthPixels + 2; j++) {
                 if (yMatrixOff + i < 0 || yMatrixOff + i >= this.mapHeight
                     || xMatrixOff + j < 0 || xMatrixOff + j >= this.mapWidth) {
                     g.drawImage(this.tiles[0],
