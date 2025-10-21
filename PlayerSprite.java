@@ -1,24 +1,20 @@
 
+import com.sun.source.tree.YieldTree;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.Buffer;
-import java.nio.file.Paths;
+import java.security.PublicKey;
 import javax.imageio.ImageIO;
-import javax.sql.rowset.spi.XmlReader;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
-import javax.swing.InputMap;
 
 public class PlayerSprite extends Entiti implements PlayerUpdate {
-    BufferedImage[] up;
-    BufferedImage[] left;
-    BufferedImage[] down;
-    BufferedImage[] right;
+    BufferedImage[][] animationFrames; // 0, 1, 2, 3 UP LEFT DOWN RIGHT
     int frames;
-    private String lastDirection; // 0, 1, 2, 3 UP LEFT
+    private int lastDirection; // 0, 1, 2, 3 UP LEFT DOWN RIGHT
     private int lastAnimationFrame;
     private  int fpsPerFrame = 5;
 
@@ -26,56 +22,46 @@ public class PlayerSprite extends Entiti implements PlayerUpdate {
     private boolean pickUp;
     private boolean inventoryState;
     private int speedingUp;
-    private final int initialSpeed = 60;
+    private final int initialSpeed = 40;
+    private final int spriteWidth;
+    private final int spriteHeight;
+    private final int spriteOffset;
+    private int playerScale;
 
     public PlayerSprite(ActionMap actionMap) {
         this.playerActionMap = actionMap;
 
         this.velocity = 3 * Game.SCALE;
-        this.sizeX = 32;       
-        this.sizeY = 32;
+        this.playerScale = (Game.SCALE * Game.MAP_RESOLTION / Game.SPRITE_RESOLUTION);
+        this.spriteOffset = 20 * this.playerScale;
+        this.sizeX =  Game.SPRITE_RESOLUTION * this.playerScale;       
+        this.sizeY = this.sizeX;
+        this.spriteWidth = this.sizeX;
+        this.spriteHeight = 2* this.sizeX;
         this.x = Game.WIDTH / 2 - this.sizeX / 2;
         this.y = Game.HEIGHT / 2 - 3/2 * this.sizeX;
         this.speedingUp = initialSpeed;
 
-
-
         // Animation 
         this.lastAnimationFrame = 0;
         this.frames = 8;
-        this.up = new BufferedImage[this.frames];
-        this.left = new BufferedImage[this.frames];
-        this.down = new BufferedImage[this.frames];
-        this.right = new BufferedImage[this.frames];
+        this.animationFrames = new BufferedImage[4][this.frames];
         String pathStart = "Tileset/Player/";
         String pathEnd = ".png";
+        BufferedImage originalT;
         for (int i = 0; i < frames * 4; i++) {
-            if (i < this.frames) {
-                try {
-                    this.up[i % frames] = ImageIO.read(new File(pathStart + i + pathEnd));
-                } catch (IOException e) {
-                    e.getStackTrace();
-                }
-                
-            } else if (i < this.frames * 2) {
-                try {
-                    this.left[i % frames] = ImageIO.read(new File(pathStart + i + pathEnd));
-                } catch (IOException e) {
-                    e.getStackTrace();
-                }
-            } else if (i < this.frames * 3) {
-                try {
-                    this.down[i % frames] = ImageIO.read(new File(pathStart + i + pathEnd));
-                } catch (IOException e) {
-                    e.getStackTrace();
-                }
-            } else {
-                try {
-                    this.right[i % frames] = ImageIO.read(new File(pathStart + i + pathEnd));
-                } catch (IOException e) {
-                    e.getStackTrace();
-                }
-            }   
+            try {
+                originalT = ImageIO.read(new File(pathStart + i + pathEnd));
+                BufferedImage scaledTGraphics = new BufferedImage(originalT.getWidth() * this.playerScale, originalT.getHeight() * this.playerScale, originalT.getType());
+                Graphics2D temp2d = scaledTGraphics.createGraphics();
+                temp2d.drawImage(originalT, 0, 0, originalT.getWidth() * this.playerScale, originalT.getHeight() * this.playerScale, null);
+                temp2d.dispose();
+
+                this.animationFrames[i / this.frames][i % this.frames] = scaledTGraphics;
+            } catch (IOException e) {
+                System.out.println("ERROR");
+                e.getStackTrace();
+            }
         }
         // Movement
         this.playerActionMap.put("moveUpPressed", new UpPressAction());
@@ -92,8 +78,33 @@ public class PlayerSprite extends Entiti implements PlayerUpdate {
         
     }
 
-    public void drawMovement(Graphics g, BufferedImage[] animationList) {
-        g.drawImage(animationList[(this.lastAnimationFrame / this.fpsPerFrame) % this.frames], this.x, this.y - 20, null);
+    public Pair movement() {
+        int xInput = this.xUpdate();
+        int yInput = this.yUpdate();
+        if (xInput != 0 && yInput != 0) {
+            xInput = (int) Math.round(xInput / Math.sqrt(2));
+            yInput = (int) Math.round(yInput / Math.sqrt(2));
+        }
+        xInput = xInput * this.speedingUp / 100;
+        yInput = yInput * this.speedingUp / 100;
+
+        return new Pair(xInput, yInput);
+    }
+    public void drawDebug(Graphics g) {
+        for (int i = 0; i < 4 * this.frames; i++) {
+            g.drawImage(this.animationFrames[i / this.frames][i % this.frames], 
+                50 + (this.spriteWidth + 5) * (i % this.frames), 50 + (this.spriteHeight + 5) * (i / this.frames), null);
+        }
+    }
+    public void drawMovement(Graphics g, int checkedDir) {
+        if (this.lastDirection != checkedDir) { // Start going right
+                this.lastAnimationFrame = 0;
+                if (this.lastDirection % 2 == checkedDir % 2) {
+                    speedingUp = initialSpeed;
+                }
+            this.lastDirection = checkedDir;
+            }
+        g.drawImage(this.animationFrames[checkedDir][(this.lastAnimationFrame / this.fpsPerFrame) % this.frames], this.x, this.y - this.spriteOffset, null);
         this.lastAnimationFrame += 1;
         if (this.speedingUp < 100) {
             this.speedingUp += 1;
@@ -104,37 +115,22 @@ public class PlayerSprite extends Entiti implements PlayerUpdate {
     }
     @Override
     public void draw(Graphics g, int xMovment, int yMovment) {
+        System.out.println(xMovment + " " + yMovment);
         if (xMovment != 0 ) {
             if (xMovment > 0) {
-                if (this.lastDirection != "Right") { // Start going right
-                    this.lastAnimationFrame = 0;
-                }
-                this.drawMovement(g, this.right);
-                this.lastDirection = "Right";
+                this.drawMovement(g, 3);
             } else {
-                if (this.lastDirection != "Left") {
-                    this.lastAnimationFrame = 0;
-                }
-                this.drawMovement(g, this.left);
-                this.lastDirection = "Left";
+                this.drawMovement(g, 1);
             }
         } else if (yMovment != 0) {
             if (yMovment > 0) {
-                if (this.lastDirection != "Down") {
-                    this.lastAnimationFrame = 0;
-                }
-                this.drawMovement(g, this.down);
-                this.lastDirection = "Down";
+                this.drawMovement(g, 2);
             } else {
-                if (this.lastDirection != "Up") {
-                    this.lastAnimationFrame = 0;
-                }
-                this.drawMovement(g, this.up);
-                this.lastDirection = "Up";
+                this.drawMovement(g, 0);
             }
         } else {
-            g.drawImage(this.down[0], this.x, this.y - 20, null);
-            this.lastDirection = "Idle";
+            g.drawImage(this.animationFrames[2][0], this.x, this.y - this.spriteOffset, null);
+            this.lastDirection = 4;
             speedingUp = initialSpeed;
         }
     

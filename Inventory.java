@@ -19,8 +19,8 @@ public class Inventory extends SubWindow{
 
     PointerInfo a = MouseInfo.getPointerInfo();
     public void draw(Graphics g){
-        drawSubWindow(g, 25, 25, Game.WIDTH/2-Game.ORIGINAL_TILE*Game.SCALE-8, Game.HEIGHT-75); //i dont understan this fucking hell why is it not -50
-        invWidth = Game.WIDTH/2-Game.ORIGINAL_TILE*Game.SCALE-8-25;
+        drawSubWindow(g, 25, 25, Game.WIDTH/2-Game.MAP_RESOLTION*Game.SCALE-8, Game.HEIGHT-75); //i dont understan this fucking hell why is it not -50
+        invWidth = Game.WIDTH/2-Game.MAP_RESOLTION*Game.SCALE-8-25;
         invHeight = Game.HEIGHT-75-25;
         int remainingWidth = invWidth;
         int remainingHeight = invHeight;
