@@ -1,4 +1,4 @@
 public class Enemie extends Entiti {
 
-    public 
+    public Pair follow(int player)
 }

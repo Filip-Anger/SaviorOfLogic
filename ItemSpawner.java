@@ -51,9 +51,9 @@ public class ItemSpawner {
         
         
     }
-    public void drawItems(Graphics g, int offsetX, int offsetY){
+    public void drawItems(Graphics g, Pair offset){
         for (Item i : this.visibleItems){
-            i.draw(g, offsetX, offsetY);
+            i.draw(g, offset);
         }
         //this.allItems.get(0).drawInInv(g, 0, 0);
         
@@ -78,7 +78,7 @@ public class ItemSpawner {
             }
         }
     }
-    public Item getItem(int x, int y, int width, int height){
+    public Item getItem(Pair playerPos, Pair size){
         for(Item item : visibleItems){
             int itemWidth = item.getSubWidth()/2;
             int itemHeight = item.getSubHeight()/2;
@@ -87,7 +87,7 @@ public class ItemSpawner {
 
             //System.out.println(itemX + " " + (x + width) + " " + itemWidth + " " + width);
 
-            if(Math.abs(itemX - (x + width)) <= (itemWidth + width) && (((y - height)) <= itemY && (itemY - itemHeight) <= (y + height))){ //-20 to adjust, looks bettter
+            if(Math.abs(itemX - (playerPos.x() + size.x())) <= (itemWidth + size.x()) && (((playerPos.y() - size.y())) <= itemY && (itemY - itemHeight) <= (playerPos.y() + size.y()))){ //-20 to adjust, looks bettter
                 visibleItems.remove(item);
                 // remove put into separate method
                 return item;

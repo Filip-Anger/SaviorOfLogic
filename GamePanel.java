@@ -23,13 +23,12 @@ public class GamePanel extends JPanel {
     private final TileMap tileMap;
     private final Inventory inventory;
     private final ItemSpawner itemSpawner;
-    private int offsetX;
-    private int offsetY;
     private int playerMovmentX = 0;
     private int playerMovmentY = 0;
     private AllInputHandler inputHandler;
     private long lastFrameTime;
     private DebugDrawer debugDrawer;
+    private Pair newPlayerPos;
 
 
     public static final int TILE_SIZE = 16;
@@ -41,6 +40,7 @@ public class GamePanel extends JPanel {
 
     public GamePanel(int startX, int startY, int fps) {
         // Player
+        Pair offset = new Pair(startX, startY);
         InputMap inputMap = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap actionMap = this.getActionMap();
         this.addMouseListener(new MouseAdapter() {
@@ -55,14 +55,12 @@ public class GamePanel extends JPanel {
         this.debugDrawer = new DebugDrawer();
 
         inputHandler = new AllInputHandler(inputMap, actionMap);
-        PlayerSprite playerSprite = new PlayerSprite(actionMap);
-        this.player = playerSprite;
-
+        
+        this.player = new PlayerSprite(actionMap, offset);
+        this.newPlayerPos = player.getAbsotulePosition();
         // TileMap
-        this.tileMap = new TileMap(this);
+        this.tileMap = new TileMap();
         // World offset
-        this.offsetX = startX;
-        this.offsetY = startY;
 
         // ItemSpawner
         this.itemSpawner = new ItemSpawner();
@@ -80,8 +78,7 @@ public class GamePanel extends JPanel {
     }
 
     private void logicUpdate() {
-        
-        
+    
         playerStateUpdate();
         playerMovment();
     
@@ -95,39 +92,26 @@ public class GamePanel extends JPanel {
         // double betweenLast = (System.nanoTime() - this.lastFrameTime);
         // System.out.println("FPS: " + 1 / (betweenLast / Math.pow(10, 9)));
         
-        this.tileMap.draw(g, this.offsetX, this.offsetY); // HELPER class to make it organized
+        this.tileMap.draw(g, this.newPlayerPos.subtractAndGive(this.player.getScreenPosition())); // HELPER class to make it organized
 
         // this.player.drawHitbox(g);
-        this.player.draw(g, this.playerMovmentX, this.playerMovmentY);
+        this.player.draw(g, this.newPlayerPos.giveNew());
         this.playerMovmentX = 0;
         this.playerMovmentY = 0;
         
 
-        this.itemSpawner.drawItems(g, this.offsetX, this.offsetY);
+        this.itemSpawner.drawItems(g, this.newPlayerPos.subtractAndGive(this.player.getScreenPosition()));
         if (inventoryState){
             this.inventory.draw(g);
         }
-        this.debugDrawer.drawDebug(g, this.player.getX(), this.player.getY());
+        // this.debugDrawer.drawDebug(g, this.player.getScreenPosition());
         // this.player.drawDebug(g);
         // this.lastFrameTime = System.nanoTime();
     }
 
     private void playerMovment() {
-        Pair input = this.player.movement();
-        // Acceleration
-        int posOnMapX = this.offsetX + this.player.getX();
-        int posOnMapY = this.offsetY + this.player.getY();
-
-        if (input.x() != 0) {
-            this.playerMovmentX = this.tileMap.tryAndMoveX(posOnMapX, posOnMapY, input.x(), this.player.getSizeX(), this.player.getSizeY());
-            this.offsetX += this.playerMovmentX;
-            posOnMapX = this.offsetX + this.player.getX();
-
-        } if (input.y() != 0) {
-            this.playerMovmentY += this.tileMap.tryAndMoveY(posOnMapX, posOnMapY, input.y(), this.player.getSizeX(), this.player.getSizeY());
-        }
-        this.offsetY += this.playerMovmentY;
-
+        this.newPlayerPos = this.tileMap.tryAndMove(this.player.absolutePosition.giveNew(), this.player.movement(), this.player.getSize());
+        
     }
 
     private void playerStateUpdate(){
@@ -140,7 +124,7 @@ public class GamePanel extends JPanel {
 
     private void PickUpItem(){
 
-        Item i = itemSpawner.getItem(offsetX + this.player.getX(), offsetY + this.player.getY(), this.player.getSizeX(), this.player.getSizeY());
+        Item i = itemSpawner.getItem(this.player.getAbsotulePosition(), this.player.getSize());
         if (i != null){
             inventory.addItem(i);
         }

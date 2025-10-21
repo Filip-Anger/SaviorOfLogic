@@ -1,11 +1,18 @@
 # Savior of Logic - Development TODO
 Press **Ctrl+Shift+V** TRUST ME!
 ---
+Kluc + truhla
+BLudisko
+Enemies?
+Wordle 
+Matematicka rovnica?
 
 ## FILIP'S TASKS
 
 ### Working on
-- [X] Collision detection  
+-   Kluc + truhla
+    BLudisko
+    Enemies?
 
 ### Not started yet
 - [X] Measure time of repainting map

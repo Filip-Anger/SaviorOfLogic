@@ -34,10 +34,10 @@ public class PropItem extends Item {
     }
 
     @Override
-    public void draw(Graphics g, int offsetX, int offsetY) {
+    public void draw(Graphics g, Pair offset) {
         //this.sw.drawSubWindow(g, getX()-20, getY()-20, this.sprite.getWidth()+40, this.sprite.getHeight()+40);
-        this.sw.drawSubWindow(g, getX()-offsetX, getY()-offsetY, subWidth, subHeight);
-        g.drawImage(sprite, getX()-offsetX+Game.SUBWINDOW_BONUS_SIZE/2, getY()-offsetY+Game.SUBWINDOW_BONUS_SIZE/2, null);
+        this.sw.drawSubWindow(g, getX() - offset.x(), getY() - offset.y(), subWidth, subHeight);
+        g.drawImage(sprite, getX() - offset.x() +Game.SUBWINDOW_BONUS_SIZE/2, getY() - offset.y() + Game.SUBWINDOW_BONUS_SIZE/2, null);
     }
 
     @Override
