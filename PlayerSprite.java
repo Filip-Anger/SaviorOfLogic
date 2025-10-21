@@ -29,7 +29,7 @@ public class PlayerSprite extends Entiti implements PlayerUpdate {
     public PlayerSprite(ActionMap actionMap, Pair offset) {
         this.playerActionMap = actionMap;
         this.velocity = 3 * Game.SCALE;
-        this.playerScale = (Game.SCALE * Game.MAP_RESOLTION / Game.SPRITE_RESOLUTION);
+        this.playerScale = (Game.SCALE * Game.MAP_RESOLTION_16 / Game.SPRITE_RESOLUTION);
         this.spriteOffset = 20 * this.playerScale;
 
         this.size = new Pair(Game.SPRITE_RESOLUTION * this.playerScale, Game.SPRITE_RESOLUTION * this.playerScale);

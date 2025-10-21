@@ -3,8 +3,8 @@ import java.awt.Graphics;
 public class ProofSubmitter {
     private int x = 1000;
     private int y = 1000;
-    private int width = Game.MAP_RESOLTION*Game.SCALE;
-    private int height = Game.MAP_RESOLTION*Game.SCALE;
+    private int width = Game.MAP_RESOLTION_16*Game.SCALE;
+    private int height = Game.MAP_RESOLTION_16*Game.SCALE;
     private SubWindow sb;
 
     public ProofSubmitter(){
@@ -12,7 +12,7 @@ public class ProofSubmitter {
     }
 
     public void draw(Graphics g){
-        this.sb.drawSubWindowXY(g, Game.WIDTH/2+(Game.MAP_RESOLTION*Game.SCALE), 25, Game.WIDTH-40, Game.HEIGHT-50);
+        this.sb.drawSubWindowXY(g, Game.WIDTH/2+(Game.MAP_RESOLTION_16*Game.SCALE), 25, Game.WIDTH-40, Game.HEIGHT-50);
     }
 
     public boolean IsNear(Pair playerPos, Pair size){

@@ -25,29 +25,7 @@ public class TileMap {
     private Set<Integer> forbiddenTiles;
 
     /** Load in all tiles. */
-    public TileMap() {
-        // this.offset = offset;
-        this.mapFile = new File("Tileset/map_new.txt");
-
-        try {
-            this.sc = new Scanner(this.mapFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        this.scaledTile = Game.MAP_RESOLTION * Game.SCALE;
-        this.widthPixels = Game.WIDTH / this.scaledTile;
-        this.heightPixels = Game.HEIGHT / this.scaledTile;
-
-        this.tileMapMatrix = new int[this.mapHeight][this.mapWidth];
-        for (int y = 0; y < this.mapHeight; y++) {
-            for (int x = 0; x < this.mapWidth; x++) {
-                if (sc.hasNext()) {
-                    this.tileMapMatrix[y][x] = sc.nextInt(); // Random between 1 and 3
-                }
-            }
-        }
-        
+    private void loadTiles() {
         this.filesNames = new String[]{"water", "grass", "path", "tree", "enemy"};
         this.forbiddenTiles = new HashSet<>();
         this.forbiddenTiles.add(0);
@@ -69,6 +47,34 @@ public class TileMap {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    public void scaleTiles() {
+        
+    }
+    public TileMap() {
+        // this.offset = offset;
+        this.mapFile = new File("Tileset/map_new.txt");
+
+        try {
+            this.sc = new Scanner(this.mapFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        this.scaledTile = Game.MAP_RESOLTION_16 * Game.SCALE;
+        this.widthPixels = Game.WIDTH / this.scaledTile;
+        this.heightPixels = Game.HEIGHT / this.scaledTile;
+
+        this.tileMapMatrix = new int[this.mapHeight][this.mapWidth];
+        for (int y = 0; y < this.mapHeight; y++) {
+            for (int x = 0; x < this.mapWidth; x++) {
+                if (sc.hasNext()) {
+                    this.tileMapMatrix[y][x] = sc.nextInt(); // Random between 1 and 3
+                }
+            }
+        }
+        this.loadTiles();
+        
     }
 
     public Pair tryAndMove(Pair position, Pair input, Pair size) {
