@@ -124,8 +124,11 @@ public class GamePanel extends JPanel {
 
     private void playerStateUpdate(){
         this.inventoryState = this.player.invStateUpdate();
+        System.out.println(this.player.pickUpUpdate());
+        
         if (this.player.pickUpUpdate()){
             PickUpItem();
+            this.player.pickUpFalse();
         }
 
     }
@@ -134,6 +137,7 @@ public class GamePanel extends JPanel {
 
         if (submitterState){
             submitterState = false;
+
         }
         else if (proofSubmitter.IsNear(this.player.getAbsotulePosition(), this.player.getSize())){
             submitterState = true;

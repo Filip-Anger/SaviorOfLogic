@@ -16,7 +16,15 @@ public class ProofSubmitter {
     }
 
     public boolean IsNear(int x, int y, int width, int height){
-        if(Math.abs((this.x+this.width/2) - (x + width)) <= this.width + width+Game.PROXIMITY_DIS && Math.abs((this.y+this.height/2) - (y + height)) <= this.height + height+Game.PROXIMITY_DIS){
+        int submitterWidth = this.width/2; //middle of submitter
+        int submitterHeight = this.height/2; //middle of submitter
+        int submitterX = this.x + submitterWidth; //middle of submitter
+        int submitterY = this.y + submitterHeight; //middle of submitter
+        int playerWidth = width/2; //middle of player
+        int playerHeight = height/2; //middle of player 
+        int playerX = x + playerWidth; //middle of player
+        int playerY = y + playerHeight; //middle of player
+        if(Math.abs(submitterX - playerX) <= (submitterWidth + playerWidth) && Math.abs(submitterY - playerY) <= (submitterHeight + playerHeight)){ //add proximity distance in case of borders
             return true;
         }
         return false;

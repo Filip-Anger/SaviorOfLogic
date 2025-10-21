@@ -70,7 +70,7 @@ public class PlayerSprite extends Entiti implements PlayerUpdate {
         this.playerActionMap.put("moveRightReleased", new RightReleaseAction());
         this.playerActionMap.put("InventoryPressed", new InventoryPress());
         this.playerActionMap.put("PickUpPressed", new PickUpPress());
-        this.playerActionMap.put("PickUpReleased", new PickUpRelease());
+
         
     }
 
@@ -136,6 +136,9 @@ public class PlayerSprite extends Entiti implements PlayerUpdate {
     public boolean pickUpUpdate(){
         return pickUp;
     }
+    public void pickUpFalse(){
+        this.pickUp = false;
+    }
 
     public class UpPressAction extends AbstractAction {
         @Override
@@ -200,16 +203,15 @@ public class PlayerSprite extends Entiti implements PlayerUpdate {
     public class PickUpPress  extends AbstractAction{
         @Override
         public void actionPerformed(ActionEvent e) {
-            pickUp = true;
+            if (pickUp){
+                pickUp = false;
+            }else {
+                pickUp = true;
+            }
         }
     }
 
-    public class PickUpRelease  extends AbstractAction{
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            pickUp = false;
-        }
-    }
+    
 
     public class InventoryPress extends AbstractAction{
         @Override

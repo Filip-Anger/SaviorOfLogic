@@ -80,14 +80,19 @@ public class ItemSpawner {
     }
     public Item getItem(Pair playerPos, Pair size){
         for(Item item : visibleItems){
-            int itemWidth = item.getSubWidth()/2;
-            int itemHeight = item.getSubHeight()/2;
-            int itemX = item.getX() + itemWidth;
-            int itemY = item.getY() + itemHeight;
-
+            int itemWidth = item.getSubWidth()/2; //middle of item
+            int itemHeight = item.getSubHeight()/2; //middle of item
+            int itemX = item.getX() + itemWidth; //middle of item
+            int itemY = item.getY() + itemHeight; //middle of item
+            int playerWidth = width/2; //middle of player
+            int playerHeight = height/2; //middle of player
+            int playerX = x + playerWidth; //middle of player
+            int playerY = y + playerHeight; //middle of player
             //System.out.println(itemX + " " + (x + width) + " " + itemWidth + " " + width);
 
-            if(Math.abs(itemX - (playerPos.x() + size.x())) <= (itemWidth + size.x()) && (((playerPos.y() - size.y())) <= itemY && (itemY - itemHeight) <= (playerPos.y() + size.y()))){ //-20 to adjust, looks bettter
+            
+            //if(Math.abs(itemX - (x + width)) <= (itemWidth + width) && (((y - height)) <= itemY && (itemY - itemHeight) <= (y + height))){ //-20 to adjust, looks bettter
+            if(Math.abs(itemX - playerX) <= (itemWidth + playerWidth) && Math.abs(itemY - playerY) <= (itemHeight + playerHeight)){ //mareks implementation
                 visibleItems.remove(item);
                 // remove put into separate method
                 return item;
