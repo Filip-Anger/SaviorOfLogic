@@ -4,6 +4,8 @@ import java.awt.Graphics;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.logging.XMLFormatter;
 
 
@@ -23,14 +25,11 @@ public class GamePanel extends JPanel {
     private final TileMap tileMap;
     private final Inventory inventory;
     private final ItemSpawner itemSpawner;
-    private int playerMovmentX = 0;
-    private int playerMovmentY = 0;
     private AllInputHandler inputHandler;
-    private long lastFrameTime;
     private ProofSubmitter proofSubmitter;
     private DebugDrawer debugDrawer;
     private Pair newPlayerPos;
-
+    private ArrayList<Skeleton> enemies;
 
     public static final int TILE_SIZE = 16;
 
@@ -42,6 +41,7 @@ public class GamePanel extends JPanel {
 
     public GamePanel(int startX, int startY, int fps) {
         // Player
+        this.enemies = new ArrayList<>();
         Pair offset = new Pair(startX, startY);
         InputMap inputMap = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap actionMap = this.getActionMap();
@@ -60,11 +60,12 @@ public class GamePanel extends JPanel {
         
         this.player = new PlayerSprite(actionMap, offset);
         this.newPlayerPos = player.getAbsotulePosition();
+        this.enemies.add(new Skeleton(1));
         // TileMap
         this.tileMap = new TileMap();
         // World offset
 
-        // ItemSpawner
+        // ItemSpawners
         this.itemSpawner = new ItemSpawner();
         // Inventory
         this.inventory = new Inventory();
@@ -84,27 +85,27 @@ public class GamePanel extends JPanel {
     private void logicUpdate() {
     
         playerStateUpdate();
-        playerMovment();
+        spritesMovment();
+        spritesColision();
     
     }
 
-
-
+    private Pair offset() {
+        return this.newPlayerPos.subtractAndGive(this.player.getScreenPosition());
+    }
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g); // Clean background
         // double betweenLast = (System.nanoTime() - this.lastFrameTime);
         // System.out.println("FPS: " + 1 / (betweenLast / Math.pow(10, 9)));
         
-        this.tileMap.draw(g, this.newPlayerPos.subtractAndGive(this.player.getScreenPosition())); // HELPER class to make it organized
+        this.tileMap.draw(g, this.offset()); // HELPER class to make it organized
 
         // this.player.drawHitbox(g);
         this.player.draw(g, this.newPlayerPos.giveNew());
-        this.playerMovmentX = 0;
-        this.playerMovmentY = 0;
-        
+        this.drawEnemies(g);
 
-        this.itemSpawner.drawItems(g, this.newPlayerPos.subtractAndGive(this.player.getScreenPosition()));
+        this.itemSpawner.drawItems(g, this.offset());
 
         if (submitterState){
             this.proofSubmitter.draw(g);
@@ -112,14 +113,33 @@ public class GamePanel extends JPanel {
         if (inventoryState){
             this.inventory.draw(g);
         }
-        // this.debugDrawer.drawDebug(g, this.player.getScreenPosition());
+        this.debugDrawer.drawDebug(g, this.player.getMiddle().subtractAndGive(this.offset()));
         // this.player.drawDebug(g);
         // this.lastFrameTime = System.nanoTime();
     }
 
-    private void playerMovment() {
+    private void spritesMovment() {
         this.newPlayerPos = this.tileMap.tryAndMove(this.player.absolutePosition.giveNew(), this.player.movement(), this.player.getSize());
         
+        for (Skeleton enemie : this.enemies) {
+            enemie.follow(this.player);
+            enemie.setAbsotulePosition(this.tileMap.tryAndMove(enemie.getAbsotulePosition().giveNew(), 
+            enemie.inputUpdate().giveNew(), enemie.getSize()));
+        }
+        
+    }
+
+    private void drawEnemies(Graphics g) {
+        for (Skeleton enemie : this.enemies) {
+            enemie.draw(g, this.offset());
+        }
+    }
+    private void spritesColision() {
+        for (Skeleton enemie : this.enemies) {
+            if (this.player.inHitbox(enemie)) {
+                System.out.println("HIT");
+            }
+        }
     }
 
     private void playerStateUpdate(){

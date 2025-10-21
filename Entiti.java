@@ -19,7 +19,7 @@ public abstract class Entiti {
     
     public Entiti() {
         this.size = new Pair(Game.SPRITE_RESOLUTION, Game.SPRITE_RESOLUTION);
-        this.absolutePosition = new Pair(20, 200);
+        this.absolutePosition = new Pair(300, 600);
     }
     /** Constructor.
      * 
@@ -28,10 +28,9 @@ public abstract class Entiti {
     */
 
     /**Called from GamePanel. */
-    public void draw(Graphics g, Pair newPosition) {
-        this.absolutePosition = newPosition;
+    public void draw(Graphics g, Pair offset) {
         g.setColor(Color.RED);
-        g.fillRect(this.screenPosition.x(), this.screenPosition.y(), this.size.x(), this.size.x());
+        g.fillRect(this.absolutePosition.x() - offset.x(), this.absolutePosition.y() - offset.y(), this.size.x(), this.size.x());
     }
 
     public void drawHitbox(Graphics g) {
@@ -39,6 +38,16 @@ public abstract class Entiti {
         g.fillRect(this.screenPosition.x(), this.screenPosition.y(), this.size.x(), this.size.y());
     }
 
+    public boolean inHitbox(Entiti other) {
+        if ((Math.abs(this.getMiddle().x() - other.getMiddle().x()) < this.size.x() / 2 + other.getSize().x() / 2)
+            && (Math.abs(this.getMiddle().y() - other.getMiddle().y()) < this.size.y() / 2 + other.getSize().y() /2)) {
+                return  true;
+            }
+        return false;
+    }
+    public Pair getMiddle() {
+        return new Pair(this.absolutePosition.x() + (this.size.x()) / 2, this.absolutePosition.y() + this.size.y() / 2);
+    }
     public Pair inputUpdate() {
         int x = 0;
         int y = 0;
@@ -66,6 +75,10 @@ public abstract class Entiti {
 
     public Pair getAbsotulePosition() {
         return this.absolutePosition;
+    }
+
+    public void setAbsotulePosition(Pair position) {
+        this.absolutePosition = position;
     }
 }
 
