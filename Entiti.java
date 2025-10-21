@@ -46,7 +46,7 @@ public abstract class Entiti {
         return false;
     }
     public Pair getMiddle() {
-        return this.absolutePosition.AddAndGive(this.size);
+        return new Pair(this.absolutePosition.x() + (this.size.x()) / 2, this.absolutePosition.y() + this.size.y() / 2);
     }
     public Pair inputUpdate() {
         int x = 0;

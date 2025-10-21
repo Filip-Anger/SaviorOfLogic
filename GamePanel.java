@@ -29,7 +29,7 @@ public class GamePanel extends JPanel {
     private ProofSubmitter proofSubmitter;
     private DebugDrawer debugDrawer;
     private Pair newPlayerPos;
-    private ArrayList<Enemie> enemies;
+    private ArrayList<Skeleton> enemies;
 
     public static final int TILE_SIZE = 16;
 
@@ -60,7 +60,7 @@ public class GamePanel extends JPanel {
         
         this.player = new PlayerSprite(actionMap, offset);
         this.newPlayerPos = player.getAbsotulePosition();
-        this.enemies.add(new Enemie(1));
+        this.enemies.add(new Skeleton(1));
         // TileMap
         this.tileMap = new TileMap();
         // World offset
@@ -113,7 +113,7 @@ public class GamePanel extends JPanel {
         if (inventoryState){
             this.inventory.draw(g);
         }
-        // this.debugDrawer.drawDebug(g, this.player.getScreenPosition());
+        this.debugDrawer.drawDebug(g, this.player.getMiddle().subtractAndGive(this.offset()));
         // this.player.drawDebug(g);
         // this.lastFrameTime = System.nanoTime();
     }
@@ -121,8 +121,8 @@ public class GamePanel extends JPanel {
     private void spritesMovment() {
         this.newPlayerPos = this.tileMap.tryAndMove(this.player.absolutePosition.giveNew(), this.player.movement(), this.player.getSize());
         
-        for (Enemie enemie : this.enemies) {
-            enemie.follow(this.newPlayerPos);
+        for (Skeleton enemie : this.enemies) {
+            enemie.follow(this.player);
             enemie.setAbsotulePosition(this.tileMap.tryAndMove(enemie.getAbsotulePosition().giveNew(), 
             enemie.inputUpdate().giveNew(), enemie.getSize()));
         }
@@ -130,12 +130,12 @@ public class GamePanel extends JPanel {
     }
 
     private void drawEnemies(Graphics g) {
-        for (Enemie enemie : this.enemies) {
+        for (Skeleton enemie : this.enemies) {
             enemie.draw(g, this.offset());
         }
     }
     private void spritesColision() {
-        for (Enemie enemie : this.enemies) {
+        for (Skeleton enemie : this.enemies) {
             if (this.player.inHitbox(enemie)) {
                 System.out.println("HIT");
             }
