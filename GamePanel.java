@@ -62,7 +62,7 @@ public class GamePanel extends JPanel {
         this.newPlayerPos = player.getAbsotulePosition();
         this.enemies.add(new Skeleton(1));
         // TileMap
-        this.tileMap = new TileMap();
+        this.tileMap = new TileMap(Game.MAP_RESOLUTION);
         // World offset
 
         // ItemSpawners
