@@ -12,7 +12,7 @@ public class ProofSubmitter {
     }
 
     public void draw(Graphics g){
-        this.sb.drawSubWindow(g, 25, 25, Game.WIDTH-50, Game.HEIGHT-75);
+        this.sb.drawSubWindowXY(g, Game.WIDTH/2+(Game.MAP_RESOLTION*Game.SCALE), 25, Game.WIDTH-40, Game.HEIGHT-50);
     }
 
     public boolean IsNear(int x, int y, int width, int height){
