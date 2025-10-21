@@ -19,13 +19,14 @@ public class TileMap {
     private final int widthPixels;
     private final int heightPixels;
     private final File mapFile;
+    // private Pair offset;
     private  Scanner sc;
 
     private Set<Integer> forbiddenTiles;
-    private GamePanel gamePanel;
 
     /** Load in all tiles. */
-    public TileMap(GamePanel gamePanel) {
+    public TileMap() {
+        // this.offset = offset;
         this.mapFile = new File("Tileset/map_new.txt");
 
         try {
@@ -34,7 +35,6 @@ public class TileMap {
             e.printStackTrace();
         }
 
-        this.gamePanel = gamePanel;
         this.scaledTile = Game.MAP_RESOLTION * Game.SCALE;
         this.widthPixels = Game.WIDTH / this.scaledTile;
         this.heightPixels = Game.HEIGHT / this.scaledTile;
@@ -47,7 +47,6 @@ public class TileMap {
                 }
             }
         }
-
         
         this.filesNames = new String[]{"water", "grass", "path", "tree", "enemy"};
         this.forbiddenTiles = new HashSet<>();
@@ -72,141 +71,77 @@ public class TileMap {
         }
     }
 
-    private int collisionHelper(int deltaX, int deltaY, int x, int y) {
-        int delta;
-        int pos;
-        if (deltaX != 0) {
-            delta = deltaX;
-            pos = x;
-        } else {
-            delta = deltaY;
-            pos = y;
+    public Pair tryAndMove(Pair position, Pair input, Pair size) {
+         if (input.x() != 0) {
+            position = this.tryAndMoveX(position, input.x(), size);
+
+        } if (input.y() != 0) {
+            position = this.tryAndMoveY(position, input.y(), size);
         }
-        if (delta < 0) {
-                return ((pos / this.scaledTile) * this.scaledTile - pos);
-        } else {
-            return ((pos / this.scaledTile) * this.scaledTile - pos); //(((pos / this.scaledTile) + 1) * this.scaledTile);
-        }
+        return position;
     }
+   
 
     /**@param deltaY NOT ZERO
      * @return max possible deltaY
     */
-    public int tryAndMoveY(int x, int y, int deltaY, int sizeX, int sizeY) {
-        int cordXLeft = (x) / this.scaledTile;
-        int cordXRight = (x + sizeX - 1) / this.scaledTile;
-        int cordYTop = (y + deltaY) / this.scaledTile;
-        int cordYBot = (y + deltaY + sizeY - 1) / this.scaledTile;
+    private Pair tryAndMoveY(Pair position, int deltaY, Pair size) {
+        int cordXLeft = (position.x()) / this.scaledTile;
+        int cordXRight = (position.x() + size.x() - 1) / this.scaledTile;
+        int cordYTop = (position.y() + deltaY) / this.scaledTile;
+        int cordYBot = (position.y() + deltaY + size.y() - 1) / this.scaledTile;
         if (cordYTop < 0) {
-            return (- y);
+            position.setY(0);
         }
-        if (cordYBot >= (this.mapHeight- 1) * this.scaledTile) {
-            return (this.mapHeight * (this.scaledTile - 1) - y);
+         else if (cordYBot >= (this.mapHeight- 1) * this.scaledTile) {
+            position.setY(this.mapHeight * (this.scaledTile - 1));
         }
-        if (deltaY < 0) { // Go up - if edge snap to current square
-            if (this.forbiddenTiles.contains(this.tileMapMatrix[cordYTop][cordXLeft]) 
-            || this.forbiddenTiles.contains(this.tileMapMatrix[cordYTop][cordXRight])) {
-                return (cordYTop + sizeY / this.scaledTile) * this.scaledTile - y;
-            }
-        } else if(deltaY > 0) { // Go down, if edge snap to square bellow
-            if (this.forbiddenTiles.contains(this.tileMapMatrix[cordYBot][cordXLeft])
-            || this.forbiddenTiles.contains(this.tileMapMatrix[cordYBot][cordXRight])) {
-                return (cordYBot - sizeY / this.scaledTile) * this.scaledTile - y;
-            }
+        else if ((deltaY < 0) && // Go up - if edge snap to current square
+                    (this.forbiddenTiles.contains(this.tileMapMatrix[cordYTop][cordXLeft]) 
+                    || this.forbiddenTiles.contains(this.tileMapMatrix[cordYTop][cordXRight]))) {
+            position.setY((cordYTop + size.y() / this.scaledTile) * this.scaledTile);
+            
+        } else if((deltaY > 0) && 
+                (this.forbiddenTiles.contains(this.tileMapMatrix[cordYBot][cordXLeft])
+                || this.forbiddenTiles.contains(this.tileMapMatrix[cordYBot][cordXRight]))) {
+            position.setY((cordYBot - size.y() / this.scaledTile) * this.scaledTile);
+        } else {
+            position.incrementY(deltaY);
         }
-        return deltaY;
+        return position;
     }
 
-    public int tryAndMoveX(int x, int y, int deltaX, int sizeX, int sizeY) {
-        int cordXLeft = (x + deltaX) / this.scaledTile;
-        int cordXRight = (x + deltaX + sizeX - 1) / this.scaledTile;
-        int cordYTop = (y) / this.scaledTile;
-        int cordYBot = (y + sizeY - 1) / this.scaledTile;
+    private Pair tryAndMoveX(Pair position, int deltaX, Pair size) {
+        int cordXLeft = (position.x() + deltaX) / this.scaledTile;
+        int cordXRight = (position.x() + deltaX + size.x() - 1) / this.scaledTile;
+        int cordYTop = (position.y()) / this.scaledTile;
+        int cordYBot = (position.y() + size.y() - 1) / this.scaledTile;
          if (cordXLeft < 0) {
-            return (- x);
+            position.setX(0);
         }
-        if (cordXRight >= (this.mapHeight - 1) * this.scaledTile) {
-            return (this.mapWidth * (this.scaledTile - 1) - x);
+        else if (cordXRight >= (this.mapHeight - 1) * this.scaledTile) {
+            position.setX(this.mapWidth * (this.scaledTile - 1));
         }
-        if (deltaX < 0) { // Go up - if edge snap to current square
-            if (this.forbiddenTiles.contains(this.tileMapMatrix[cordYTop][cordXLeft])
-            || this.forbiddenTiles.contains(this.tileMapMatrix[cordYBot][cordXLeft])) {
-                if ((x + deltaX) == cordXLeft) {
-                    return 0;
-                }
-                return (cordXLeft + 1) * this.scaledTile - x;
-            }
-        } else if(deltaX > 0) { // Go down, if edge snap to square bellow
-            if (this.forbiddenTiles.contains(this.tileMapMatrix[cordYTop][cordXRight])
-            || this.forbiddenTiles.contains(this.tileMapMatrix[cordYBot][cordXRight])) {
-                if ((x + deltaX) == cordXRight) {
-                    return 0;
-                }
-                return (cordXRight - sizeX / this.scaledTile) * this.scaledTile - x;
-            }
+        else if ((deltaX < 0) && // Go up - if edge snap to current square
+                (this.forbiddenTiles.contains(this.tileMapMatrix[cordYTop][cordXLeft])
+                || this.forbiddenTiles.contains(this.tileMapMatrix[cordYBot][cordXLeft]))) {
+            position.setX((cordXLeft + 1) * this.scaledTile);
+
+        } else if((deltaX > 0) &&  // Go down, if edge snap to square bellow
+                (this.forbiddenTiles.contains(this.tileMapMatrix[cordYTop][cordXRight])
+                || this.forbiddenTiles.contains(this.tileMapMatrix[cordYBot][cordXRight]))) {
+            position.setX((cordXRight - size.x() / this.scaledTile) * this.scaledTile);
+        } else {
+            position.incrementX(deltaX);
         }
-        return deltaX;
+        return position;
     }
-    // public int canWalkOn(int x1, int y1, int deltaX, int deltaY, int size) {
-    //     if (x1 < 0 || y1 < 0) {
-    //         return 0;
-    //     }
-    //     if (x1 + deltaX + size > this.mapWidth * this.scaledTile
-    //         || y1 + deltaY + size > this.mapHeight * this.scaledTile) {
-    //         return this.mapWidth * this.scaledTile - size;
-    //     }
-        
-    //     // Rounded down for the left top
-    //     int xCord1 = (x1 + deltaX) / this.scaledTile;
-    //     int yCord1 = (y1 + deltaY) / this.scaledTile;
-    //     if (this.forbiddenTiles.contains(this.tileMapMatrix[yCord1][xCord1])) {
-    //         return this.collisionHelper(deltaX, deltaY, x1, y1);
-    //     }
 
-    //     // Top right >> x round UP
-    //     xCord1 = (x1 + deltaX + size) / this.scaledTile;
-    //     if (this.forbiddenTiles.contains(this.tileMapMatrix[yCord1][xCord1])) {
-    //         return this.collisionHelper(deltaX, deltaY, x1 , y1);
-
-    //     }
-
-    //     yCord1 = (y1 + + deltaY + size) / this.scaledTile;
-    //     if (this.forbiddenTiles.contains(this.tileMapMatrix[yCord1][xCord1])) {
-    //         return this.collisionHelper(deltaX, deltaY, x1, y1);
-    //     }
-
-    //     // Top right >> x round UP
-    //     xCord1 = (x1 + deltaX) / this.scaledTile;
-    //     if (this.forbiddenTiles.contains(this.tileMapMatrix[yCord1][xCord1])) {
-    //         return this.collisionHelper(deltaX, deltaY, x1, y1);
-    //     }
-    //     return (deltaX + deltaY);
-    //     // Bottom right >> 
-    // }
-
-    // public void snapToEdge(int velocityX, int velocityY, int x, int y) {
-    //     if (x % this.scaledTile != 0) {
-    //         if (velocityX > 0) {
-    //             this.gamePanel.setPlayerX((x / this.scaledTile + 1) * this.scaledTile);
-    //         } else if (velocityX < 0) {
-    //             this.gamePanel.setPlayerX((x  - (x % this.scaledTile)));
-    //         }
-    //     }
-    //     if (y % this.scaledTile != 0) {
-    //         if (velocityY > 0) {
-    //             this.gamePanel.setPlayerY((y / this.scaledTile + 1) * this.scaledTile);
-    //         } else if (velocityY < 0) {
-    //             this.gamePanel.setPlayerY((y  - (x % this.scaledTile)));
-    //         }
-    //     }
-        
-    // }
-
-    public void draw(Graphics g, int xOffset, int yOffset) {
-        int yMatrixOff = yOffset / this.scaledTile;
-        int xMatrixOff = xOffset / this.scaledTile;
-        int xFracOff = xOffset % this.scaledTile;
-        int yFracOff = yOffset % this.scaledTile;
+    public void draw(Graphics g, Pair offset) {
+        int yMatrixOff = offset.y() / this.scaledTile;
+        int xMatrixOff = offset.x() / this.scaledTile;
+        int xFracOff = offset.x() % this.scaledTile;
+        int yFracOff = offset.y() % this.scaledTile;
         for (int i = -1; i < this.heightPixels + 2; i++) {
             for (int j = -1; j < this.widthPixels + 2; j++) {
                 if (yMatrixOff + i < 0 || yMatrixOff + i >= this.mapHeight

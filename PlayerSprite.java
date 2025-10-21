@@ -16,33 +16,29 @@ public class PlayerSprite extends Entiti implements PlayerUpdate {
     int frames;
     private int lastDirection; // 0, 1, 2, 3 UP LEFT DOWN RIGHT
     private int lastAnimationFrame;
-    private  int fpsPerFrame = 5;
+    private  int framesPerAnimation = 5;
 
     ActionMap playerActionMap;
     private boolean pickUp;
     private boolean inventoryState;
     private int speedingUp;
-    private final int initialSpeed = 40;
-    private final int spriteWidth;
-    private final int spriteHeight;
+    private final Pair spriteSize;
     private final int spriteOffset;
     private int playerScale;
 
-    public PlayerSprite(ActionMap actionMap) {
+    public PlayerSprite(ActionMap actionMap, Pair offset) {
         this.playerActionMap = actionMap;
-
         this.velocity = 3 * Game.SCALE;
         this.playerScale = (Game.SCALE * Game.MAP_RESOLTION / Game.SPRITE_RESOLUTION);
         this.spriteOffset = 20 * this.playerScale;
-        this.sizeX =  Game.SPRITE_RESOLUTION * this.playerScale;       
-        this.sizeY = this.sizeX;
-        this.spriteWidth = this.sizeX;
-        this.spriteHeight = 2* this.sizeX;
-        this.x = Game.WIDTH / 2 - this.sizeX / 2;
-        this.y = Game.HEIGHT / 2 - 3/2 * this.sizeX;
-        this.speedingUp = initialSpeed;
+
+        this.size = new Pair(Game.SPRITE_RESOLUTION * this.playerScale, Game.SPRITE_RESOLUTION * this.playerScale);
+        this.spriteSize = new Pair(this.size.x(), this.size.x() * 2);
+        this.screenPosition = new Pair(Game.WIDTH / 2 - this.size.x() / 2, Game.HEIGHT / 2 - 3/2 * this.size.x());
+        this.absolutePosition = new Pair(offset.x() + this.screenPosition.x(), offset.y() + this.screenPosition.y());
 
         // Animation 
+        this.speedingUp = Game.PLAYER_ACCELERATION;
         this.lastAnimationFrame = 0;
         this.frames = 8;
         this.animationFrames = new BufferedImage[4][this.frames];
@@ -79,32 +75,28 @@ public class PlayerSprite extends Entiti implements PlayerUpdate {
     }
 
     public Pair movement() {
-        int xInput = this.xUpdate();
-        int yInput = this.yUpdate();
-        if (xInput != 0 && yInput != 0) {
-            xInput = (int) Math.round(xInput / Math.sqrt(2));
-            yInput = (int) Math.round(yInput / Math.sqrt(2));
+        Pair input = this.inputUpdate();
+        if (input.x() != 0 && input.y() != 0) {
+            input.set((int) Math.round(input.x() / Math.sqrt(2)), (int) Math.round(input.y() / Math.sqrt(2)));
         }
-        xInput = xInput * this.speedingUp / 100;
-        yInput = yInput * this.speedingUp / 100;
-
-        return new Pair(xInput, yInput);
+        input.multyPercentage(this.speedingUp);
+        return input;
     }
     public void drawDebug(Graphics g) {
         for (int i = 0; i < 4 * this.frames; i++) {
             g.drawImage(this.animationFrames[i / this.frames][i % this.frames], 
-                50 + (this.spriteWidth + 5) * (i % this.frames), 50 + (this.spriteHeight + 5) * (i / this.frames), null);
+                50 + (this.spriteSize.x() + 5) * (i % this.frames), 50 + (this.spriteSize.y() + 5) * (i / this.frames), null);
         }
     }
     public void drawMovement(Graphics g, int checkedDir) {
         if (this.lastDirection != checkedDir) { // Start going right
                 this.lastAnimationFrame = 0;
                 if (this.lastDirection % 2 == checkedDir % 2) {
-                    speedingUp = initialSpeed;
+                    speedingUp = Game.PLAYER_ACCELERATION;
                 }
             this.lastDirection = checkedDir;
             }
-        g.drawImage(this.animationFrames[checkedDir][(this.lastAnimationFrame / this.fpsPerFrame) % this.frames], this.x, this.y - this.spriteOffset, null);
+        g.drawImage(this.animationFrames[checkedDir][(this.lastAnimationFrame / this.framesPerAnimation) % this.frames], this.screenPosition.x(), this.screenPosition.y() - this.spriteOffset, null);
         this.lastAnimationFrame += 1;
         if (this.speedingUp < 100) {
             this.speedingUp += 1;
@@ -114,8 +106,9 @@ public class PlayerSprite extends Entiti implements PlayerUpdate {
         return this.speedingUp;
     }
     @Override
-    public void draw(Graphics g, int xMovment, int yMovment) {
-        System.out.println(xMovment + " " + yMovment);
+    public void draw(Graphics g, Pair newPosition) {
+        int xMovment = newPosition.x() - this.absolutePosition.x();
+        int yMovment = newPosition.y() - this.absolutePosition.y();
         if (xMovment != 0 ) {
             if (xMovment > 0) {
                 this.drawMovement(g, 3);
@@ -129,11 +122,11 @@ public class PlayerSprite extends Entiti implements PlayerUpdate {
                 this.drawMovement(g, 0);
             }
         } else {
-            g.drawImage(this.animationFrames[2][0], this.x, this.y - this.spriteOffset, null);
+            g.drawImage(this.animationFrames[2][0], this.screenPosition.x(), this.screenPosition.y() - this.spriteOffset, null);
             this.lastDirection = 4;
-            speedingUp = initialSpeed;
+            speedingUp = Game.PLAYER_ACCELERATION;
         }
-    
+        this.absolutePosition = newPosition;
     }
     @Override
     public boolean invStateUpdate(){

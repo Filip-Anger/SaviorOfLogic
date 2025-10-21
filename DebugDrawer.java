@@ -1,19 +1,18 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.CropImageFilter;
 
 public class DebugDrawer {
-    int sizeX;
-    int sizeY;
+    Pair size;
     public DebugDrawer() {
-        this(5, 5);
+        this(new Pair(5, 5));
     }
 
-    public DebugDrawer(int sizeX, int sizeY) {
-        this.sizeX = sizeX;
-        this.sizeY = sizeY;
+    public DebugDrawer(Pair size) {
+        this.size = size;
     }
-    public void drawDebug(Graphics g, int x, int y) {
+    public void drawDebug(Graphics g, Pair coords) {
         g.setColor(Color.RED);
-        g.fillRect(x, y, this.sizeX, this.sizeY);
+        g.fillRect(coords.x(), coords.y(), this.size.x(), this.size.y());
     }
 }

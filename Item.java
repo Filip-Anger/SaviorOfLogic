@@ -48,9 +48,9 @@ public abstract class Item {
         this.y = y;
     }
 
-    public void draw(Graphics g, int offsetX, int offsetY) {
+    public void draw(Graphics g, Pair offset) {
         //this.sw.drawSubWindow(g, getX()-20, getY()-20, this.sprite.getWidth()+40, this.sprite.getHeight()+40);
-        g.drawImage(sprite, getX()-offsetX, getY()-offsetY, null);
+        g.drawImage(sprite, getX() - offset.x(), getY() - offset.y(), null);
     }
 
     public void drawInInv(Graphics g, int x, int y){

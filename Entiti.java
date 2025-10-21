@@ -12,10 +12,9 @@ public abstract class Entiti {
     boolean movingLeft;
     boolean movingRight;
 
-    int sizeX;
-    int sizeY;
-    int x;
-    int y;
+    protected  Pair size;
+    protected  Pair screenPosition;
+    protected  Pair absolutePosition;
     int velocity;
     
     /** Constructor.
@@ -25,51 +24,44 @@ public abstract class Entiti {
     */
 
     /**Called from GamePanel. */
-    public void draw(Graphics g, int xMovment, int yMovment) {
+    public void draw(Graphics g, Pair newPosition) {
+        this.absolutePosition = newPosition;
         g.setColor(Color.RED);
-        g.fillRect(this.x, this.y, this.sizeX, this.sizeY);
+        g.fillRect(this.screenPosition.x(), this.screenPosition.y(), this.size.x(), this.size.x());
     }
 
     public void drawHitbox(Graphics g) {
         g.setColor(Color.RED);
-        g.fillRect(this.x, this.y, this.sizeX, this.sizeY);
+        g.fillRect(this.screenPosition.x(), this.screenPosition.y(), this.size.x(), this.size.y());
     }
 
-    public int yUpdate() {
+    public Pair inputUpdate() {
+        int x = 0;
+        int y = 0;
         if (this.movingUp && !this.movingDown) {
-            return -this.velocity;
+            y = -this.velocity;
         } else if (this.movingDown && !this.movingUp) {
-            return this.velocity;
+            y = this.velocity;
+        }
+        if (this.movingLeft && !this.movingRight) {
+            x = -this.velocity;
+        } else if (this.movingRight && !this.movingLeft) {
+            x = this.velocity;
         }
         // both pressed or neither pressed -> no vertical movement
-        return 0;
+        return new Pair(x, y);
     }
 
-
-    public int xUpdate() {
-        if (this.movingLeft && !this.movingRight) {
-            return -this.velocity;
-        } else if (this.movingRight && !this.movingLeft) {
-            return this.velocity;
-        }
-        // both pressed or neither pressed -> no horizontal movement
-        return 0;
+    public Pair getScreenPosition() {
+        return this.screenPosition;
     }
 
-    public int getX() {
-        return this.x;
+    public Pair getSize() {
+        return this.size;
     }
 
-    public int getY() {
-        return this.y;
-    }
-
-    public int getSizeX() {
-        return this.sizeX;
-    }
-
-    public int getSizeY() {
-        return this.sizeY;
+    public Pair getAbsotulePosition() {
+        return this.absolutePosition;
     }
 }
 
