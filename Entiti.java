@@ -17,6 +17,10 @@ public abstract class Entiti {
     protected  Pair absolutePosition;
     int velocity;
     
+    public Entiti() {
+        this.size = new Pair(Game.SPRITE_RESOLUTION, Game.SPRITE_RESOLUTION);
+        this.absolutePosition = new Pair(20, 200);
+    }
     /** Constructor.
      * 
      * @param frameInputMap map from the parent swing object
