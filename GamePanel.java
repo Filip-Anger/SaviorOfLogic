@@ -124,7 +124,7 @@ public class GamePanel extends JPanel {
 
     private void playerStateUpdate(){
         this.inventoryState = this.player.invStateUpdate();
-        System.out.println(this.player.pickUpUpdate());
+        //System.out.println(this.player.pickUpUpdate());
         
         if (this.player.pickUpUpdate()){
             PickUpItem();
