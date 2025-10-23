@@ -1,8 +1,10 @@
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
@@ -11,8 +13,8 @@ import javax.imageio.ImageIO;
 /** Tiles are loaded here, returned on request. */
 public class TileMap {
     private BufferedImage[] tiles; // grass, path, tree, water, enemy
-    private String[] filesNames;
     private int[][] tileMapMatrix;
+    private ArrayList<MutliTile> mutliTiles;
     private final int mapHeight = 50;
     private final int mapWidth = 200;
     private final int widthPixels;
@@ -23,21 +25,28 @@ public class TileMap {
 
     private Set<Integer> forbiddenTiles;
 
-    /** Load in all tiles. */
-    private void loadTiles() {
-        this.filesNames = new String[]{"water", "grass", "path", "tree", "enemy"};
-        this.forbiddenTiles = new HashSet<>();
-        this.forbiddenTiles.add(0);
-        this.forbiddenTiles.add(3);
-        this.tiles = new BufferedImage[this.filesNames.length];
+    /**
+     * 
+     * @param start Including
+     * @param end Excluding
+     * @param forbidden Collision on tiles
+     */
+    private void loadStructure(int start, int end, boolean forbidden) {
         try {
-            for (int i = 0; i < this.filesNames.length; i++) {
-                this.tiles[i] = ImageIO.read(new File("Tileset/Map64/tile159.png"));
-                // this.tiles[i] = ImageIO.read(new File("Tileset/Tiles/" + filesNames[i] + ".png"));
+            for (int i = start; i < end; i++) {
+                this.tiles[i] = ImageIO.read(new File("Tileset/Dungeon/" + String.format("%1$3d", i) + ".png"));
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            e.getStackTrace();
         }
+    }
+    /** Load in all tiles. */
+    private void loadTiles() {
+        this.forbiddenTiles = new HashSet<>();
+        this.tiles = new BufferedImage[144];
+        this.mutliTiles = new ArrayList<>();
+        this.mutliTiles.add(new MutliTile("gate", , heightPixels))
+
     }
     public void scale(int newSize) {
         BufferedImage originalT;
