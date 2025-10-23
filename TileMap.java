@@ -161,7 +161,8 @@ public class TileMap {
                     }
                     if (t == 25 || t == 26) {
                         this.spikes.add(new Pair(x, y));
-                    } 
+                    }
+                    
                 }
             }
         }

@@ -78,10 +78,14 @@ public class ItemSpawner {
             visibleItems.add(item);
         } else if (item.getType().equalsIgnoreCase("ActionTile")) {
             allItems.add(item);
+            visibleItems.add(item);
+
         }
     }
     public Item getItem(Pair playerPos, Pair size){
         for(Item item : visibleItems){
+            if (item.getType().equalsIgnoreCase("ActionTile")) {
+            }
             int itemWidth = item.getSubWidth()/2; //middle of item
             int itemHeight = item.getSubHeight()/2; //middle of item
             int itemX = item.getX() + itemWidth; //middle of item

@@ -208,11 +208,11 @@ public class GamePanel extends JPanel {
         if (i == null){
             return;
         }
+        System.out.println(i.getType());
         if (i.getType().equalsIgnoreCase("Prop")) {
             this.inventory.addItem(i);
         } else if (i.getType().equalsIgnoreCase("ActionTile")) {
             this.tileMap.actionUsed(i);
-            System.out.println("LEVER ON OF");
         }
         
     }
