@@ -4,6 +4,7 @@ import java.awt.Graphics;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.XMLFormatter;
@@ -29,6 +30,8 @@ public class GamePanel extends JPanel {
     private ProofSubmitter proofSubmitter;
     private DebugDrawer debugDrawer;
     private Pair newPlayerPos;
+    private boolean wasDragging = false;
+
     private ArrayList<Skeleton> enemies;
 
     public static final int TILE_SIZE = 16;
@@ -45,6 +48,7 @@ public class GamePanel extends JPanel {
         Pair offset = new Pair(startX, startY);
         InputMap inputMap = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap actionMap = this.getActionMap();
+        /*
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e){
@@ -53,11 +57,15 @@ public class GamePanel extends JPanel {
             }
 
         });
-
+        */
         this.debugDrawer = new DebugDrawer();
 
         inputHandler = new AllInputHandler(inputMap, actionMap);
-        
+
+        this.addMouseListener(inputHandler.new ClickListener());
+        this.addMouseListener(inputHandler.new ReleaseListener());
+        this.addMouseMotionListener(inputHandler.new DragListener());
+
         this.player = new PlayerSprite(actionMap, offset);
         this.newPlayerPos = player.getAbsotulePosition();
         this.enemies.add(new Skeleton(1));
@@ -70,7 +78,7 @@ public class GamePanel extends JPanel {
         // Inventory
         this.inventory = new Inventory();
 
-        this.proofSubmitter = new ProofSubmitter();
+        this.proofSubmitter = new ProofSubmitter(this.inventory);
         
         // Update timer
         this.timer = new Timer((int) Math.round(1000.0 / fps), e -> {
@@ -107,12 +115,24 @@ public class GamePanel extends JPanel {
 
         this.itemSpawner.drawItems(g, this.offset());
 
-        if (submitterState){
-            this.proofSubmitter.draw(g);
-        }
         if (inventoryState){
             this.inventory.draw(g);
         }
+        if (submitterState){
+            this.proofSubmitter.draw(g);
+            if (inputHandler.isDragging()){
+                this.wasDragging = true;
+
+                //System.out.println("Dragging");
+                this.inventory.dragItem(g, this.inputHandler.getMouseClickX(), this.inputHandler.getMouseClickY(), this.inputHandler.getMouseDragX(), this.inputHandler.getMouseDragY());
+            }
+            else if (this.wasDragging){
+                this.wasDragging = false;
+                this.proofSubmitter.dropItem(this.inputHandler.getMouseDragX(), this.inputHandler.getMouseDragY());
+                //this.inventory.dropItem(this.inputHandler.getMouseDragX(), this.inputHandler.getMouseDragY());
+            }
+        }
+        // this.debugDrawer.drawDebug(g, this.player.getScreenPosition());
         this.debugDrawer.drawDebug(g, this.player.getMiddle().subtractAndGive(this.offset()));
         // this.player.drawDebug(g);
         // this.lastFrameTime = System.nanoTime();
@@ -157,6 +177,7 @@ public class GamePanel extends JPanel {
 
         if (submitterState){
             submitterState = false;
+            
 
         }
         else if (proofSubmitter.IsNear(this.player.getAbsotulePosition(), this.player.getSize())){
@@ -169,4 +190,5 @@ public class GamePanel extends JPanel {
     }
     //private void inventoryMovement() 
     }
+    
 }

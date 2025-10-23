@@ -20,6 +20,7 @@ class Game implements Runnable{
     public static final int PLAYER_ACCELERATION = 50;
     public static final int PROXIMITY_DIS = 10;
     
+    
 
 
     GamePanel gamePanel;

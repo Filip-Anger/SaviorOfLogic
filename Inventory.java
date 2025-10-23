@@ -15,6 +15,7 @@ public class Inventory extends SubWindow{
     private int invWidth;
     private int invHeight;  
     private final int slotOffset = 35;
+    private Item draggedItem = null;
     
 
     PointerInfo a = MouseInfo.getPointerInfo();
@@ -31,6 +32,7 @@ public class Inventory extends SubWindow{
             if (itemSlotSize < remainingWidth){
                 remainingWidth -= itemSlotSize;
                 item.drawInInv(g, x, y);
+                item.setPos(x, y);
                 x += itemSlotSize;
                 
             }else{
@@ -40,6 +42,7 @@ public class Inventory extends SubWindow{
                     x = 60;
                     y +=item.getInvHeight()+5;
                     item.drawInInv(g, x, y);
+                    item.setPos(x, y);
                     x += itemSlotSize;
                     remainingWidth -= itemSlotSize;
                 }
@@ -52,4 +55,37 @@ public class Inventory extends SubWindow{
     public void addItem(Item item){
         items.add(item);
     }
+    
+    public void dragItem(Graphics g, int mouseStartX, int mouseStartY, int mouseX, int mouseY){
+        if (draggedItem == null) {
+            for (Item item: items){
+                int itemWidth = item.getInvWidth()/2; //middle of item
+                int itemHeight = item.getInvHeight()/2; //middle of item    
+                int itemX = item.getX() + itemWidth; //middle of item
+                int itemY = item.getY() + itemHeight; //middle of item
+                //System.out.println(itemX + " " + mouseStartX + " " + itemWidth);
+                //System.out.println(itemY + " " + mouseStartY + " " + itemHeight);
+                if (Math.abs(itemX - mouseStartX) <= (itemWidth) && Math.abs(itemY - mouseStartY) <= (itemHeight+10)){
+                    this.draggedItem = item;
+                    this.items.remove(item);
+                    //item.setPos(mouseStartX, mouseStartY);
+                    System.out.println("Started dragging item at " + mouseStartX + " " + mouseStartY);
+                    break;
+                }
+            }
+        } else {
+            int drawOffsetX = Math.abs(draggedItem.getX() - mouseStartX);
+            int drawOffsetY = Math.abs(draggedItem.getY() - mouseStartY);
+            //draggedItem.setPos(mouseX, mouseY);
+            System.out.println("Dragging item at " + drawOffsetY + " " + mouseStartY + " " + draggedItem.getY());
+            this.draggedItem.drawInInv(g, mouseX-drawOffsetX, mouseY-drawOffsetY);
+        }
+    }
+    public Item getDragItem(){
+        return this.draggedItem;
+    }
+    public void nullDragItem(){
+        this.draggedItem = null;
+    }
+    
 }
