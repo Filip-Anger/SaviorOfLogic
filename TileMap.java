@@ -31,21 +31,22 @@ public class TileMap {
         this.forbiddenTiles.add(3);
         this.tiles = new BufferedImage[this.filesNames.length];
         try {
-            for (int i = 0; i < this.filesNames.length; i++) {        
-                this.tiles[i] = ImageIO.read(new File("Tileset/Tiles/" + filesNames[i] + ".png"));
+            for (int i = 0; i < this.filesNames.length; i++) {
+                this.tiles[i] = ImageIO.read(new File("Tileset/Map64/tile159.png"));
+                // this.tiles[i] = ImageIO.read(new File("Tileset/Tiles/" + filesNames[i] + ".png"));
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    public void scale(int scale) {
+    public void scale(int newSize) {
         BufferedImage originalT;
         BufferedImage scaledTGraphics;
         for (int i = 0; i < this.tiles.length; i++) {
             originalT = this.tiles[i];
-            scaledTGraphics = new BufferedImage(originalT.getWidth() * scale, originalT.getHeight() * scale, originalT.getType());
+            scaledTGraphics = new BufferedImage(newSize, newSize, originalT.getType());
             Graphics2D temp2d = scaledTGraphics.createGraphics();
-            temp2d.drawImage(originalT, 0, 0, originalT.getWidth() * scale, originalT.getHeight() * scale, null);
+            temp2d.drawImage(originalT, 0, 0, newSize, newSize, null);
             temp2d.dispose();
 
             this.tiles[i] = scaledTGraphics;
@@ -75,7 +76,7 @@ public class TileMap {
         this.loadMap();
 
         this.loadTiles();
-        this.scale(Game.TILE_SIZE / originalTileSize);
+        // this.scale(Game.TILE_SIZE);
     }
 
     public Pair tryAndMove(Pair position, Pair input, Pair size) {
