@@ -21,6 +21,7 @@ import javax.swing.Timer;
  * Everything is drawn by paintComponent - using helper classes
 */
 public class GamePanel extends JPanel {
+    private int gameState = 2;
     private final Timer timer;
     private final PlayerSprite player;
     private final TileMap tileMap;
@@ -101,15 +102,40 @@ public class GamePanel extends JPanel {
     
     }
 
-    private Pair offset() {
-        return this.newPlayerPos.subtractAndGive(this.player.getScreenPosition());
-    }
+    
     @Override
     public void paintComponent(Graphics g) {
-        super.paintComponent(g); // Clean background
+        super.paintComponent(g);
+        switch (gameState) {
+            case 0:
+                //drawStartScreen
+                break;
+            case 1:
+                //drawStoryScreen
+                break;
+            case 2:
+                drawPlayScreen(g);
+                break;
+            case 3:
+                //drawEndScreen
+                break;
+            default:
+                drawPlayScreen(g);
+                break;
+        }
+        // Clean background
         // double betweenLast = (System.nanoTime() - this.lastFrameTime);
         // System.out.println("FPS: " + 1 / (betweenLast / Math.pow(10, 9)));
         
+        
+        // this.debugDrawer.drawDebug(g, this.player.getScreenPosition());
+        // this.debugDrawer.drawDebug(g, this.player.getMiddle().subtractAndGive(this.offset()));
+        // this.player.drawDebug(g);
+        // this.lastFrameTime = System.nanoTime();
+    }
+
+
+    private void drawPlayScreen(Graphics g){
         this.tileMap.draw(g, this.offset()); // HELPER class to make it organized
 
         // this.player.drawHitbox(g);
@@ -137,10 +163,10 @@ public class GamePanel extends JPanel {
                 this.proofSubmitter.dropItem(this.inputHandler.getMouseDragX(), this.inputHandler.getMouseDragY());
             }
         }
-        // this.debugDrawer.drawDebug(g, this.player.getScreenPosition());
-        // this.debugDrawer.drawDebug(g, this.player.getMiddle().subtractAndGive(this.offset()));
-        // this.player.drawDebug(g);
-        // this.lastFrameTime = System.nanoTime();
+    }
+
+    private Pair offset() {
+        return this.newPlayerPos.subtractAndGive(this.player.getScreenPosition());
     }
 
     private void spritesMovment() {
