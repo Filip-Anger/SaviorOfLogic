@@ -64,14 +64,14 @@ public class TileMap {
     private void loadStructure(MutliTile tileStructure) {
         int end = tileStructure.getStrat() + tileStructure.getLength();
         Set<Integer> nums = new HashSet<>();
-        System.out.print(tileStructure.getName()+ ": ");
+        // System.out.print(tileStructure.getName()+ ": ");
         try {
             for (int i = tileStructure.getStrat(); i < end; i++) {
                 this.tiles[i] = ImageIO.read(new File("Tileset/Dungeon/" + String.format("%03d", i) + ".png"));
                 nums.add(i);
-                System.out.print(i + " ");
+                // System.out.print(i + " ");
             }
-            System.out.println();
+            // System.out.println();
             if (tileStructure.getCollision()) {
                 this.forbiddenTiles.addAll(nums);
             }
@@ -84,7 +84,11 @@ public class TileMap {
         this.forbiddenTiles = new HashSet<>();
         this.tiles = new Image[144];
         this.mutliTiles = new ArrayList<>();
-        this.mutliTiles.add(new MutliTile("gateClosed", 0, 8, true));
+        // this.mutliTiles.add(new MutliTile("gateClosed", 0, 8, true));
+        this.mutliTiles.add(new MutliTile("gateEdge1", 0, 1, false));
+        this.mutliTiles.add(new MutliTile("gateEdge1", 3, 1, false));
+        this.mutliTiles.add(new MutliTile("gateClosed1", 1, 2, true));
+        this.mutliTiles.add(new MutliTile("gateClosed1", 4, 4, true));
         this.mutliTiles.add(new MutliTile("gateOpened", 140, 4, false));
         this.mutliTiles.add(new MutliTile("floor", 43, 1, false));
         this.mutliTiles.add(new MutliTile("floorsBroken", 16, 6, false));
