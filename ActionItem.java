@@ -6,6 +6,8 @@ public class ActionItem extends Item {
             actionS = "Lever";
         } else if (action == 22) {
             actionS = "Chest";
+        } else if (action == 118) {
+            actionS = "Mimic";
         }
         this.setContent(actionS);
         System.out.println(xCord * Game.TILE_SIZE + " " + yCord * Game.TILE_SIZE);

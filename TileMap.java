@@ -49,6 +49,7 @@ public class TileMap {
         this.actionTiles.add(105);
         this.actionTiles.add(106);
         this.actionTiles.add(22);
+        this.actionTiles.add(118);
         this.setMapSize();
         this.loadMap(itemSpawner);
         this.loadTiles();
@@ -90,7 +91,7 @@ public class TileMap {
         this.mutliTiles.add(new MutliTile("chestClosed", 22, 1, false));
         this.mutliTiles.add(new MutliTile("chestEmptyClosedOpened", 100, 2, false));
         this.mutliTiles.add(new MutliTile("chestFullClosedOpened", 109, 2, false));
-        this.mutliTiles.add(new MutliTile("mimicClosedOpened", 109, 2, false));
+        this.mutliTiles.add(new MutliTile("mimicClosedOpened", 118, 2, false));
         this.mutliTiles.add(new MutliTile("skull", 10, 2, false));
         this.mutliTiles.add(new MutliTile("spikesUp", 25, 1, true));
         this.mutliTiles.add(new MutliTile("spikesUp", 26, 1, false));
@@ -157,12 +158,15 @@ public class TileMap {
                     t = randomFloor(sc.nextInt());
                     this.tileMapMatrix[y][x] = t;
                     if (this.actionTiles.contains(t)) {
+                        if (t == 105) {
+                            itemSpawner.addItem(new ActionItem("actionTile", x, y, 106));
+                        }
                         itemSpawner.addItem(new ActionItem("actionTile", x, y, t));
                     }
                     if (t == 25 || t == 26) {
                         this.spikes.add(new Pair(x, y));
                     }
-                    
+
                 }
             }
         }
@@ -177,13 +181,20 @@ public class TileMap {
                 this.leverPress(item.xCord, item.yCord);
                 break;
             case "Chest":
-                // this.openChest(i, y);
+                this.openChest(item.xCord, item.yCord);
                 break;
+            case "Mimic":
+                this.mimic(item.xCord, item.yCord);
             default:
                 throw new AssertionError();
         }
     }
 
+    private void mimic(int x, int y) {
+        if (this.tileMapMatrix[y][x] == 118) {
+            this.tileMapMatrix[y][x] = 119;
+        }
+    }
     private void leverPress(int x, int y) {
         if (this.tileMapMatrix[y][x] == 105) {
             this.tileMapMatrix[y][x] = 106;
@@ -204,7 +215,9 @@ public class TileMap {
     }
 
     private void openChest(int x, int y) {
-
+        if (this.tileMapMatrix[y][x] == 22) {
+            this.tileMapMatrix[y][x] = 110;
+        }
     }
     
 

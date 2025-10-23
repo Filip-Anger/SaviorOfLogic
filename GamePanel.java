@@ -69,7 +69,6 @@ public class GamePanel extends JPanel {
 
         this.player = new PlayerSprite(actionMap, offset);
         this.newPlayerPos = player.getAbsotulePosition();
-        // this.enemies.add(new Skeleton(1));
         // TileMap
 
         // ItemSpawners
@@ -212,7 +211,11 @@ public class GamePanel extends JPanel {
         if (i.getType().equalsIgnoreCase("Prop")) {
             this.inventory.addItem(i);
         } else if (i.getType().equalsIgnoreCase("ActionTile")) {
-            this.tileMap.actionUsed(i);
+            if (i.getContent().equalsIgnoreCase("Mimic")) {
+                this.enemies.add(new Skeleton(1, new Pair(i.getX(), i.getY())));
+            } else {
+                this.tileMap.actionUsed(i);
+            }
         }
         
     }
