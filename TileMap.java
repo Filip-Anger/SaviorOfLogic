@@ -3,10 +3,9 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
-import java.lang.classfile.TypeAnnotation;
-import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 import javax.imageio.ImageIO;
@@ -24,7 +23,9 @@ public class TileMap {
     // private Pair offset;
     private  Scanner sc;
     private Set<Integer> forbiddenTiles;
-    private int basicFloor;
+    private int basicFloor = 43;
+    private int[] brokenFloors = new int[]{17, 18, 19, 20, 21};;
+    private Random random = new Random();
 
     /**
      * 
@@ -58,7 +59,6 @@ public class TileMap {
         this.mutliTiles.add(new MutliTile("gateClosed", 0, 8, true));
         this.mutliTiles.add(new MutliTile("gateOpened", 140, 4, false));
         this.mutliTiles.add(new MutliTile("floor", 43, 1, false));
-        this.basicFloor = 43;
         this.mutliTiles.add(new MutliTile("floorsBroken", 16, 6, false));
         this.mutliTiles.add(new MutliTile("chestClosed", 22, 1, false));
         this.mutliTiles.add(new MutliTile("chestEmptyClosedOpened", 100, 2, false));
@@ -106,12 +106,25 @@ public class TileMap {
         System.out.println(mapWidth + " " + mapHeight);
     }
 
+    private int randomFloor(int tileNum) {
+        if (tileNum != this.basicFloor) {
+            return tileNum;
+        }
+        if (Math.random() > 0.85) {
+            if (Math.random() >= 0.5) {
+                return 17;
+            }
+            return random.nextInt(this.brokenFloors.length - 1) + this.brokenFloors[1];
+        }
+        return tileNum;
+    } 
+
     public void loadMap() {
         this.tileMapMatrix = new int[this.mapHeight][this.mapWidth];
         for (int y = 0; y < this.mapHeight; y++) {
             for (int x = 0; x < this.mapWidth; x++) {
                 if (sc.hasNextInt()) {
-                    this.tileMapMatrix[y][x] = sc.nextInt();
+                    this.tileMapMatrix[y][x] = randomFloor(sc.nextInt());
                 }
             }
         }
