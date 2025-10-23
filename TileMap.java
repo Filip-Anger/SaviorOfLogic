@@ -17,7 +17,6 @@ public class TileMap {
     private BufferedImage[] tiles; // grass, path, tree, water, enemy
     private int[][] tileMapMatrix;
     private ArrayList<MutliTile> mutliTiles;
-    private ArrayList<MutliTile> mutliTiles;
     private final int mapHeight = 50;
     private final int mapWidth = 200;
     private final int widthPixels;
@@ -60,14 +59,7 @@ public class TileMap {
             this.loadStructure(structure);
         }
     }
-    /** Load in all tiles. */
-    private void loadTiles() {
-        this.forbiddenTiles = new HashSet<>();
-        this.tiles = new BufferedImage[144];
-        this.mutliTiles = new ArrayList<>();
-        this.mutliTiles.add(new MutliTile("gate", , heightPixels))
 
-    }
     public void scale(int newSize) {
         BufferedImage originalT;
         BufferedImage scaledTGraphics;
