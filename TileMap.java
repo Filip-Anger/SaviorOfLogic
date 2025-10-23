@@ -1,9 +1,11 @@
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
@@ -14,6 +16,7 @@ import javax.imageio.ImageIO;
 public class TileMap {
     private BufferedImage[] tiles; // grass, path, tree, water, enemy
     private int[][] tileMapMatrix;
+    private ArrayList<MutliTile> mutliTiles;
     private ArrayList<MutliTile> mutliTiles;
     private final int mapHeight = 50;
     private final int mapWidth = 200;
@@ -56,6 +59,14 @@ public class TileMap {
         for (MutliTile structure : this.mutliTiles) {
             this.loadStructure(structure);
         }
+    }
+    /** Load in all tiles. */
+    private void loadTiles() {
+        this.forbiddenTiles = new HashSet<>();
+        this.tiles = new BufferedImage[144];
+        this.mutliTiles = new ArrayList<>();
+        this.mutliTiles.add(new MutliTile("gate", , heightPixels))
+
     }
     public void scale(int newSize) {
         BufferedImage originalT;
