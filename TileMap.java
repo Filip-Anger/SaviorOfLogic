@@ -1,3 +1,4 @@
+import com.sun.management.GcInfo;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -25,6 +26,7 @@ public class TileMap {
     // private Pair offset;
     private  Scanner sc;
     private Set<Integer> forbiddenTiles;
+    private int basicFloor;
 
     /**
      * 
@@ -55,6 +57,7 @@ public class TileMap {
         this.mutliTiles.add(new MutliTile("gateClosed", 0, 8, true));
         this.mutliTiles.add(new MutliTile("gateOpened", 140, 4, false));
         this.mutliTiles.add(new MutliTile("floor", 43, 1, false));
+        this.basicFloor = 43;
         this.mutliTiles.add(new MutliTile("chestClosed", 22, 1, false));
         this.mutliTiles.add(new MutliTile("chestEmptyClosedOpened", 100, 2, false));
         this.mutliTiles.add(new MutliTile("chestFullClosedOpened", 109, 2, false));
@@ -187,13 +190,17 @@ public class TileMap {
         int yFracOff = offset.y() % Game.TILE_SIZE;
         for (int i = -1; i < this.heightPixels + 2; i++) {
             for (int j = -1; j < this.widthPixels + 2; j++) {
+                int x = j * Game.TILE_SIZE - xFracOff;
+                int y = i * Game.TILE_SIZE - yFracOff;
                 if (yMatrixOff + i < 0 || yMatrixOff + i >= this.mapHeight
                     || xMatrixOff + j < 0 || xMatrixOff + j >= this.mapWidth) {
-                    g.drawImage(this.tiles[0],
-                        j * Game.TILE_SIZE - xFracOff, i * Game.TILE_SIZE - yFracOff, null);
+                    g.fillRect(x, y, Game.TILE_SIZE, Game.TILE_SIZE);
                 } else {
-                    g.drawImage(this.tiles[this.tileMapMatrix[yMatrixOff + i][xMatrixOff + j]],
-                        j * Game.TILE_SIZE - xFracOff, i * Game.TILE_SIZE - yFracOff, null);
+                    int tileNum = this.tileMapMatrix[yMatrixOff + i][xMatrixOff + j];
+                    if (tileNum != this.basicFloor) {
+                        g.drawImage(this.tiles[this.basicFloor], x, y, null);
+                    }
+                    g.drawImage(this.tiles[tileNum], x, y, null);
                 }
             }
         }
