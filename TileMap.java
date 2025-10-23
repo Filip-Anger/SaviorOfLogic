@@ -1,12 +1,10 @@
-import com.sun.management.GcInfo;
+import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.lang.classfile.TypeAnnotation;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
@@ -15,11 +13,11 @@ import javax.imageio.ImageIO;
 
 /** Tiles are loaded here, returned on request. */
 public class TileMap {
-    private BufferedImage[] tiles; // grass, path, tree, water, enemy
+    private Image[] tiles; // grass, path, tree, water, enemy
     private int[][] tileMapMatrix;
     private ArrayList<MutliTile> mutliTiles;
-    private final int mapHeight = 50;
-    private final int mapWidth = 200;
+    private int mapHeight = 0;
+    private int mapWidth = 0;
     private final int widthPixels;
     private final int heightPixels;
     private final File mapFile;
@@ -37,11 +35,14 @@ public class TileMap {
     private void loadStructure(MutliTile tileStructure) {
         int end = tileStructure.getStrat() + tileStructure.getLength();
         Set<Integer> nums = new HashSet<>();
+        System.out.print(tileStructure.getName()+ ": ");
         try {
             for (int i = tileStructure.getStrat(); i < end; i++) {
-                this.tiles[i] = ImageIO.read(new File("Tileset/Dungeon/" + String.format("%1$3d", i) + ".png"));
+                this.tiles[i] = ImageIO.read(new File("Tileset/Dungeon/" + String.format("%03d", i) + ".png"));
                 nums.add(i);
+                System.out.print(i + " ");
             }
+            System.out.println();
             if (tileStructure.getCollision()) {
                 this.forbiddenTiles.addAll(nums);
             }
@@ -52,55 +53,64 @@ public class TileMap {
     /** Load in all tiles. */
     private void loadTiles() {
         this.forbiddenTiles = new HashSet<>();
-        this.tiles = new BufferedImage[144];
+        this.tiles = new Image[144];
         this.mutliTiles = new ArrayList<>();
         this.mutliTiles.add(new MutliTile("gateClosed", 0, 8, true));
         this.mutliTiles.add(new MutliTile("gateOpened", 140, 4, false));
         this.mutliTiles.add(new MutliTile("floor", 43, 1, false));
         this.basicFloor = 43;
+        this.mutliTiles.add(new MutliTile("floorsBroken", 16, 6, false));
         this.mutliTiles.add(new MutliTile("chestClosed", 22, 1, false));
         this.mutliTiles.add(new MutliTile("chestEmptyClosedOpened", 100, 2, false));
         this.mutliTiles.add(new MutliTile("chestFullClosedOpened", 109, 2, false));
         this.mutliTiles.add(new MutliTile("mimicClosedOpened", 109, 2, false));
-        this.mutliTiles.add(new MutliTile("skull", 10, 1, false));
+        this.mutliTiles.add(new MutliTile("skull", 10, 2, false));
         this.mutliTiles.add(new MutliTile("spikesUpDown", 25, 2, false));
         this.mutliTiles.add(new MutliTile("pluvace", 30, 5, true));
         this.mutliTiles.add(new MutliTile("potionBlueGreen", 23, 2, false));
         this.mutliTiles.add(new MutliTile("pillar", 27, 3, true));
-        this.mutliTiles.add(new MutliTile("bomb", 44, 3, false));
-        this.mutliTiles.add(new MutliTile("walls", 35, 8, true));
+        // this.mutliTiles.add(new MutliTile("bomb", 44, 3, false));
+        this.mutliTiles.add(new MutliTile("walls", 35, 7, true));
         this.mutliTiles.add(new MutliTile("heart", 77, 3, false));
         this.mutliTiles.add(new MutliTile("lever", 105, 2, false));
 
         for (MutliTile structure : this.mutliTiles) {
+            
             this.loadStructure(structure);
         }
     }
 
     public void scale(int newSize) {
-        BufferedImage originalT;
-        BufferedImage scaledTGraphics;
         for (int i = 0; i < this.tiles.length; i++) {
-            originalT = this.tiles[i];
-            scaledTGraphics = new BufferedImage(newSize, newSize, originalT.getType());
-            Graphics2D temp2d = scaledTGraphics.createGraphics();
-            temp2d.drawImage(originalT, 0, 0, newSize, newSize, null);
-            temp2d.dispose();
-
-            this.tiles[i] = scaledTGraphics;
+            if (this.tiles[i] != null) {
+                this.tiles[i] = this.tiles[i].getScaledInstance(newSize, newSize, Image.SCALE_DEFAULT);
+            }
         }       
     }
 
-    public void loadMap() {
-        try {
-            this.sc = new Scanner(this.mapFile);
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void setMapSize() {
+        if (sc.hasNextInt()) {
+            this.mapWidth = sc.nextInt();
         }
+        if (sc.hasNextInt()) {
+            this.mapHeight = sc.nextInt();
+        }
+    }
+    public void getMapSize() {
+        String line = "";
+        while(sc.hasNextLine()) {
+            this.mapHeight += 1;
+            line = sc.nextLine();
+        }
+        this.mapWidth = line.split(" ").length;
+        System.out.println(mapWidth + " " + mapHeight);
+    }
+
+    public void loadMap() {
         this.tileMapMatrix = new int[this.mapHeight][this.mapWidth];
         for (int y = 0; y < this.mapHeight; y++) {
             for (int x = 0; x < this.mapWidth; x++) {
-                if (sc.hasNext()) {
+                if (sc.hasNextInt()) {
                     this.tileMapMatrix[y][x] = sc.nextInt();
                 }
             }
@@ -108,13 +118,18 @@ public class TileMap {
     }
     public TileMap(int originalTileSize) {
         // this.offset = offset;
-        this.mapFile = new File("Tileset/map_new.txt");
+        this.mapFile = new File("Tileset/DungeonMap.txt");
+                try {
+            this.sc = new Scanner(this.mapFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         this.widthPixels = Game.WIDTH / Game.TILE_SIZE;
         this.heightPixels = Game.HEIGHT / Game.TILE_SIZE;
+        this.setMapSize();
         this.loadMap();
-
         this.loadTiles();
-        // this.scale(Game.TILE_SIZE);
+        this.scale(Game.TILE_SIZE);
     }
 
     public Pair tryAndMove(Pair position, Pair input, Pair size) {
@@ -165,10 +180,10 @@ public class TileMap {
          if (position.x() + deltaX < 0) {
             position.setX(0);
         }
-        else if (cordXRight >= (this.mapHeight - 1) * Game.TILE_SIZE) {
+        else if (cordXRight >= (this.mapWidth - 1) * Game.TILE_SIZE) {
             position.setX(this.mapWidth * (Game.TILE_SIZE - 1));
         }
-        else if ((deltaX < 0) && // Go up - if edge snap to current square
+        else if ((deltaX < 0) && (cordXLeft < this.mapWidth) && // Go up - if edge snap to current square
                 (this.forbiddenTiles.contains(this.tileMapMatrix[cordYTop][cordXLeft])
                 || this.forbiddenTiles.contains(this.tileMapMatrix[cordYBot][cordXLeft]))) {
             position.setX((cordXLeft + 1) * Game.TILE_SIZE);
@@ -194,13 +209,22 @@ public class TileMap {
                 int y = i * Game.TILE_SIZE - yFracOff;
                 if (yMatrixOff + i < 0 || yMatrixOff + i >= this.mapHeight
                     || xMatrixOff + j < 0 || xMatrixOff + j >= this.mapWidth) {
+                    g.setColor(Color.BLACK);
                     g.fillRect(x, y, Game.TILE_SIZE, Game.TILE_SIZE);
                 } else {
                     int tileNum = this.tileMapMatrix[yMatrixOff + i][xMatrixOff + j];
-                    if (tileNum != this.basicFloor) {
+
+                    if ((xMatrixOff + j == 0 || yMatrixOff + i == 0 || xMatrixOff + j == (this.mapWidth - 1) || yMatrixOff + i == this.mapHeight -1)
+                        || tileNum == -1) {
+                        g.setColor(Color.BLACK);
+                        g.fillRect(x, y, Game.TILE_SIZE, Game.TILE_SIZE);
+                    }
+                    else if (tileNum != this.basicFloor) {
                         g.drawImage(this.tiles[this.basicFloor], x, y, null);
                     }
-                    g.drawImage(this.tiles[tileNum], x, y, null);
+                    if (tileNum != -1) {
+                        g.drawImage(this.tiles[tileNum], x, y, null);
+                    }
                 }
             }
         }

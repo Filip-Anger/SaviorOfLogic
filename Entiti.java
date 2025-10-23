@@ -19,7 +19,7 @@ public abstract class Entiti {
     
     public Entiti() {
         this.size = new Pair(Game.SPRITE_RESOLUTION, Game.SPRITE_RESOLUTION);
-        this.absolutePosition = new Pair(300, 600);
+        this.absolutePosition = new Pair(32, 32);
     }
     /** Constructor.
      * 

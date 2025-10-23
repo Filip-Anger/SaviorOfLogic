@@ -68,7 +68,7 @@ public class GamePanel extends JPanel {
 
         this.player = new PlayerSprite(actionMap, offset);
         this.newPlayerPos = player.getAbsotulePosition();
-        this.enemies.add(new Skeleton(1));
+        // this.enemies.add(new Skeleton(1));
         // TileMap
         this.tileMap = new TileMap(Game.MAP_RESOLUTION);
         // World offset

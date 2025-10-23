@@ -24,18 +24,19 @@ public class PlayerSprite extends Entiti implements PlayerUpdate {
     private int speedingUp;
     private final Pair spriteSize;
     private final int spriteOffset;
-    private int playerScale;
+    private float playerScale;
 
     public PlayerSprite(ActionMap actionMap, Pair offset) {
         this.playerActionMap = actionMap;
         this.velocity = Game.TILE_SIZE / 6;
-        this.playerScale = Game.TILE_SIZE / Game.SPRITE_RESOLUTION;
-        this.spriteOffset = 20 * this.playerScale;
+        this.playerScale = (float) Game.TILE_SIZE / Game.SPRITE_RESOLUTION;
+        this.spriteOffset = Math.round(20 * this.playerScale);
 
-        this.size = new Pair(Game.SPRITE_RESOLUTION * this.playerScale, Game.SPRITE_RESOLUTION * this.playerScale);
+        this.size = new Pair(Math.round(Game.SPRITE_RESOLUTION * this.playerScale), Math.round(Game.SPRITE_RESOLUTION * this.playerScale));
         this.spriteSize = new Pair(this.size.x(), this.size.x() * 2);
         this.screenPosition = new Pair(Game.WIDTH / 2 - this.size.x() / 2, Game.HEIGHT / 2 - 3/2 * this.size.x());
         this.absolutePosition = new Pair(offset.x() + this.screenPosition.x(), offset.y() + this.screenPosition.y());
+
 
         // Animation 
         this.speedingUp = Game.PLAYER_ACCELERATION;
@@ -48,9 +49,9 @@ public class PlayerSprite extends Entiti implements PlayerUpdate {
         for (int i = 0; i < frames * 4; i++) {
             try {
                 originalT = ImageIO.read(new File(pathStart + i + pathEnd));
-                BufferedImage scaledTGraphics = new BufferedImage(originalT.getWidth() * this.playerScale, originalT.getHeight() * this.playerScale, originalT.getType());
+                BufferedImage scaledTGraphics = new BufferedImage(Math.round(originalT.getWidth() * this.playerScale), Math.round(originalT.getHeight() * this.playerScale), originalT.getType());
                 Graphics2D temp2d = scaledTGraphics.createGraphics();
-                temp2d.drawImage(originalT, 0, 0, originalT.getWidth() * this.playerScale, originalT.getHeight() * this.playerScale, null);
+                temp2d.drawImage(originalT, 0, 0, Math.round(originalT.getWidth() * this.playerScale), Math.round(originalT.getHeight() * this.playerScale), null);
                 temp2d.dispose();
 
                 this.animationFrames[i / this.frames][i % this.frames] = scaledTGraphics;
