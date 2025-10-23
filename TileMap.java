@@ -5,7 +5,9 @@ import java.io.File;
 import java.io.IOException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
@@ -27,7 +29,31 @@ public class TileMap {
     private int basicFloor = 43;
     private int[] brokenFloors = new int[]{17, 18, 19, 20, 21};;
     private Random random = new Random();
+    private ArrayList<Pair> spikes = new ArrayList<>();
+    private Set<Integer> actionTiles;
 
+    // private Set<Integer>  = new HashMap<>();
+    // Ked si v tejto lokacii a stalcis E tak posli niekam info ze sa pouzil ten item
+
+    public TileMap(ItemSpawner itemSpawner) {
+        // this.offset = offset;
+        this.mapFile = new File("Tileset/DungeonMap.txt");
+                try {
+            this.sc = new Scanner(this.mapFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        this.widthPixels = Game.WIDTH / Game.TILE_SIZE;
+        this.heightPixels = Game.HEIGHT / Game.TILE_SIZE;
+        this.actionTiles = new HashSet<>();
+        this.actionTiles.add(105);
+        this.actionTiles.add(106);
+        this.actionTiles.add(22);
+        this.setMapSize();
+        this.loadMap(itemSpawner);
+        this.loadTiles();
+        this.scale(Game.TILE_SIZE);
+    }
     /**
      * 
      * @param start Including
@@ -97,6 +123,7 @@ public class TileMap {
             this.mapHeight = sc.nextInt();
         }
     }
+    
     public void getMapSize() {
         String line = "";
         while(sc.hasNextLine()) {
@@ -120,31 +147,64 @@ public class TileMap {
         return tileNum;
     } 
 
-    public void loadMap() {
+    public void loadMap(ItemSpawner itemSpawner) {
+        int t;
         this.tileMapMatrix = new int[this.mapHeight][this.mapWidth];
         for (int y = 0; y < this.mapHeight; y++) {
             for (int x = 0; x < this.mapWidth; x++) {
                 if (sc.hasNextInt()) {
-                    this.tileMapMatrix[y][x] = randomFloor(sc.nextInt());
+                    t = randomFloor(sc.nextInt());
+                    this.tileMapMatrix[y][x] = t;
+                    if (this.actionTiles.contains(t)) {
+                        itemSpawner.addItem(new ActionItem("actionTile", x, y, t));
+                    }
+                    if (t == 25 || t == 26) {
+                        this.spikes.add(new Pair(x, y));
+                    } 
                 }
             }
         }
     }
-    public TileMap(int originalTileSize) {
-        // this.offset = offset;
-        this.mapFile = new File("Tileset/DungeonMap.txt");
-                try {
-            this.sc = new Scanner(this.mapFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        this.widthPixels = Game.WIDTH / Game.TILE_SIZE;
-        this.heightPixels = Game.HEIGHT / Game.TILE_SIZE;
-        this.setMapSize();
-        this.loadMap();
-        this.loadTiles();
-        this.scale(Game.TILE_SIZE);
+    public void openDoor() {
+
     }
+
+    public void actionUsed(Item item) {
+        switch (item.getContent()) {
+            case "Lever":
+                this.leverPress(item.xCord, item.yCord);
+                break;
+            case "Chest":
+                // this.openChest(i, y);
+                break;
+            default:
+                throw new AssertionError();
+        }
+    }
+
+    private void leverPress(int x, int y) {
+        if (this.tileMapMatrix[y][x] == 105) {
+            this.tileMapMatrix[y][x] = 106;
+        } else if (this.tileMapMatrix[y][x] == 106) {
+            this.tileMapMatrix[y][x] = 105;
+        }
+        this.spikeSwap();
+    }
+
+    private void spikeSwap() {
+        for (Pair cords : this.spikes) {
+            if (this.tileMapMatrix[cords.y()][cords.x()] == 25) {
+                this.tileMapMatrix[cords.y()][cords.x()] = 26;
+            } else if (this.tileMapMatrix[cords.y()][cords.x()] == 26) {
+                this.tileMapMatrix[cords.y()][cords.x()] = 25;
+            }
+        }
+    }
+
+    private void openChest(int x, int y) {
+
+    }
+    
 
     public Pair tryAndMove(Pair position, Pair input, Pair size) {
          if (input.x() != 0) {

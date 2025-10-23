@@ -31,7 +31,7 @@ public class ProofSubmitter {
         int playerHeight = size.y()/2; //middle of player 
         int playerX = playerPos.x() + playerWidth; //middle of player
         int playerY = playerPos.y() + playerHeight; //middle of player
-        if(Math.abs(submitterX - playerX) <= (submitterWidth + playerWidth) && Math.abs(submitterY - playerY) <= (submitterHeight + playerHeight)){ //add proximity distance in case of borders
+        if (Math.abs(submitterX - playerX) <= (submitterWidth + playerWidth) && Math.abs(submitterY - playerY) <= (submitterHeight + playerHeight)){ //add proximity distance in case of borders
             return true;
         }
         return false;
@@ -77,8 +77,7 @@ public class ProofSubmitter {
                     if (draggedItem.getID() == -1){
                         return;
                     }
-                    Item tempItem = new PropItem(-1,-1,-1,-1);
-                    tempItem.setSprite("...");
+                    Item tempItem = new PropItem("...",-1,"...",-1,-1);
                     pb.changeProofLine(i-1, tempItem);
                     inventory.setDragItem(draggedItem);
                     return;
