@@ -212,6 +212,7 @@ public class GamePanel extends JPanel {
             this.inventory.addItem(i);
         } else if (i.getType().equalsIgnoreCase("ActionTile")) {
             this.tileMap.actionUsed(i);
+            System.out.println("LEVER ON OF");
         }
         
     }

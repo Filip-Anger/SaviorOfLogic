@@ -4,13 +4,13 @@ import java.awt.image.BufferedImage;
 
 public abstract class Item {
 
-    private String type;
-    private int x;
-    private int y;
-    private int id;
+    protected String type;
+    protected int x;
+    protected int y;
+    protected int id;
     int xCord;
     int yCord;
-    private String content;
+    protected String content;
     private BufferedImage sprite;
     private int width = Game.MAP_RESOLUTION*Game.SCALE;
     private int height = Game.MAP_RESOLUTION*Game.SCALE;

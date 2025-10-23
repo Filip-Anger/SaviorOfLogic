@@ -17,11 +17,12 @@ public class PropItem extends Item {
     private TextToGraphics t;
 
     public PropItem(String type, int id, String content, int x, int y) {
+        super(type, id, content, x, y);
         if (x == -1 && y == -1){
             x = (int) Math.random() * (500*32 + 1);
             y = (int) Math.random() * (40*32 + 1) + 5*32;
         }
-        super(type, id, content, x, y); 
+        this.setPos(x, y);
         this.sw = new SubWindow();
         this.t  = new TextToGraphics("Arial Unicode MS", size);
         this.setSprite(content);
