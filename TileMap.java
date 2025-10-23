@@ -22,7 +22,6 @@ public class TileMap {
     private final File mapFile;
     // private Pair offset;
     private  Scanner sc;
-
     private Set<Integer> forbiddenTiles;
 
     /**
@@ -31,10 +30,16 @@ public class TileMap {
      * @param end Excluding
      * @param forbidden Collision on tiles
      */
-    private void loadStructure(int start, int end, boolean forbidden) {
+    private void loadStructure(MutliTile tileStructure) {
+        int end = tileStructure.getStrat() + tileStructure.getLength();
+        Set<Integer> nums = new HashSet<>();
         try {
-            for (int i = start; i < end; i++) {
+            for (int i = tileStructure.getStrat(); i < end; i++) {
                 this.tiles[i] = ImageIO.read(new File("Tileset/Dungeon/" + String.format("%1$3d", i) + ".png"));
+                nums.add(i);
+            }
+            if (tileStructure.getCollision()) {
+                this.forbiddenTiles.addAll(nums);
             }
         } catch (IOException e) {
             e.getStackTrace();
@@ -45,8 +50,12 @@ public class TileMap {
         this.forbiddenTiles = new HashSet<>();
         this.tiles = new BufferedImage[144];
         this.mutliTiles = new ArrayList<>();
-        this.mutliTiles.add(new MutliTile("gate", , heightPixels))
+        this.mutliTiles.add(new MutliTile("gate", 0, 8, true));
+        
 
+        for (MutliTile structure : this.mutliTiles) {
+            this.loadStructure(structure);
+        }
     }
     public void scale(int newSize) {
         BufferedImage originalT;
