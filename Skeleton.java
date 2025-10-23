@@ -9,11 +9,12 @@ import javax.imageio.ImageIO;
 
 public class Skeleton extends Entiti {
     Image sprite;
-    public Skeleton(int velocity) {
+    public Skeleton(int velocity, Pair absolutePosition) {
+        this.setAbsotulePosition(absolutePosition);
         this.velocity = velocity;
         try {
             this.sprite = ImageIO.read(new File("Tileset/Player/whiteSkull.png"));  
-            this.sprite = this.sprite.getScaledInstance(Game.TILE_SIZE, Game.TILE_SIZE, Image.SCALE_DEFAULT);
+            this.sprite = this.sprite.getScaledInstance(Game.TILE_SIZE * 2, Game.TILE_SIZE * 2, Image.SCALE_DEFAULT);
         } catch (IOException e) {
             e.getStackTrace();
         }

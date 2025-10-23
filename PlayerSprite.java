@@ -11,7 +11,7 @@ import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 
-public class PlayerSprite extends Entiti implements PlayerUpdate {
+public class PlayerSprite extends Entiti {
     BufferedImage[][] animationFrames; // 0, 1, 2, 3 UP LEFT DOWN RIGHT
     int frames;
     private int lastDirection; // 0, 1, 2, 3 UP LEFT DOWN RIGHT
@@ -131,11 +131,10 @@ public class PlayerSprite extends Entiti implements PlayerUpdate {
         }
         this.absolutePosition = newPosition;
     }
-    @Override
+
     public boolean invStateUpdate(){
         return inventoryState;
     }
-    @Override
     public boolean pickUpUpdate(){
         return pickUp;
     }
@@ -143,7 +142,6 @@ public class PlayerSprite extends Entiti implements PlayerUpdate {
         this.pickUp = false;
     }
 
-    @Override
     public boolean submitUpdate(){
         return submit;
     }

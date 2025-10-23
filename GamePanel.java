@@ -28,7 +28,7 @@ public class GamePanel extends JPanel {
     private final ItemSpawner itemSpawner;
     private AllInputHandler inputHandler;
     private ProofSubmitter proofSubmitter;
-    private DebugDrawer debugDrawer;
+    // private DebugDrawer debugDrawer;
     private Pair newPlayerPos;
     private boolean wasDragging = false;
     private boolean isNearSubmitter = false;
@@ -59,7 +59,7 @@ public class GamePanel extends JPanel {
 
         });
         */
-        this.debugDrawer = new DebugDrawer();
+        // this.debugDrawer = new DebugDrawer();
 
         inputHandler = new AllInputHandler(inputMap, actionMap);
 
@@ -69,15 +69,17 @@ public class GamePanel extends JPanel {
 
         this.player = new PlayerSprite(actionMap, offset);
         this.newPlayerPos = player.getAbsotulePosition();
-        // this.enemies.add(new Skeleton(1));
         // TileMap
-        this.tileMap = new TileMap(Game.MAP_RESOLUTION);
-        // World offset
 
         // ItemSpawners
         this.itemSpawner = new ItemSpawner();
         // Inventory
         this.inventory = new Inventory();
+
+        this.tileMap = new TileMap(itemSpawner);
+        // World offset
+
+        
 
         this.proofSubmitter = new ProofSubmitter(this.inventory);
         
@@ -136,7 +138,7 @@ public class GamePanel extends JPanel {
             }
         }
         // this.debugDrawer.drawDebug(g, this.player.getScreenPosition());
-        this.debugDrawer.drawDebug(g, this.player.getMiddle().subtractAndGive(this.offset()));
+        // this.debugDrawer.drawDebug(g, this.player.getMiddle().subtractAndGive(this.offset()));
         // this.player.drawDebug(g);
         // this.lastFrameTime = System.nanoTime();
     }
@@ -195,15 +197,27 @@ public class GamePanel extends JPanel {
 
     private void submit(){
         if(proofSubmitter.submitProofs()){
-            openDoor();
+            this.tileMap.openDoor();
+            this.openDoor();
         }
     }
 
     private void PickUpItem(){
-            Item i = itemSpawner.getItem(this.player.getAbsotulePosition(), this.player.getSize());
-            if (i != null){
-                inventory.addItem(i);
+        Item i = itemSpawner.getItem(this.player.getAbsotulePosition(), this.player.getSize());
+        if (i == null){
+            return;
         }
+        System.out.println(i.getType());
+        if (i.getType().equalsIgnoreCase("Prop")) {
+            this.inventory.addItem(i);
+        } else if (i.getType().equalsIgnoreCase("ActionTile")) {
+            if (i.getContent().equalsIgnoreCase("Mimic")) {
+                this.enemies.add(new Skeleton(1, new Pair(i.getX(), i.getY())));
+            } else {
+                this.tileMap.actionUsed(i);
+            }
+        }
+        
     }
     private void openDoor(){
         System.out.println("DOOR OPENED!");

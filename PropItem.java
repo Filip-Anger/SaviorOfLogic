@@ -1,5 +1,6 @@
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.Random;
 
 
 
@@ -14,12 +15,17 @@ public class PropItem extends Item {
     private int subWidth;
     private int subHeight;
     private TextToGraphics t;
-    
 
-    public PropItem(int type, int x, int y, int id) {
-        super(type, x, y, id); 
+    public PropItem(String type, int id, String content, int x, int y) {
+        super(type, id, content, x, y);
+        if (x == -1 && y == -1){
+            x = (int) Math.random() * (500*32 + 1);
+            y = (int) Math.random() * (40*32 + 1) + 5*32;
+        }
+        this.setPos(x, y);
         this.sw = new SubWindow();
         this.t  = new TextToGraphics("Arial Unicode MS", size);
+        this.setSprite(content);
     }
 
     @Override
@@ -64,10 +70,5 @@ public class PropItem extends Item {
     @Override
     public int getSubHeight() {
         return this.subHeight;
-    }   
-
-
-    
-    
-    
+    }       
 }

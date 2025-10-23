@@ -17,7 +17,7 @@ public class ItemSpawner {
     public ArrayList<Item> visibleItems = new ArrayList<Item>();
     //public ArrayList<Item> allProps = new ArrayList<Item>();
     private String tempInputString = "";
-    Random rand = new Random();
+    
 
 
     public ItemSpawner(){
@@ -46,7 +46,17 @@ public class ItemSpawner {
         inputStrings = tempInputString.split("\n");
         for (String i : inputStrings){
             i = i.replaceAll("\\n|\\r", "");
-            addItem(i.split(";"));
+            String[] line = i.split(";");
+            if (line.length == 5) {
+                String type = line[0];
+                int id = Integer.parseInt(line[1]);
+                String content = line[2];
+                int x = Integer.parseInt(line[3]);
+                int y = Integer.parseInt(line[4]);
+                Item newI = new PropItem(type, id, content, x, y);
+                this.addItem(newI);
+            }
+            
         }
         
         
@@ -60,26 +70,22 @@ public class ItemSpawner {
     }
 
     
-    public void addItem(String[] itemData){
-        
-        if (itemData[0].equals("0")){
-            if (itemData[3].equals("-1") && itemData[4].equals("-1")){
-                Item i = new PropItem(0, rand.nextInt(500*32), rand.nextInt(5*32,40*32), Integer.parseInt(itemData[1]));
-                i.setSprite(itemData[2]);
-                allItems.add(i);
-                visibleItems.add(i);
-                
-                
-            }else{
-                Item i = new PropItem(0, Integer.parseInt(itemData[3]), Integer.parseInt(itemData[4]), Integer.parseInt(itemData[1]));
-                i.setSprite(itemData[2]);
-                allItems.add(i);
-                visibleItems.add(i);
-            }
+    public void addItem(Item item){
+        //type, id, whatever, x, y
+        // If has type Proposition
+        if (item.getType().equals("Prop")){
+            allItems.add(item);
+            visibleItems.add(item);
+        } else if (item.getType().equalsIgnoreCase("ActionTile")) {
+            allItems.add(item);
+            visibleItems.add(item);
+
         }
     }
     public Item getItem(Pair playerPos, Pair size){
         for(Item item : visibleItems){
+            if (item.getType().equalsIgnoreCase("ActionTile")) {
+            }
             int itemWidth = item.getSubWidth()/2; //middle of item
             int itemHeight = item.getSubHeight()/2; //middle of item
             int itemX = item.getX() + itemWidth; //middle of item

@@ -7,11 +7,7 @@ public class ProofLine {
     public ProofLine(int correctID){
 
         this.CorrectID = correctID;
-        this.proofItem = new PropItem(-1, -1, -1, -1);
-        this.proofItem.setSprite("...");
-
-
-
+        this.proofItem = new PropItem("...", -1, "...", -1, -1);
     }
 
     public void draw(Graphics g, int x, int y){
