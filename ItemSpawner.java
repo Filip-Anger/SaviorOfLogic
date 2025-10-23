@@ -76,8 +76,9 @@ public class ItemSpawner {
         if (item.getType().equals("Prop")){
             allItems.add(item);
             visibleItems.add(item);
+        } else if (item.getType().equalsIgnoreCase("ActionTile")) {
+            allItems.add(item);
         }
-        // } else if ()
     }
     public Item getItem(Pair playerPos, Pair size){
         for(Item item : visibleItems){
