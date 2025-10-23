@@ -9,8 +9,8 @@ public abstract class Item {
     private int y;
     private int ID;
     private BufferedImage sprite;
-    private int width = Game.MAP_RESOLTION*Game.SCALE;
-    private int height = Game.MAP_RESOLTION*Game.SCALE;
+    private int width = Game.MAP_RESOLUTION*Game.SCALE;
+    private int height = Game.MAP_RESOLUTION*Game.SCALE;
 
     private int subWidth = width+Game.SUBWINDOW_BONUS_SIZE;
     private int subHeight = height+Game.SUBWINDOW_BONUS_SIZE;

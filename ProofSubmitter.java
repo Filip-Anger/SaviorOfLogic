@@ -4,8 +4,8 @@ public class ProofSubmitter {
     private ProofBuilder pb;
     private int x = 1000;
     private int y = 1000;
-    private int width = Game.MAP_RESOLTION*Game.SCALE;
-    private int height = Game.MAP_RESOLTION*Game.SCALE;
+    private int width = Game.MAP_RESOLUTION*Game.SCALE;
+    private int height = Game.MAP_RESOLUTION*Game.SCALE;
     private SubWindow sb;
     private Inventory inventory;
     private int lineCount = 9;
@@ -17,7 +17,7 @@ public class ProofSubmitter {
     }
 
     public void draw(Graphics g){
-        this.sb.drawSubWindowXY(g, Game.WIDTH/2+(Game.MAP_RESOLTION*Game.SCALE), 25, Game.WIDTH-40, Game.HEIGHT-50);
+        this.sb.drawSubWindowXY(g, Game.WIDTH/2+(Game.MAP_RESOLUTION*Game.SCALE), 25, Game.WIDTH-40, Game.HEIGHT-50);
         this.inventory.draw(g);
         this.pb.draw(g);
     }

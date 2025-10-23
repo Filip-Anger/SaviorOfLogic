@@ -1,6 +1,9 @@
 # Savior of Logic - Development TODO
 Press **Ctrl+Shift+V** TRUST ME!
 ---
+
+https://tuenl-my.sharepoint.com/:w:/g/personal/f_anger_student_tue_nl/EdiY6WCV3URIk3fh4qZj6rwBl9TyzO1NQJ2FEHa6TSZMwA?e=P3cwNK
+
 Kluc + truhla
 BLudisko
 Enemies?
