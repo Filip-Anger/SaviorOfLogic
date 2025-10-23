@@ -92,7 +92,8 @@ public class TileMap {
         this.mutliTiles.add(new MutliTile("chestFullClosedOpened", 109, 2, false));
         this.mutliTiles.add(new MutliTile("mimicClosedOpened", 109, 2, false));
         this.mutliTiles.add(new MutliTile("skull", 10, 2, false));
-        this.mutliTiles.add(new MutliTile("spikesUpDown", 25, 2, false));
+        this.mutliTiles.add(new MutliTile("spikesUp", 25, 1, true));
+        this.mutliTiles.add(new MutliTile("spikesUp", 26, 1, false));
         this.mutliTiles.add(new MutliTile("pluvace", 30, 5, true));
         this.mutliTiles.add(new MutliTile("potionBlueGreen", 23, 2, false));
         this.mutliTiles.add(new MutliTile("pillar", 27, 3, true));

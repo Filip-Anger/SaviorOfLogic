@@ -30,6 +30,10 @@ public abstract class Item {
 
     }
 
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     public void setSprite(Object sprite){
         this.sprite = (BufferedImage)sprite;
     }
