@@ -31,6 +31,7 @@ public class GamePanel extends JPanel {
     private DebugDrawer debugDrawer;
     private Pair newPlayerPos;
     private boolean wasDragging = false;
+    private boolean isNearSubmitter = false;
 
     private ArrayList<Skeleton> enemies;
 
@@ -123,13 +124,15 @@ public class GamePanel extends JPanel {
             if (inputHandler.isDragging()){
                 this.wasDragging = true;
 
-                //System.out.println("Dragging");
-                this.inventory.dragItem(g, this.inputHandler.getMouseClickX(), this.inputHandler.getMouseClickY(), this.inputHandler.getMouseDragX(), this.inputHandler.getMouseDragY());
+                if (this.inputHandler.getMouseClickX() > Game.WIDTH/2){
+                    this.proofSubmitter.setDragItem(g, this.inputHandler.getMouseClickX(), this.inputHandler.getMouseClickY(), this.inputHandler.getMouseDragX(), this.inputHandler.getMouseDragY());
+                }
+                
+                    this.inventory.dragItem(g, this.inputHandler.getMouseClickX(), this.inputHandler.getMouseClickY(), this.inputHandler.getMouseDragX(), this.inputHandler.getMouseDragY());
             }
             else if (this.wasDragging){
                 this.wasDragging = false;
                 this.proofSubmitter.dropItem(this.inputHandler.getMouseDragX(), this.inputHandler.getMouseDragY());
-                //this.inventory.dropItem(this.inputHandler.getMouseDragX(), this.inputHandler.getMouseDragY());
             }
         }
         // this.debugDrawer.drawDebug(g, this.player.getScreenPosition());
@@ -163,32 +166,48 @@ public class GamePanel extends JPanel {
     }
 
     private void playerStateUpdate(){
+        this.isNearSubmitter = proofSubmitter.isNear(this.player.getAbsotulePosition(), this.player.getSize());
         this.inventoryState = this.player.invStateUpdate();
-        //System.out.println(this.player.pickUpUpdate());
+
+        if (!this.isNearSubmitter){
+                this.submitterState = false;
+            }
         
         if (this.player.pickUpUpdate()){
             PickUpItem();
             this.player.pickUpFalse();
+            if(this.isNearSubmitter){
+                if (this.submitterState){
+                    this.submitterState = false;
+                }
+                else{
+                    this.submitterState = true;
+                }
+            }
         }
+        if (this.player.submitUpdate() && this.isNearSubmitter){
+            submit();
+            this.player.submitFalse();
+        }
+        
 
+    }
+
+    private void submit(){
+        if(proofSubmitter.submitProofs()){
+            openDoor();
+        }
     }
 
     private void PickUpItem(){
-
-        if (submitterState){
-            submitterState = false;
-            
-
-        }
-        else if (proofSubmitter.IsNear(this.player.getAbsotulePosition(), this.player.getSize())){
-            submitterState = true;
-        } else { 
-        Item i = itemSpawner.getItem(this.player.getAbsotulePosition(), this.player.getSize());
-        if (i != null){
-            inventory.addItem(i);
+            Item i = itemSpawner.getItem(this.player.getAbsotulePosition(), this.player.getSize());
+            if (i != null){
+                inventory.addItem(i);
         }
     }
-    //private void inventoryMovement() 
+    private void openDoor(){
+        System.out.println("DOOR OPENED!");
     }
+    
     
 }

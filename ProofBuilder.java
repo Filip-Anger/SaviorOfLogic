@@ -82,7 +82,23 @@ public class ProofBuilder {
         }
     }
     public void changeProofLine(int line, Item item){
-        proofLines[line].setProofItem(item);
+        this.proofLines[line].setProofItem(item);
+    }
+
+    public boolean checkProofs(){
+        boolean allCorrect = true;
+        for (int i = 0; i < this.lineCount-1; i++){
+            ProofLine iLine = this.proofLines[i];
+            //System.out.println(iLine.getCorrectID() + " " + iLine.getItem().getID());
+            if (!iLine.isCorrect()){
+                allCorrect = false;
+            }
+        }
+        if (allCorrect){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public int getRowHeight(){
@@ -90,5 +106,8 @@ public class ProofBuilder {
     }
     public int getLineCount(){
         return this.lineCount;
+    }
+    public Item getItem(int line){
+        return this.proofLines[line].getItem();
     }
 }

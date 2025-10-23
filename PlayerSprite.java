@@ -21,6 +21,7 @@ public class PlayerSprite extends Entiti implements PlayerUpdate {
     ActionMap playerActionMap;
     private boolean pickUp;
     private boolean inventoryState;
+    private boolean submit = false;
     private int speedingUp;
     private final Pair spriteSize;
     private final int spriteOffset;
@@ -71,6 +72,7 @@ public class PlayerSprite extends Entiti implements PlayerUpdate {
         this.playerActionMap.put("moveRightReleased", new RightReleaseAction());
         this.playerActionMap.put("InventoryPressed", new InventoryPress());
         this.playerActionMap.put("PickUpPressed", new PickUpPress());
+        this.playerActionMap.put("SubmitPressed", new SubmitPressed());
 
         
     }
@@ -141,6 +143,14 @@ public class PlayerSprite extends Entiti implements PlayerUpdate {
         this.pickUp = false;
     }
 
+    @Override
+    public boolean submitUpdate(){
+        return submit;
+    }
+    public void submitFalse(){
+        this.submit = false;
+    }
+
     public class UpPressAction extends AbstractAction {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -208,6 +218,17 @@ public class PlayerSprite extends Entiti implements PlayerUpdate {
                 pickUp = false;
             }else {
                 pickUp = true;
+            }
+        }
+    }
+
+    public class SubmitPressed  extends AbstractAction{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (submit){
+                submit = false;
+            }else {
+                submit = true;
             }
         }
     }
