@@ -16,7 +16,7 @@ public class PropItem extends Item {
     private TextToGraphics t;
     
 
-    public PropItem(int type, int x, int y, String id) {
+    public PropItem(int type, int x, int y, int id) {
         super(type, x, y, id); 
         this.sw = new SubWindow();
         this.t  = new TextToGraphics("Arial Unicode MS", size);

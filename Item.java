@@ -7,7 +7,7 @@ public abstract class Item {
     private int type;
     private int x;
     private int y;
-    private String ID;
+    private int ID;
     private BufferedImage sprite;
     private int width = Game.MAP_RESOLTION*Game.SCALE;
     private int height = Game.MAP_RESOLTION*Game.SCALE;
@@ -18,7 +18,7 @@ public abstract class Item {
     
     
     
-    public Item(int type, int x, int y, String ID){
+    public Item(int type, int x, int y, int ID){
         this.type = type;
         this.x = x;
         this.y = y;
@@ -34,7 +34,7 @@ public abstract class Item {
     public int getType() { return this.type; }
     public int getX() { return this.x; }
     public int getY() { return this.y; }
-    public String getID() { return this.ID; }
+    public int getID() { return this.ID; }
     public BufferedImage getSprite() { return this.sprite; }
     public int getInvWidth() { return this.width; }
     public int getInvHeight() { return this.height; }

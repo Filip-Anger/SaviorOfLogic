@@ -61,8 +61,10 @@ public class AllInputHandler {
         public void mousePressed (MouseEvent e){
             mouseClickX = e.getX();
             mouseClickY = e.getY();
+            mouseDragX = mouseClickX;
+            mouseDragY = mouseClickY;
             dragging = true;
-            //System.out.println("Pressed at " + mouseStartX + " " + mouseStartY);
+            System.out.println("Pressed at " + mouseClickX + " " + mouseClickY);
         }
         
     }

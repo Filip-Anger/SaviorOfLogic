@@ -64,14 +64,14 @@ public class ItemSpawner {
         
         if (itemData[0].equals("0")){
             if (itemData[3].equals("-1") && itemData[4].equals("-1")){
-                Item i = new PropItem(0, rand.nextInt(500*32), rand.nextInt(5*32,40*32), itemData[1]);
+                Item i = new PropItem(0, rand.nextInt(500*32), rand.nextInt(5*32,40*32), Integer.parseInt(itemData[1]));
                 i.setSprite(itemData[2]);
                 allItems.add(i);
                 visibleItems.add(i);
                 
                 
             }else{
-                Item i = new PropItem(0, Integer.parseInt(itemData[3]), Integer.parseInt(itemData[4]), itemData[1]);
+                Item i = new PropItem(0, Integer.parseInt(itemData[3]), Integer.parseInt(itemData[4]), Integer.parseInt(itemData[1]));
                 i.setSprite(itemData[2]);
                 allItems.add(i);
                 visibleItems.add(i);

@@ -76,7 +76,7 @@ public class GamePanel extends JPanel {
         // Inventory
         this.inventory = new Inventory();
 
-        this.proofSubmitter = new ProofSubmitter();
+        this.proofSubmitter = new ProofSubmitter(this.inventory);
         
         // Update timer
         this.timer = new Timer((int) Math.round(1000.0 / fps), e -> {
@@ -126,6 +126,7 @@ public class GamePanel extends JPanel {
             }
             else if (this.wasDragging){
                 this.wasDragging = false;
+                this.proofSubmitter.dropItem(this.inputHandler.getMouseDragX(), this.inputHandler.getMouseDragY());
                 //this.inventory.dropItem(this.inputHandler.getMouseDragX(), this.inputHandler.getMouseDragY());
             }
         }
@@ -154,12 +155,11 @@ public class GamePanel extends JPanel {
 
         if (submitterState){
             submitterState = false;
-            inventoryState = false;
+            
 
         }
         else if (proofSubmitter.IsNear(this.player.getAbsotulePosition(), this.player.getSize())){
             submitterState = true;
-            inventoryState = true;
         } else { 
         Item i = itemSpawner.getItem(this.player.getAbsotulePosition(), this.player.getSize());
         if (i != null){
