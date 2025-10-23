@@ -52,8 +52,22 @@ public class TileMap {
         this.forbiddenTiles = new HashSet<>();
         this.tiles = new BufferedImage[144];
         this.mutliTiles = new ArrayList<>();
-        this.mutliTiles.add(new MutliTile("gate", 0, 8, true));
-        
+        this.mutliTiles.add(new MutliTile("gateClosed", 0, 8, true));
+        this.mutliTiles.add(new MutliTile("gateOpened", 140, 4, false));
+        this.mutliTiles.add(new MutliTile("floor", 43, 1, false));
+        this.mutliTiles.add(new MutliTile("chestClosed", 22, 1, false));
+        this.mutliTiles.add(new MutliTile("chestEmptyClosedOpened", 100, 2, false));
+        this.mutliTiles.add(new MutliTile("chestFullClosedOpened", 109, 2, false));
+        this.mutliTiles.add(new MutliTile("mimicClosedOpened", 109, 2, false));
+        this.mutliTiles.add(new MutliTile("skull", 10, 1, false));
+        this.mutliTiles.add(new MutliTile("spikesUpDown", 25, 2, false));
+        this.mutliTiles.add(new MutliTile("pluvace", 30, 5, true));
+        this.mutliTiles.add(new MutliTile("potionBlueGreen", 23, 2, false));
+        this.mutliTiles.add(new MutliTile("pillar", 27, 3, true));
+        this.mutliTiles.add(new MutliTile("bomb", 44, 3, false));
+        this.mutliTiles.add(new MutliTile("walls", 35, 8, true));
+        this.mutliTiles.add(new MutliTile("heart", 77, 3, false));
+        this.mutliTiles.add(new MutliTile("lever", 105, 2, false));
 
         for (MutliTile structure : this.mutliTiles) {
             this.loadStructure(structure);
