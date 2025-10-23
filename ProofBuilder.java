@@ -50,7 +50,7 @@ public class ProofBuilder {
         int i = 0;
         for (int line = 0; line <  lineCount; line++) {
             
-            int x = Game.WIDTH/2+(Game.MAP_RESOLTION*Game.SCALE)+35;
+            int x = Game.WIDTH/2+(Game.MAP_RESOLUTION*Game.SCALE)+35;
             int width = proofLines[i].getWidth();
             int height = proofLines[i].getHeight();
             Color c = Color.WHITE;
