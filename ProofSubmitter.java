@@ -2,13 +2,13 @@ import java.awt.Graphics;
 
 public class ProofSubmitter {
     private ProofBuilder pb;
-    private int x = 1000;
-    private int y = 1000;
+    private int x = 320;
+    private int y = 500;
     private int width = Game.MAP_RESOLUTION*Game.SCALE;
     private int height = Game.MAP_RESOLUTION*Game.SCALE;
     private SubWindow sb;
     private Inventory inventory;
-    private int lineCount = 9;
+    
 
     public ProofSubmitter(Inventory inv){
         this.sb = new SubWindow();
@@ -22,7 +22,7 @@ public class ProofSubmitter {
         this.pb.draw(g);
     }
 
-    public boolean IsNear(Pair playerPos, Pair size){
+    public boolean isNear(Pair playerPos, Pair size){
         int submitterWidth = this.width/2; //middle of submitter
         int submitterHeight = this.height/2; //middle of submitter
         int submitterX = this.x + submitterWidth; //middle of submitter
@@ -42,18 +42,54 @@ public class ProofSubmitter {
         if (item == null){
             return;
         }
-        int rowHeight = pb.getRowHeight();
-        int lineCount = pb.getLineCount();
-        for(int i = 1; i < lineCount+1; i++){
-    
-            if (i*rowHeight+55 >= mouseY){
-                pb.changeProofLine(i-1, item);
-                inventory.nullDragItem();
-                return;
+        else if (mouseX > Game.WIDTH/2) {
+
+            int rowHeight = pb.getRowHeight();
+            int lineCount = pb.getLineCount();
+            
+            for(int i = 1; i < lineCount+1; i++){
+                
+                if (i*rowHeight+55 >= mouseY){
+                    Item tempItem = pb.getItem(i-1);
+                    if (tempItem.getID() != -1){
+                        inventory.addItem(tempItem);
+                    }
+                    pb.changeProofLine(i-1, item);
+                    inventory.nullDragItem();
+                    return;
+                }
             }
         }
+            
         inventory.addItem(item);
         inventory.nullDragItem();
+    }
+    
+    public void setDragItem(Graphics g, int mouseStartX, int mouseStartY, int mouseX, int mouseY){
+        Item item = inventory.getDragItem();
+        int rowHeight = pb.getRowHeight();
+        int lineCount = pb.getLineCount();
+        if (item == null){
+            for(int i = 1; i < lineCount+1; i++){
+    
+                if (i*rowHeight+55 >= mouseY){
+                    Item draggedItem = pb.getItem(i-1);
+                    if (draggedItem.getID() == -1){
+                        return;
+                    }
+                    Item tempItem = new PropItem(-1,-1,-1,-1);
+                    tempItem.setSprite("...");
+                    pb.changeProofLine(i-1, tempItem);
+                    inventory.setDragItem(draggedItem);
+                    return;
+                }
+            }
+        
+        }
+    }
+
+    public boolean submitProofs(){
+        return pb.checkProofs();
     }
     
 }

@@ -1,0 +1,3 @@
+TYPE;ID;Spirte;X;Y
+⇒∧∨⇔¬∀∃∈
+0;5;∀x[x∈A:∃y[y∈B: P(x) = P(y)]];-1;-1

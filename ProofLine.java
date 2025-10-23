@@ -8,13 +8,15 @@ public class ProofLine {
 
         this.CorrectID = correctID;
         this.proofItem = new PropItem(-1, -1, -1, -1);
-        this.proofItem.setSprite("A=>B");
+        this.proofItem.setSprite("...");
+
 
 
     }
 
     public void draw(Graphics g, int x, int y){
         if (this.proofItem != null){
+            this.proofItem.setPos(x, y);
             this.proofItem.drawInInv(g, x, y);
         }
     }
@@ -48,6 +50,9 @@ public class ProofLine {
     }
     public int getCorrectID(){
         return this.CorrectID;
+    }
+    public Item getItem(){
+        return this.proofItem;
     }
 
 }

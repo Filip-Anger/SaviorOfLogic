@@ -28,11 +28,11 @@ Matematicka rovnica?
 ## MAREK'S TASKS
 
 ### Wokring on
-- [ ] Mouse drag
+- [x] Mouse drag
 
 
 ### Not started yet
-- [ ] Door dialogue screen
+- [x] Door dialogue screen
 - [ ] NPC dialogue screen
 - [ ] Wordle 
 - [ ] Matematicka rovnica?
@@ -49,4 +49,4 @@ Matematicka rovnica?
 4. Review and merge
 
 
-**Last Updated:** 21.10.2025
+**Last Updated:** 23.10.2025

@@ -70,15 +70,16 @@ public class Inventory extends SubWindow{
                     this.items.remove(item);
                     //item.setPos(mouseStartX, mouseStartY);
                     System.out.println("Started dragging item at " + mouseStartX + " " + mouseStartY);
-                    break;
+                    return;
                 }
             }
         } else {
             int drawOffsetX = Math.abs(draggedItem.getX() - mouseStartX);
             int drawOffsetY = Math.abs(draggedItem.getY() - mouseStartY);
             //draggedItem.setPos(mouseX, mouseY);
-            System.out.println("Dragging item at " + drawOffsetY + " " + mouseStartY + " " + draggedItem.getY());
-            this.draggedItem.drawInInv(g, mouseX-drawOffsetX, mouseY-drawOffsetY);
+            //System.out.println("X: " + drawOffsetX + " " + mouseStartX + " " + draggedItem.getX());
+            //System.out.println("Y: " + drawOffsetY + " " + mouseStartY + " " + draggedItem.getY());
+            this.draggedItem.drawInInv(g, mouseX-drawOffsetX, mouseY);
         }
     }
     public Item getDragItem(){
@@ -88,4 +89,7 @@ public class Inventory extends SubWindow{
         this.draggedItem = null;
     }
     
+    public void setDragItem(Item item){
+        this.draggedItem = item;
+    }
 }
