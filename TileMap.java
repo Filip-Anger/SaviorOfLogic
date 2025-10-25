@@ -1,8 +1,10 @@
+import com.sun.source.tree.NewArrayTree;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,6 +33,7 @@ public class TileMap {
     private Random random = new Random();
     private ArrayList<Pair> spikes = new ArrayList<>();
     private Set<Integer> actionTiles;
+    private ArrayList<Pair> door = new ArrayList<>();
 
     // private Set<Integer>  = new HashMap<>();
     // Ked si v tejto lokacii a stalcis E tak posli niekam info ze sa pouzil ten item
@@ -159,6 +162,7 @@ public class TileMap {
         for (int y = 0; y < this.mapHeight; y++) {
             for (int x = 0; x < this.mapWidth; x++) {
                 if (sc.hasNextInt()) {
+        
                     t = randomFloor(sc.nextInt());
                     this.tileMapMatrix[y][x] = t;
                     if (this.actionTiles.contains(t)) {
@@ -169,14 +173,23 @@ public class TileMap {
                     }
                     if (t == 25 || t == 26) {
                         this.spikes.add(new Pair(x, y));
+                    } else if (t == 1 || t == 2 || t == 5 || t == 6) {
+                        this.door.add(new Pair(x, y));
                     }
-
                 }
             }
         }
     }
     public void openDoor() {
-
+        if (this.door.size() == 0) {
+            System.out.println("BAD");
+            return;
+        }
+        if (this.tileMapMatrix[this.door.get(0).y()][this.door.get(0).x()] == 1) {
+            for (int i = 0; i < this.door.size(); i++) {
+                this.tileMapMatrix[this.door.get(i).y()][this.door.get(i).x()] = 140 + i;
+            } 
+        }
     }
 
     public void actionUsed(Item item) {
