@@ -27,6 +27,7 @@ public class GamePanel extends JPanel {
     private ProofSubmitter proofSubmitter;
     private Intro intro;
     private boolean displayNextText = false;
+    private boolean lastParagraph =false;
     // private DebugDrawer debugDrawer;
     private Pair newPlayerPos;
     private boolean wasDragging = false;
@@ -112,15 +113,19 @@ public class GamePanel extends JPanel {
     }
 
     private void storyScreen(Graphics g) {
-        if (this.intro.getCounter() == 0) {
-            this.intro.drawStoryScreen(g);
-        }
+        this.intro.drawStoryScreen(g);
         if (this.displayNextText) {
-            this.displayNextText = false;
-            if (this.intro.drawNextEndLast(g)) {
+            if (this.lastParagraph) {
                 this.gameState += 1;
             }
+            this.displayNextText = false;
+            if (this.intro.drawNextEndLast(g)) {
+                this.lastParagraph = true;
+                return;
+            }
 
+        } else {
+            this.intro.drawCurrent(g);
         }
     }
     private void drawPlayScreen(Graphics g){

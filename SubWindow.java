@@ -2,8 +2,9 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import javax.swing.JComponent;
 
-public class SubWindow {
+public class SubWindow extends JComponent {
     public void drawSubWindow(Graphics g, int x, int y, int width, int height){
         Graphics2D g2 = (Graphics2D) g;
         Color c = new Color(0,0,0,220);

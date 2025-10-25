@@ -10,51 +10,56 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 import javax.naming.SizeLimitExceededException;
+import javax.swing.JTextPane;
 
-public class Intro {
+
+public class Intro extends JTextPane{
     Image introImage;
-    FileInputStream fileInputStream;
-    InputStreamReader inputStreamReader;
     int storyTextCounter = 0;
-    private ArrayList<BufferedImage> storyText;
     int x;
     int y;
     int width;
     int height;
-
+    Scanner sc;
+    ArrayList<String> textPragraphs;
+    JTextPane pane;
+    SubWindow sb;
 
     public Intro() {
         try{
             this.introImage = ImageIO.read(new File("Tileset/atlas.jpg"));
-            this.fileInputStream = new FileInputStream("StoryText.txt");
-
+            this.sc = new Scanner(new File("StoryText.txt"));
         } catch (IOException e){
             e.getStackTrace();
         }
-
-        try {
-            this.inputStreamReader = new InputStreamReader(this.fileInputStream, StandardCharsets.UTF_8);
-            int ch;
-            String wholeText = "";
-            while ((ch = this.inputStreamReader.read()) != -1) {
-                
-                wholeText += (char)ch;
-                
+        this.textPragraphs = new ArrayList<>();
+        String word;
+        String paragraph = "";
+        while (sc.hasNext()) {
+            word = sc.next();
+            if (word.equals("vykokotitSa")) {
+                paragraph = paragraph.strip();
+                this.textPragraphs.add(paragraph);
+                paragraph = "";
+            } else {
+                paragraph += word + " ";
             }
-            int width = Game.WIDTH - 40 - 15;
-            int height = Game.HEIGHT/2 - 50 - 15;
-            TextToGraphics textToGraphics = new TextToGraphics("Arial Unicode MS", 20);
-            this.storyText = textToGraphics.convertAndSplit(wholeText.split(" "), 
-                width - 2 * Game.SUBWINDOW_BONUS_SIZE, height - 2 * Game.SUBWINDOW_BONUS_SIZE);
-            this.fileInputStream.close();
-        } catch (IOException e) {
-            e.getStackTrace();
+        }
+        if (paragraph.length() > 0) {
+            this.textPragraphs.add(paragraph);
+        }
+        this.pane = new JTextPane();
+            // int width = Game.WIDTH - 40 - 15;
+            // int height = Game.HEIGHT/2 - 50 - 15;
+            // TextToGraphics textToGraphics = new TextToGraphics("Arial Unicode MS", 20);
+            // this.storyText = textToGraphics.convertAndSplit(wholeText.split(" "), 
+            //     width - 2 * Game.SUBWINDOW_BONUS_SIZE, height - 2 * Game.SUBWINDOW_BONUS_SIZE);
         }
 
-    }
 
 
     public void drawStartScreen(Graphics g, PlayerSprite player){
@@ -66,7 +71,7 @@ public class Intro {
         g.drawString(text, 17, 100);
 
         BufferedImage playerImage =  player.getIdleImage();
-        int loadScale = 3;
+        int loadScale = 2;
         Pair size = new Pair(playerImage.getWidth() * loadScale,  playerImage.getHeight() * loadScale);
         g.drawImage(playerImage, (Game.WIDTH - size.x()) / 2, (Game.HEIGHT - size.y()) / 2, size.x(), size.y(), null);
         g.setFont(g.getFont().deriveFont(Font.BOLD,52));
@@ -76,25 +81,35 @@ public class Intro {
     }
 
     public boolean drawNextEndLast(Graphics g){
-        if (this.storyTextCounter +1 == this.storyText.size()){
+        if (this.storyTextCounter == this.textPragraphs.size()){
             return true;
         }
-        this.storyTextCounter += 1;
-        System.out.println(this.storyText.get(this.storyTextCounter));
         // TENTO RIADOK DISPLAJUJE BLACK SCREEN STORY TEXT JE STALE DIVNY ALE NEPADA TO
-        g.drawImage(this.storyText.get(this.storyTextCounter), this.x+Game.SUBWINDOW_BONUS_SIZE, this.y+Game.SUBWINDOW_BONUS_SIZE, null);
+        System.out.println(this.textPragraphs.get(this.storyTextCounter));
+        this.pane.setText(this.textPragraphs.get(this.storyTextCounter));
+        // g.drawImage(this.storyText.get(this.storyTextCounter), this.x+Game.SUBWINDOW_BONUS_SIZE, this.y+Game.SUBWINDOW_BONUS_SIZE, null);
+        this.storyTextCounter += 1;
+
+        if (this.storyTextCounter + 1 == this.textPragraphs.size()){
+            return true;
+        }
         return false;
     }
 
+    public void drawCurrent(Graphics g) {
+        System.out.println(this.textPragraphs.get(this.storyTextCounter));
+        this.pane.setText(this.textPragraphs.get(this.storyTextCounter));
+
+    }
     public void drawStoryScreen(Graphics g) {
         g.drawImage(this.introImage, 0, 0, Game.WIDTH, Game.HEIGHT, null);
-        SubWindow sb = new SubWindow();
+        this.sb = new SubWindow();
         this.x = 20;
         this.y = Game.HEIGHT/2 - 50;
         this.width = Game.WIDTH - 2*x - 15;
         this.height = Game.HEIGHT/2 - 50 - 15;
-        sb.drawSubWindow(g, x, y,  width, height);
-        g.drawImage(this.storyText.get(this.storyTextCounter), x+Game.SUBWINDOW_BONUS_SIZE, y+Game.SUBWINDOW_BONUS_SIZE, null);
+        this.sb.drawSubWindow(g, x, y,  width, height);
+        this.sb.add(this.pane);
     }
 
     public int getCounter() {
