@@ -1,10 +1,10 @@
-It is the first quartile at TU/e — and the legendary course 
-Logic & Sets has returned. Every year, countless students face this challenge… 
+It is the first quartile at TU/e - and the legendary course 
+Logic & Sets has returned. Every year, countless students face this challenge... 
 and many barely survive the final exam.
 
 <linebreak>
 
-At the center of it all stands Professor Baas Luutik — brilliant, strict, 
+At the center of it all stands Professor Baas Luutik - brilliant, strict, 
 and feared by everyone who forgot to study quantifiers.
 
 <linebreak>
@@ -26,7 +26,7 @@ Now the future of logic is in danger.
 You are the last hope.
 To free him, you must complete the final challenge:
 Rebuild the missing proof fragments scattered across the map.
-Only a perfectly constructed proof will unlock the dungeon door…
+Only a perfectly constructed proof will unlock the dungeon door...
 
 <linebreak>
 
