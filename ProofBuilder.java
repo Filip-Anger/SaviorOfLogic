@@ -1,6 +1,8 @@
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.File;
+import java.util.Scanner;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.BasicStroke;
@@ -12,13 +14,13 @@ public class ProofBuilder {
     private String[] inputStrings;
     private int rowHeight;
     private int lineCount;
+    private Scanner sc;
     //private int[]
     
 
     public ProofBuilder(){
         try {
-        FileInputStream fis = new FileInputStream("ProofBuilderInstruct.txt");
-        InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
+        InputStreamReader isr = new InputStreamReader(new FileInputStream("ProofBuilderInstruct.txt"), "UTF-8");
         int ch;
         while((ch = isr.read()) != -1 ){
             tempInputString += (char)ch;
