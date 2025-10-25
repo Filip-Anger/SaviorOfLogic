@@ -5,11 +5,13 @@ import java.awt.Container;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.TextArea;
 import java.util.ArrayList;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.Timer;
 
 /**MODEL. DATA without BEHAVIOUR should be here.
@@ -36,6 +38,7 @@ public class GamePanel extends JPanel {
     //Game state
     public boolean inventoryState = false;
     public boolean submitterState = false;
+    private int storyTextCounter = 0;
 
 
     public final int propItem = 0;
@@ -49,6 +52,7 @@ public class GamePanel extends JPanel {
         InputMap inputMap = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap actionMap = this.getActionMap();
         inputHandler = new AllInputHandler(inputMap, actionMap);
+
 
         this.addMouseListener(inputHandler.new ClickListener());
         this.addMouseListener(inputHandler.new ReleaseListener());
@@ -70,6 +74,10 @@ public class GamePanel extends JPanel {
 
         this.proofSubmitter = new ProofSubmitter(this.inventory);
         this.intro = new Intro();
+        this.intro.setStoryText(this.storyTextCounter);
+        this.add(this.intro.getStoryTextComp());
+
+        
         
         // Update timer
         this.timer = new Timer((int) Math.round(1000.0 / fps), e -> {
@@ -98,7 +106,8 @@ public class GamePanel extends JPanel {
                 this.intro.drawStartScreen(g, this.player);
                 break;
             case 1:
-                storyScreen(g);
+                this.intro.drawStoryScreen(g);
+                //storyScreen(g);
                 break;
             case 2:
                 drawPlayScreen(g);
@@ -112,22 +121,6 @@ public class GamePanel extends JPanel {
         }
     }
 
-    private void storyScreen(Graphics g) {
-        this.intro.drawStoryScreen(g);
-        if (this.displayNextText) {
-            if (this.lastParagraph) {
-                this.gameState += 1;
-            }
-            this.displayNextText = false;
-            if (this.intro.drawNextEndLast(g)) {
-                this.lastParagraph = true;
-                return;
-            }
-
-        } else {
-            this.intro.drawCurrent(g);
-        }
-    }
     private void drawPlayScreen(Graphics g){
         this.tileMap.draw(g, this.offset()); // HELPER class to make it organized
 
@@ -191,7 +184,14 @@ public class GamePanel extends JPanel {
                 return;
             }
             if (this.gameState == 1){
-                this.displayNextText = true;
+                if (this.storyTextCounter < this.intro.getStoryCounter()){
+                    this.storyTextCounter +=1;
+                    this.intro.setStoryText(this.storyTextCounter);
+                }
+                else{
+                    this.intro.hideStoryTextComp();
+                    gameState += 1;
+                }
                 this.player.pickUpFalse();
                 return;
             }

@@ -14,6 +14,7 @@ import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 import javax.naming.SizeLimitExceededException;
+import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 
 
@@ -28,6 +29,7 @@ public class Intro extends JTextPane{
     ArrayList<String> textPragraphs;
     JTextPane pane;
     SubWindow sb;
+    private JTextArea textArea;
 
     public Intro() {
         try{
@@ -41,7 +43,7 @@ public class Intro extends JTextPane{
         String paragraph = "";
         while (sc.hasNext()) {
             word = sc.next();
-            if (word.equals("vykokotitSa")) {
+            if (word.equals("<linebreak>")) {
                 paragraph = paragraph.strip();
                 this.textPragraphs.add(paragraph);
                 paragraph = "";
@@ -52,16 +54,39 @@ public class Intro extends JTextPane{
         if (paragraph.length() > 0) {
             this.textPragraphs.add(paragraph);
         }
-        this.pane = new JTextPane();
-            // int width = Game.WIDTH - 40 - 15;
-            // int height = Game.HEIGHT/2 - 50 - 15;
-            // TextToGraphics textToGraphics = new TextToGraphics("Arial Unicode MS", 20);
-            // this.storyText = textToGraphics.convertAndSplit(wholeText.split(" "), 
-            //     width - 2 * Game.SUBWINDOW_BONUS_SIZE, height - 2 * Game.SUBWINDOW_BONUS_SIZE);
-        }
-
-
-
+        this.textArea = new JTextArea();
+        this.textArea.setEditable(false);
+        this.textArea.setLineWrap(true);
+        this.textArea.setWrapStyleWord(true);
+        this.textArea.setOpaque(false);     
+        //this.textArea.setFocusable(false);  
+        this.textArea.setBorder(null);      
+        this.textArea.setForeground(Color.WHITE);
+        this.textArea.setFont(new Font("Arial Unicode MS", Font.PLAIN, 30));
+        this.textArea.setVisible(false);
+        
+        
+        // int width = Game.WIDTH - 40 - 15;
+        // int height = Game.HEIGHT/2 - 50 - 15;
+        // TextToGraphics textToGraphics = new TextToGraphics("Arial Unicode MS", 20);
+        // this.storyText = textToGraphics.convertAndSplit(wholeText.split(" "), 
+        //     width - 2 * Game.SUBWINDOW_BONUS_SIZE, height - 2 * Game.SUBWINDOW_BONUS_SIZE);
+    }
+    public JTextArea getStoryTextComp(){
+        return this.textArea;
+    }
+    public Integer getStoryCounter(){
+        return this.textPragraphs.size()-1;
+    }
+    public void setStoryText(int i){
+        this.textArea.setText(this.textPragraphs.get(i));
+    }
+    public void hideStoryTextComp(){
+        this.textArea.setVisible(false);
+    }
+    
+    
+    
     public void drawStartScreen(Graphics g, PlayerSprite player){
         g.setFont(g.getFont().deriveFont(Font.BOLD,96));
         String text = "Saviour of Logic";
@@ -69,7 +94,7 @@ public class Intro extends JTextPane{
         g.drawString(text, 22, 105);
         g.setColor(Color.WHITE);
         g.drawString(text, 17, 100);
-
+        
         BufferedImage playerImage =  player.getIdleImage();
         int loadScale = 2;
         Pair size = new Pair(playerImage.getWidth() * loadScale,  playerImage.getHeight() * loadScale);
@@ -79,28 +104,10 @@ public class Intro extends JTextPane{
         g.setColor(Color.WHITE);
         g.drawString(text, 105, 500);
     }
+    
 
-    public boolean drawNextEndLast(Graphics g){
-        if (this.storyTextCounter == this.textPragraphs.size()){
-            return true;
-        }
-        // TENTO RIADOK DISPLAJUJE BLACK SCREEN STORY TEXT JE STALE DIVNY ALE NEPADA TO
-        System.out.println(this.textPragraphs.get(this.storyTextCounter));
-        this.pane.setText(this.textPragraphs.get(this.storyTextCounter));
-        // g.drawImage(this.storyText.get(this.storyTextCounter), this.x+Game.SUBWINDOW_BONUS_SIZE, this.y+Game.SUBWINDOW_BONUS_SIZE, null);
-        this.storyTextCounter += 1;
+        
 
-        if (this.storyTextCounter + 1 == this.textPragraphs.size()){
-            return true;
-        }
-        return false;
-    }
-
-    public void drawCurrent(Graphics g) {
-        System.out.println(this.textPragraphs.get(this.storyTextCounter));
-        this.pane.setText(this.textPragraphs.get(this.storyTextCounter));
-
-    }
     public void drawStoryScreen(Graphics g) {
         g.drawImage(this.introImage, 0, 0, Game.WIDTH, Game.HEIGHT, null);
         this.sb = new SubWindow();
@@ -109,9 +116,10 @@ public class Intro extends JTextPane{
         this.width = Game.WIDTH - 2*x - 15;
         this.height = Game.HEIGHT/2 - 50 - 15;
         this.sb.drawSubWindow(g, x, y,  width, height);
-        this.sb.add(this.pane);
+        this.textArea.setBounds(x+Game.SUBWINDOW_BONUS_SIZE, y+Game.SUBWINDOW_BONUS_SIZE, width-2*Game.SUBWINDOW_BONUS_SIZE, height-2*Game.SUBWINDOW_BONUS_SIZE);
+        this.textArea.setVisible(true);
     }
-
+    
     public int getCounter() {
         return this.storyTextCounter;
     }
