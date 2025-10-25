@@ -62,29 +62,29 @@ public class TextToGraphics {
         return img;
     }
 
-    public ArrayList<BufferedImage> convertAndSplit(String[] texts, int width, int height){
+    public ArrayList<BufferedImage> convertAndSplit(String[] words, int width, int height){
         ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
         BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = img.createGraphics();
         g2d.setFont(this.font);
         FontMetrics fm = g2d.getFontMetrics();
-        String text = "";
+        String paragraph = "";
         ArrayList<String> textArray = new ArrayList<String>();
         this.height = fm.getHeight();
         int CurrWidth = this.height;
-        for (String i : texts){
-            i = i.replace("\\n","");
-            if (fm.stringWidth(text + " " + i) <= width){
-                    text += " " + i;
-                }
-            else{
-                if (CurrWidth + this.height + 10<= width){
-                    System.out.println(text);
-                    textArray.add(text);
-                    text = i;
-                    CurrWidth += this.height + 10;
-                }
-                else {
+        // TOTO JE TOTALNE CURSED LOOP 
+        // FUJ
+        for (String nextWord : words){
+            if (fm.stringWidth(paragraph + " " + nextWord) <= width){
+                    paragraph += " " + nextWord;
+                } else {
+                // if (CurrWidth + this.height + 10<= width){
+                //     System.out.println(paragraph);
+                //     textArray.add(paragraph);
+                //     paragraph = i;
+                //     CurrWidth += this.height + 10;
+                // }
+                // else {
                     img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
                     g2d = img.createGraphics();
                     g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);   
@@ -97,9 +97,9 @@ public class TextToGraphics {
                         g2d.drawString(j, 0, y);
                         y += y+10;
                     }
-                    g2d.dispose();
                     images.add(img);
-                }
+                    g2d.dispose();
+                // }
                 
             }
         }

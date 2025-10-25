@@ -20,6 +20,10 @@ public class Intro {
     InputStreamReader inputStreamReader;
     int storyTextCounter = 0;
     private ArrayList<BufferedImage> storyText;
+    int x;
+    int y;
+    int width;
+    int height;
 
 
     public Intro() {
@@ -61,31 +65,39 @@ public class Intro {
         g.setColor(Color.WHITE);
         g.drawString(text, 17, 100);
 
-        Image playerImage =  player.getIdleImage();
-        Pair size = player.getSize();
+        BufferedImage playerImage =  player.getIdleImage();
+        int loadScale = 3;
+        Pair size = new Pair(playerImage.getWidth() * loadScale,  playerImage.getHeight() * loadScale);
         g.drawImage(playerImage, (Game.WIDTH - size.x()) / 2, (Game.HEIGHT - size.y()) / 2, size.x(), size.y(), null);
         g.setFont(g.getFont().deriveFont(Font.BOLD,52));
         text = "Press E to start a game";
         g.setColor(Color.WHITE);
         g.drawString(text, 105, 500);
     }
-    
-    public boolean lastText(){
+
+    public boolean drawNextEndLast(Graphics g){
         if (this.storyTextCounter +1 == this.storyText.size()){
             return true;
         }
         this.storyTextCounter += 1;
+        System.out.println(this.storyText.get(this.storyTextCounter));
+        // TENTO RIADOK DISPLAJUJE BLACK SCREEN STORY TEXT JE STALE DIVNY ALE NEPADA TO
+        g.drawImage(this.storyText.get(this.storyTextCounter), this.x+Game.SUBWINDOW_BONUS_SIZE, this.y+Game.SUBWINDOW_BONUS_SIZE, null);
         return false;
     }
 
     public void drawStoryScreen(Graphics g) {
         g.drawImage(this.introImage, 0, 0, Game.WIDTH, Game.HEIGHT, null);
         SubWindow sb = new SubWindow();
-        int x = 20;
-        int y = Game.HEIGHT/2 - 50;
-        int width = Game.WIDTH - 2*x - 15;
-        int height = Game.HEIGHT/2 - 50 - 15;
+        this.x = 20;
+        this.y = Game.HEIGHT/2 - 50;
+        this.width = Game.WIDTH - 2*x - 15;
+        this.height = Game.HEIGHT/2 - 50 - 15;
         sb.drawSubWindow(g, x, y,  width, height);
         g.drawImage(this.storyText.get(this.storyTextCounter), x+Game.SUBWINDOW_BONUS_SIZE, y+Game.SUBWINDOW_BONUS_SIZE, null);
+    }
+
+    public int getCounter() {
+        return this.storyTextCounter;
     }
 }

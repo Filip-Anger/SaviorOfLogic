@@ -5,24 +5,7 @@ import java.awt.Container;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOError;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.concurrent.ExecutionException;
-import java.util.logging.XMLFormatter;
-
-import javax.imageio.ImageIO;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
@@ -43,6 +26,7 @@ public class GamePanel extends JPanel {
     private AllInputHandler inputHandler;
     private ProofSubmitter proofSubmitter;
     private Intro intro;
+    private boolean displayNextText = false;
     // private DebugDrawer debugDrawer;
     private Pair newPlayerPos;
     private boolean wasDragging = false;
@@ -51,6 +35,7 @@ public class GamePanel extends JPanel {
     //Game state
     public boolean inventoryState = false;
     public boolean submitterState = false;
+
 
     public final int propItem = 0;
 
@@ -112,7 +97,7 @@ public class GamePanel extends JPanel {
                 this.intro.drawStartScreen(g, this.player);
                 break;
             case 1:
-                this.intro.drawStoryScreen(g);
+                storyScreen(g);
                 break;
             case 2:
                 drawPlayScreen(g);
@@ -126,7 +111,18 @@ public class GamePanel extends JPanel {
         }
     }
 
+    private void storyScreen(Graphics g) {
+        if (this.intro.getCounter() == 0) {
+            this.intro.drawStoryScreen(g);
+        }
+        if (this.displayNextText) {
+            this.displayNextText = false;
+            if (this.intro.drawNextEndLast(g)) {
+                this.gameState += 1;
+            }
 
+        }
+    }
     private void drawPlayScreen(Graphics g){
         this.tileMap.draw(g, this.offset()); // HELPER class to make it organized
 
@@ -190,7 +186,8 @@ public class GamePanel extends JPanel {
                 return;
             }
             if (this.gameState == 1){
-                //this.nextStoryText();
+                this.displayNextText = true;
+                this.player.pickUpFalse();
                 return;
             }
             PickUpItem();

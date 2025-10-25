@@ -136,7 +136,7 @@ public class PlayerSprite extends Entiti {
         return inventoryState;
     }
     public boolean pickUpUpdate(){
-        return pickUp;
+        return this.pickUp;
     }
     public void pickUpFalse(){
         this.pickUp = false;
@@ -212,7 +212,7 @@ public class PlayerSprite extends Entiti {
         }
     }
 
-    public class PickUpPress  extends AbstractAction{
+    public class PickUpPress extends AbstractAction{
         @Override
         public void actionPerformed(ActionEvent e) {
             if (pickUp){
