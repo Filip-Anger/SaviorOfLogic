@@ -141,6 +141,9 @@ public class PlayerSprite extends Entiti {
     public void pickUpFalse(){
         this.pickUp = false;
     }
+    public BufferedImage getIdleImage(){
+        return this.animationFrames[2][0];
+    }
 
     public boolean submitUpdate(){
         return submit;
