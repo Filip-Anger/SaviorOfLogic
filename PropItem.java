@@ -1,7 +1,5 @@
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.util.Random;
-
 
 
 public class PropItem extends Item {

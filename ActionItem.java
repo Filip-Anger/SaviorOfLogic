@@ -1,3 +1,4 @@
+/**TODO: Class description. */
 public class ActionItem extends Item {
     public ActionItem(String type, int xCord, int yCord, int action) {
         super("ActionTile", xCord * yCord , "undefined", xCord * Game.TILE_SIZE, yCord * Game.TILE_SIZE);

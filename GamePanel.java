@@ -14,6 +14,7 @@ import javax.swing.Timer;
  * Collect data from Player and provides it for TileMap
  * Everything is drawn by paintComponent - using helper classes
 */
+/**TODO: Class description. */
 public class GamePanel extends JPanel {
     private int gameState = 0;
     private final Timer timer;

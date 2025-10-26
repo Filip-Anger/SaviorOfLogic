@@ -1,7 +1,4 @@
 import java.awt.BorderLayout;
-
-import java.util.ArrayList;
-
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
@@ -47,6 +44,6 @@ class Game implements Runnable{
 
     
     public static void main(String[] args) {
-        Game game = new Game(60);
+        new Game(60);
     }
 }

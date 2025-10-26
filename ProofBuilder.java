@@ -1,8 +1,5 @@
 import java.io.FileInputStream;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.File;
-import java.util.Scanner;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.BasicStroke;
@@ -14,8 +11,6 @@ public class ProofBuilder {
     private String[] inputStrings;
     private int rowHeight;
     private int lineCount;
-    private Scanner sc;
-    //private int[]
     
 
     public ProofBuilder(){
@@ -56,7 +51,6 @@ public class ProofBuilder {
             int width = proofLines[i].getWidth();
             int height = proofLines[i].getHeight();
             Color c = Color.WHITE;
-            int flagOffset = 0;
             for (String s : this.inputStrings[line].split("")) {
                 //System.out.println(c);
                 if (s.equals("F")){
@@ -65,8 +59,6 @@ public class ProofBuilder {
                     g2.setColor(c);
                     g2.drawRect(x, y, width+15, height+5);
                     x += 20;
-                    flagOffset += 1;
-                    //y += 10;
                 }
                 if (s.equals("|")){
                     g2.setStroke(new BasicStroke(1));
@@ -77,7 +69,6 @@ public class ProofBuilder {
                     
                 }
             }
-            //y += flagOffset*10;
             proofLines[i].draw(g2, x, y+15);
             y += this.rowHeight;
             i++;

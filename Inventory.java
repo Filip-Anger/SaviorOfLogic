@@ -1,13 +1,9 @@
 import java.awt.Graphics;
 import java.awt.MouseInfo;
 import java.awt.PointerInfo;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-import javax.swing.*;
-
-
-
+/**TODO: Class description. */
 public class Inventory extends SubWindow{
 
     public ArrayList<Item> items = new ArrayList<>();
@@ -75,10 +71,6 @@ public class Inventory extends SubWindow{
             }
         } else {
             int drawOffsetX = Math.abs(draggedItem.getX() - mouseStartX);
-            int drawOffsetY = Math.abs(draggedItem.getY() - mouseStartY);
-            //draggedItem.setPos(mouseX, mouseY);
-            //System.out.println("X: " + drawOffsetX + " " + mouseStartX + " " + draggedItem.getX());
-            //System.out.println("Y: " + drawOffsetY + " " + mouseStartY + " " + draggedItem.getY());
             this.draggedItem.drawInInv(g, mouseX-drawOffsetX, mouseY);
         }
     }

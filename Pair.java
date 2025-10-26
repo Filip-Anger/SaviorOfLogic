@@ -1,6 +1,3 @@
-
-import java.security.PublicKey;
-
 public class Pair {
     private int x;
     private int y;

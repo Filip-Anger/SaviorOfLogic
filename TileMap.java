@@ -1,15 +1,11 @@
-import com.sun.source.tree.NewArrayTree;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;

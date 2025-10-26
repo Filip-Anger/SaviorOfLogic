@@ -1,7 +1,8 @@
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.image.CropImageFilter;
 
+
+/**TODO: Class description. */
 public class DebugDrawer {
     Pair size;
     public DebugDrawer() {

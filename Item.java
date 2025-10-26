@@ -1,7 +1,7 @@
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-
+/**TODO: Class description. */
 public abstract class Item {
 
     protected String type;

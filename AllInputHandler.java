@@ -7,6 +7,7 @@ import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.KeyStroke;
 
+/**TODO: Class description. */
 public class AllInputHandler {
     InputMap inputMap;
     ActionMap actionMap;

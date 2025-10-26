@@ -10,10 +10,9 @@ import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 import javax.swing.JTextArea;
-import javax.swing.JTextPane;
 
-
-public class Intro extends JTextPane{
+/**TODO: Class description. */
+public class Intro{
     Image introImage;
     int storyTextCounter = 0;
     int x;
@@ -22,7 +21,6 @@ public class Intro extends JTextPane{
     int height;
     Scanner sc;
     ArrayList<String> textPragraphs;
-    JTextPane pane;
     SubWindow sb;
     private JTextArea textArea;
 
@@ -54,7 +52,6 @@ public class Intro extends JTextPane{
         this.textArea.setLineWrap(true);
         this.textArea.setWrapStyleWord(true);
         this.textArea.setOpaque(false);     
-        //this.textArea.setFocusable(false);  
         this.textArea.setBorder(null);      
         this.textArea.setForeground(Color.WHITE);
         this.textArea.setFont(new Font("Arial Unicode MS", Font.PLAIN, 30));
