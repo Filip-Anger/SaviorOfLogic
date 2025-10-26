@@ -1,11 +1,12 @@
 import java.awt.Graphics;
 
 public class ProofLine {
+    
     private Item proofItem;
     private int CorrectID;
     private boolean isCorrect;
-    public ProofLine(int correctID){
-
+    
+    public ProofLine(int correctID) {
         this.CorrectID = correctID;
         this.proofItem = new PropItem("...", -1, "...", -1, -1);
     }

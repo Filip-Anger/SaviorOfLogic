@@ -45,8 +45,7 @@ public class PropItem extends Item {
     }
 
     @Override
-    public void drawInInv(Graphics g, int x, int y){
-        
+    public void drawInInv(Graphics g, int x, int y) {
         g.drawImage(invSprite, x-15, y-15, null);
     }
 

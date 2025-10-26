@@ -13,7 +13,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 
 
-public class Outro extends JTextPane{
+public class Outro extends JTextPane {
+
     Image OutroImage;
     int storyTextCounter = 0;
     int x;
@@ -65,16 +66,22 @@ public class Outro extends JTextPane{
     public JTextArea getOutroStoryTextComp(){
         return this.textArea;
     }
+
     public Integer getStoryCounter(){
         return this.textPragraphs.size()-1;
     }
+
+    public int getCounter() {
+        return this.storyTextCounter;
+    }
+
     public void setOutroStoryText(int i){
         this.textArea.setText(this.textPragraphs.get(i));
     }
+
     public void hideOutroStoryTextComp(){
         this.textArea.setVisible(false);
     }
-    
     
     
     public void drawEndScreen(Graphics g, PlayerSprite player){
@@ -94,9 +101,7 @@ public class Outro extends JTextPane{
         g.setColor(Color.WHITE);
         g.drawString(text, 80, 500);
     }
-    
-
-        
+            
 
     public void drawOutroStoryScreen(Graphics g) {
         g.drawImage(this.OutroImage, 0, 0, Game.WIDTH, Game.HEIGHT, null);
@@ -108,9 +113,5 @@ public class Outro extends JTextPane{
         this.sb.drawSubWindow(g, x, y,  width, height);
         this.textArea.setBounds(x+Game.SUBWINDOW_BONUS_SIZE, y+Game.SUBWINDOW_BONUS_SIZE, width-2*Game.SUBWINDOW_BONUS_SIZE, height-2*Game.SUBWINDOW_BONUS_SIZE);
         this.textArea.setVisible(true);
-    }
-    
-    public int getCounter() {
-        return this.storyTextCounter;
     }
 }
