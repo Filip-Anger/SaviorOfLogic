@@ -67,14 +67,12 @@ public class AllInputHandler {
             mouseDragX = mouseClickX;
             mouseDragY = mouseClickY;
             dragging = true;
-            System.out.println("Pressed at " + mouseClickX + " " + mouseClickY);
         }
         
     }
     public class ReleaseListener extends MouseAdapter {
         public void mouseReleased (MouseEvent e){
             dragging = false;
-            //System.out.println("Released");
         }
         
     }
@@ -83,7 +81,6 @@ public class AllInputHandler {
         public void mouseDragged(MouseEvent e){
             mouseDragX = e.getX();
             mouseDragY = e.getY();
-            //System.out.println("Drag at " + mouseDragX + " " + mouseDragY);
         }
     }
 

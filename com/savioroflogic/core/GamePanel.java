@@ -262,8 +262,7 @@ public class GamePanel extends JPanel {
         com.savioroflogic.items.Item i = itemSpawner.getItem(this.player.getAbsotulePosition(), this.player.getSize());
         if (i == null){
             return;
-        }
-        System.out.println(i.getType());
+        };
         if (i.getType().equalsIgnoreCase("Prop")) {
             this.inventory.addItem(i);
         } else if (i.getType().equalsIgnoreCase("ActionTile")) {

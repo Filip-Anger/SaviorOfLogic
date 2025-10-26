@@ -19,7 +19,6 @@ public class ActionItem extends Item {
             actionS = "Mimic";
         }
         this.setContent(actionS);
-        System.out.println(xCord * Game.TILE_SIZE + " " + yCord * Game.TILE_SIZE);
         this.xCord = xCord;
         this.yCord = yCord;
     }
