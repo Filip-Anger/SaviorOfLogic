@@ -1,7 +1,12 @@
+package com.savioroflogic.items;
+
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-/**TODO: Class description. */
+import com.savioroflogic.core.Game;
+import com.savioroflogic.util.Pair;
+
+/** Class that represents every interactable itemin game.*/
 public abstract class Item {
 
     protected String type;
@@ -76,6 +81,15 @@ public abstract class Item {
     public void setPos(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    // Tile coordinates in map (tile indices)
+    public int getTileX() {
+        return this.xCord;
+    }
+
+    public int getTileY() {
+        return this.yCord;
     }
 
     

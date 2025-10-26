@@ -1,3 +1,5 @@
+package com.savioroflogic.entity;
+
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
@@ -7,6 +9,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
+
+import com.savioroflogic.util.Pair;
+
 /**Extends entiti but also maps keybinding actions - movment and pickup.
  * Draw method handels animation - when player changes direction 
  * animation progression resetes...
@@ -29,18 +34,18 @@ public class PlayerSprite extends Entiti {
 
     public PlayerSprite(ActionMap actionMap, Pair offset) {
         this.playerActionMap = actionMap;
-        this.velocity = Game.TILE_SIZE / 6;
-        this.playerScale = (float) Game.TILE_SIZE / Game.SPRITE_RESOLUTION;
+        this.velocity = com.savioroflogic.core.Game.TILE_SIZE / 6;
+        this.playerScale = (float) com.savioroflogic.core.Game.TILE_SIZE / com.savioroflogic.core.Game.SPRITE_RESOLUTION;
         this.spriteOffset = Math.round(20 * this.playerScale);
 
-        this.size = new Pair(Math.round(Game.SPRITE_RESOLUTION * this.playerScale), Math.round(Game.SPRITE_RESOLUTION * this.playerScale));
+        this.size = new Pair(Math.round(com.savioroflogic.core.Game.SPRITE_RESOLUTION * this.playerScale), Math.round(com.savioroflogic.core.Game.SPRITE_RESOLUTION * this.playerScale));
         this.spriteSize = new Pair(this.size.x(), this.size.x() * 2);
-        this.screenPosition = new Pair(Game.WIDTH / 2 - this.size.x() / 2, Game.HEIGHT / 2 - 3/2 * this.size.x());
+        this.screenPosition = new Pair(com.savioroflogic.core.Game.WIDTH / 2 - this.size.x() / 2, com.savioroflogic.core.Game.HEIGHT / 2 - 3/2 * this.size.x());
         this.absolutePosition = new Pair(offset.x() + this.screenPosition.x(), offset.y() + this.screenPosition.y());
 
 
         // Animation 
-        this.speedingUp = Game.PLAYER_ACCELERATION;
+        this.speedingUp = com.savioroflogic.core.Game.PLAYER_ACCELERATION;
         this.lastAnimationFrame = 0;
         this.frames = 8;
         this.animationFrames = new BufferedImage[4][this.frames];
@@ -95,7 +100,7 @@ public class PlayerSprite extends Entiti {
         if (this.lastDirection != checkedDir) { // Start going right
                 this.lastAnimationFrame = 0;
                 if (this.lastDirection % 2 == checkedDir % 2) {
-                    speedingUp = Game.PLAYER_ACCELERATION;
+                    speedingUp = com.savioroflogic.core.Game.PLAYER_ACCELERATION;
                 }
             this.lastDirection = checkedDir;
             }
@@ -127,7 +132,7 @@ public class PlayerSprite extends Entiti {
         } else {
             g.drawImage(this.animationFrames[2][0], this.screenPosition.x(), this.screenPosition.y() - this.spriteOffset, null);
             this.lastDirection = 4;
-            speedingUp = Game.PLAYER_ACCELERATION;
+            speedingUp = com.savioroflogic.core.Game.PLAYER_ACCELERATION;
         }
         this.absolutePosition = newPosition;
     }

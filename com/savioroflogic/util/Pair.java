@@ -1,3 +1,5 @@
+package com.savioroflogic.util;
+
 /**Helper class for everything with X, Y cordinates */
 public class Pair {
     private int x;

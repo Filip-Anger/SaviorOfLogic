@@ -1,5 +1,11 @@
+package com.savioroflogic.proof;
+
 import java.awt.Graphics;
 
+import com.savioroflogic.items.PropItem;
+import com.savioroflogic.items.Item;
+
+/** Class that represents one line in the proof builder. */
 public class ProofLine {
     
     private Item proofItem;
@@ -11,45 +17,51 @@ public class ProofLine {
         this.proofItem = new PropItem("...", -1, "...", -1, -1);
     }
 
-    public void draw(Graphics g, int x, int y){
+
+    public void draw(Graphics g, int x, int y) {
         if (this.proofItem != null){
             this.proofItem.setPos(x, y);
             this.proofItem.drawInInv(g, x, y);
         }
     }
 
-    public void setProofSting(String s){
+    public boolean isCorrect() {
+        return this.isCorrect;
+    }
+    
+    public void setProofSting(String s) {
         this.proofItem.setSprite(s);
     }
-    public void setProofItem(Item item){
+    
+    public void setProofItem(Item item) {
         this.proofItem = item;
-        if (item.getID() == this.CorrectID){
+        if (item.getID() == this.CorrectID) {
             this.isCorrect = true;
         }else{
             this.isCorrect = false;
         }
     }
         
-    public boolean isCorrect(){
-        return this.isCorrect;
-    }
+
     public int getWidth(){
-        if (this.proofItem != null){
+        if (this.proofItem != null) {
             return this.proofItem.getInvWidth();
         }
         return 0;
     }
+
     public int getHeight(){
-        if (this.proofItem != null){
+        if (this.proofItem != null) {
             return this.proofItem.getInvHeight();
         }
         return 0;
     }
-    public int getCorrectID(){
+
+    public int getCorrectID() {
         return this.CorrectID;
     }
-    public Item getItem(){
+
+    public Item getItem() {
         return this.proofItem;
     }
-
 }

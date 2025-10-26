@@ -1,7 +1,6 @@
-
+package com.savioroflogic.core;
 
 import java.awt.Color;
-
 import java.awt.Graphics;
 import java.util.ArrayList;
 import javax.swing.ActionMap;
@@ -9,6 +8,17 @@ import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+
+import com.savioroflogic.input.AllInputHandler;
+import com.savioroflogic.entity.PlayerSprite;
+import com.savioroflogic.world.TileMap;
+import com.savioroflogic.world.ItemSpawner;
+import com.savioroflogic.ui.Inventory;
+import com.savioroflogic.proof.ProofSubmitter;
+import com.savioroflogic.ui.Intro;
+import com.savioroflogic.ui.Outro;
+import com.savioroflogic.entity.Skeleton;
+import com.savioroflogic.util.Pair;
 
 /**MODEL. DATA without BEHAVIOUR should be here.
  * Collect data from Player and provides it for TileMap
@@ -27,8 +37,7 @@ In the timer 2 methods are called:
     2. Repaint - in componentPaint there is a switch based on which
         helper functions are called, note that Graphics g in only passed from 
         and not artificially generated.*/
-        
-/**TODO: Class description. */
+        /**TODO: Class description. */
 public class GamePanel extends JPanel {
     private int gameState = 0;
     private final Timer timer;
@@ -91,7 +100,7 @@ public class GamePanel extends JPanel {
         this.outro.setOutroStoryText(this.storyTextCounter);
         this.add(this.outro.getOutroStoryTextComp());
 
-
+        
         
         
         // Update timer
@@ -138,19 +147,16 @@ public class GamePanel extends JPanel {
         }
     }
 
-    private void drawPlayScreen(Graphics g){
+    private void drawPlayScreen(Graphics g) {
         this.tileMap.draw(g, this.offset()); // HELPER class to make it organized
-
-        // this.player.drawHitbox(g);
         this.player.draw(g, this.newPlayerPos.giveNew());
         this.drawEnemies(g);
-
         this.itemSpawner.drawItems(g, this.offset());
 
-        if (inventoryState){
+        if (inventoryState) {
             this.inventory.draw(g);
         }
-        if (submitterState){
+        if (submitterState) {
             this.proofSubmitter.draw(g);
             this.Drag(g);
             
@@ -162,8 +168,8 @@ public class GamePanel extends JPanel {
     }
 
     private void spritesMovment() {
-        // Player
-        this.newPlayerPos = this.tileMap.tryAndMove(this.player.absolutePosition.giveNew(), this.player.movement(), this.player.getSize());
+    // Player
+    this.newPlayerPos = this.tileMap.tryAndMove(this.player.getAbsotulePosition().giveNew(), this.player.movement(), this.player.getSize());
         // Other sprites
         for (Skeleton enemie : this.enemies) {
             enemie.follow(this.player);
@@ -178,6 +184,7 @@ public class GamePanel extends JPanel {
             enemie.draw(g, this.offset());
         }
     }
+
     private void spritesColision() {
         for (Skeleton enemie : this.enemies) {
             if (this.player.inHitbox(enemie)) {
@@ -186,26 +193,23 @@ public class GamePanel extends JPanel {
         }
     }
 
-    private void playerStateUpdate(){
+    private void playerStateUpdate() {
         this.isNearSubmitter = proofSubmitter.isNear(this.player.getAbsotulePosition(), this.player.getSize());
         this.inventoryState = this.player.invStateUpdate();
-
-        if (!this.isNearSubmitter){
+        if (!this.isNearSubmitter) {
                 this.submitterState = false;
             }
-        
-        if (this.player.pickUpUpdate()){
-            if (this.gameState == 0){
+        if (this.player.pickUpUpdate()) {
+            if (this.gameState == 0) {
                 this.gameState += 1;
                 this.player.pickUpFalse();
                 return;
             }
-            if (this.gameState == 1){
-                if (this.storyTextCounter < this.intro.getStoryCounter()){
+            if (this.gameState == 1) {
+                if (this.storyTextCounter < this.intro.getStoryCounter()) {
                     this.storyTextCounter +=1;
                     this.intro.setIntroStoryText(this.storyTextCounter);
-                }
-                else{
+                } else {
                     this.intro.hideIntroStoryTextComp();
                     this.storyTextCounter = 0;
                     gameState += 1;
@@ -213,13 +217,11 @@ public class GamePanel extends JPanel {
                 this.player.pickUpFalse();
                 return;
             }
-            if (gameState == 3){
-                if (this.storyTextCounter < this.outro.getStoryCounter()){
+            if (gameState == 3) {
+                if (this.storyTextCounter < this.outro.getStoryCounter()) {
                     this.storyTextCounter +=1;
                     this.outro.setOutroStoryText(this.storyTextCounter);
-                    
-                }
-                else{
+                } else {
                     this.outro.hideOutroStoryTextComp();
                     this.storyTextCounter = 0;
                     gameState += 1;
@@ -227,14 +229,13 @@ public class GamePanel extends JPanel {
                 this.player.pickUpFalse();
                 return;
             }
-            if (this.gameState == 4){
+            if (this.gameState == 4) {
                 System.exit(0);
-                
             }
             PickUpItem();
             this.player.pickUpFalse();
-            if(this.isNearSubmitter){
-                if (this.submitterState){
+            if (this.isNearSubmitter) {
+                if (this.submitterState) {
                     this.submitterState = false;
                 }
                 else{
@@ -242,7 +243,7 @@ public class GamePanel extends JPanel {
                 }
             }
         }
-        if (this.player.submitUpdate() && this.isNearSubmitter){
+        if (this.player.submitUpdate() && this.isNearSubmitter) {
             submit();
             this.player.submitFalse();
         }
@@ -250,15 +251,15 @@ public class GamePanel extends JPanel {
 
     }
 
-    private void submit(){
-        if(proofSubmitter.submitProofs()){
+    private void submit() {
+        if (proofSubmitter.submitProofs()) {
             this.tileMap.openDoor();
             this.openDoor();
         }
     }
 
-    private void PickUpItem(){
-        Item i = itemSpawner.getItem(this.player.getAbsotulePosition(), this.player.getSize());
+    private void PickUpItem() {
+        com.savioroflogic.items.Item i = itemSpawner.getItem(this.player.getAbsotulePosition(), this.player.getSize());
         if (i == null){
             return;
         }
@@ -274,21 +275,22 @@ public class GamePanel extends JPanel {
         }
         
     }
-    private void openDoor(){
-        System.out.println("DOOR OPENED!");
+
+    private void openDoor() {
         this.gameState = 3;
     }
-    private void Drag(Graphics g){
-        if (this.inputHandler.isDragging()){
+
+    private void Drag(Graphics g) {
+        if (this.inputHandler.isDragging()) {
                 this.wasDragging = true;
 
-                if (this.inputHandler.getMouseClickX() > Game.WIDTH/2){
+                if (this.inputHandler.getMouseClickX() > Game.WIDTH / 2) {
                     this.proofSubmitter.setDragItem(g, this.inputHandler.getMouseClickX(), this.inputHandler.getMouseClickY(), this.inputHandler.getMouseDragX(), this.inputHandler.getMouseDragY());
                 }
                 
                     this.inventory.dragItem(g, this.inputHandler.getMouseClickX(), this.inputHandler.getMouseClickY(), this.inputHandler.getMouseDragX(), this.inputHandler.getMouseDragY());
             }
-            else if (this.wasDragging){
+            else if (this.wasDragging) {
                 this.wasDragging = false;
                 this.proofSubmitter.dropItem(this.inputHandler.getMouseDragX(), this.inputHandler.getMouseDragY());
             }

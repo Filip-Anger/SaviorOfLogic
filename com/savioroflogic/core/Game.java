@@ -1,3 +1,5 @@
+package com.savioroflogic.core;
+
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -6,7 +8,7 @@ import javax.swing.SwingUtilities;
  * everything really happens in GamePanel.
  * Constants are set here
  */
-class Game implements Runnable{
+public class Game implements Runnable{
     public static final int SCALE = 2;
     public static final int WIDTH = 800;
     public static final int HEIGHT = 640;

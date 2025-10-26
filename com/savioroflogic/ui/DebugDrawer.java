@@ -1,18 +1,20 @@
+package com.savioroflogic.ui;
+
 import java.awt.Color;
 import java.awt.Graphics;
 
 
 /**TODO: Class description. */
 public class DebugDrawer {
-    Pair size;
+    com.savioroflogic.util.Pair size;
     public DebugDrawer() {
-        this(new Pair(5, 5));
+        this(new com.savioroflogic.util.Pair(5, 5));
     }
 
-    public DebugDrawer(Pair size) {
+    public DebugDrawer(com.savioroflogic.util.Pair size) {
         this.size = size;
     }
-    public void drawDebug(Graphics g, Pair coords) {
+    public void drawDebug(Graphics g, com.savioroflogic.util.Pair coords) {
         g.setColor(Color.RED);
         g.fillRect(coords.x(), coords.y(), this.size.x(), this.size.y());
     }

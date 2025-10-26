@@ -1,10 +1,11 @@
+package com.savioroflogic.entity;
+
 import java.awt.Color;
 import java.awt.Graphics;
+import com.savioroflogic.util.Pair;
 
 
-
-
-/**TODO: Class description. */
+/** Abstract class that represents all entities in the game */
 public abstract class Entiti {
     boolean movingUp;
     boolean movingDown;
@@ -17,7 +18,7 @@ public abstract class Entiti {
     int velocity;
     
     public Entiti() {
-        this.size = new Pair(Game.SPRITE_RESOLUTION, Game.SPRITE_RESOLUTION);
+        this.size = new Pair(com.savioroflogic.core.Game.SPRITE_RESOLUTION, com.savioroflogic.core.Game.SPRITE_RESOLUTION);
         this.absolutePosition = new Pair(32, 32);
     }
     /** Constructor.
@@ -80,5 +81,3 @@ public abstract class Entiti {
         this.absolutePosition = position;
     }
 }
-
-    

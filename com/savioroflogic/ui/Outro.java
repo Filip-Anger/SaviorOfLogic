@@ -1,3 +1,5 @@
+package com.savioroflogic.ui;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -7,15 +9,18 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+
 import javax.imageio.ImageIO;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 
+import com.savioroflogic.entity.PlayerSprite;
 
-/**TODO: Class description. */
-public class Intro {
+/**Class that handles drawing the outro state of the game. 
+ * The rendered text is loaded from txt file in constructor*/
+public class Outro extends JTextPane {
 
-    Image introImage;
+    Image OutroImage;
     int storyTextCounter = 0;
     int x;
     int y;
@@ -25,13 +30,12 @@ public class Intro {
     ArrayList<String> textPragraphs;
     JTextPane pane;
     SubWindow sb;
-    JTextArea textArea;
+    private JTextArea textArea;
 
-
-    public Intro() {
+    public Outro() {
         try{
-            this.introImage = ImageIO.read(new File("Static/Intro/Dung.png"));
-            this.sc = new Scanner(new File("Static/Intro/IntroStoryText.txt"));
+            this.OutroImage = ImageIO.read(new File("Static/Intro/Baas.jpg"));
+            this.sc = new Scanner(new File("Static/Intro/OutroStoryText.txt"));
         } catch (IOException e){
             e.getStackTrace();
         }
@@ -61,58 +65,58 @@ public class Intro {
         this.textArea.setForeground(Color.WHITE);
         this.textArea.setFont(new Font("Arial Unicode MS", Font.PLAIN, 30));
         this.textArea.setVisible(false);
+        
+
     }
-
-
-    public JTextArea getIntroStoryTextComp() {
+    public JTextArea getOutroStoryTextComp(){
         return this.textArea;
     }
 
-    public Integer getStoryCounter() {
+    public Integer getStoryCounter(){
         return this.textPragraphs.size()-1;
     }
-    
-    public void setIntroStoryText(int i) {
-        this.textArea.setText(this.textPragraphs.get(i));
-    }
-    
-    public void hideIntroStoryTextComp() {
-        this.textArea.setVisible(false);
-    }
-    
+
     public int getCounter() {
         return this.storyTextCounter;
     }
 
+    public void setOutroStoryText(int i){
+        this.textArea.setText(this.textPragraphs.get(i));
+    }
 
-    public void drawStartScreen(Graphics g, PlayerSprite player) {
-        g.setFont(g.getFont().deriveFont(Font.BOLD,96));
-        String text = "Saviour of Logic";
-        g.setColor(Color.GRAY);
-        g.drawString(text, 22, 105);
-        g.setColor(Color.WHITE);
-        g.drawString(text, 17, 100);
-        BufferedImage playerImage =  player.getIdleImage();
-        int loadScale = 2;
-        Pair size = new Pair(playerImage.getWidth() * loadScale,  playerImage.getHeight() * loadScale);
-        g.drawImage(playerImage, (Game.WIDTH - size.x()) / 2, (Game.HEIGHT - size.y()) / 2, size.x(), 
-        size.y(), null);
-        g.setFont(g.getFont().deriveFont(Font.BOLD,52));
-        text = "Press E to start a game";
-        g.setColor(Color.WHITE);
-        g.drawString(text, 105, 500);
+    public void hideOutroStoryTextComp(){
+        this.textArea.setVisible(false);
     }
     
-    public void drawIntroStoryScreen(Graphics g) {
-        g.drawImage(this.introImage, 0, 0, Game.WIDTH, Game.HEIGHT, null);
+    
+    public void drawEndScreen(Graphics g, PlayerSprite player){
+        g.setFont(g.getFont().deriveFont(Font.BOLD,96));
+        String text = "You have won!";
+        g.setColor(Color.GRAY);
+        g.drawString(text, 62, 105);
+        g.setColor(Color.WHITE);
+        g.drawString(text, 57, 100);
+        
+        BufferedImage playerImage =  player.getIdleImage();
+        int loadScale = 2;
+        com.savioroflogic.util.Pair size = new com.savioroflogic.util.Pair(playerImage.getWidth() * loadScale,  playerImage.getHeight() * loadScale);
+        g.drawImage(playerImage, (com.savioroflogic.core.Game.WIDTH - size.x()) / 2, (com.savioroflogic.core.Game.HEIGHT - size.y()) / 2, size.x(), size.y(), null);
+        g.setFont(g.getFont().deriveFont(Font.BOLD,52));
+        text = "Press E to close the game";
+        g.setColor(Color.WHITE);
+        g.drawString(text, 80, 500);
+    }
+            
+
+    public void drawOutroStoryScreen(Graphics g) {
+        g.drawImage(this.OutroImage, 0, 0, com.savioroflogic.core.Game.WIDTH, com.savioroflogic.core.Game.HEIGHT, null);
         this.sb = new SubWindow();
         this.x = 20;
-        this.y = Game.HEIGHT/2 - 50;
-        this.width = Game.WIDTH - 2*x - 15;
-        this.height = Game.HEIGHT/2 - 50 - 15;
+        this.y = com.savioroflogic.core.Game.HEIGHT/2 - 50;
+        this.width = com.savioroflogic.core.Game.WIDTH - 2*x - 15;
+        this.height = com.savioroflogic.core.Game.HEIGHT/2 - 50 - 15;
         this.sb.drawSubWindow(g, x, y,  width, height);
-        this.textArea.setBounds(x+Game.SUBWINDOW_BONUS_SIZE, y+Game.SUBWINDOW_BONUS_SIZE, 
-        width-2*Game.SUBWINDOW_BONUS_SIZE, height-2*Game.SUBWINDOW_BONUS_SIZE);
+        this.textArea.setBounds(x+com.savioroflogic.core.Game.SUBWINDOW_BONUS_SIZE, y+com.savioroflogic.core.Game.SUBWINDOW_BONUS_SIZE, width-2*com.savioroflogic.core.Game.SUBWINDOW_BONUS_SIZE, height-2*com.savioroflogic.core.Game.SUBWINDOW_BONUS_SIZE);
         this.textArea.setVisible(true);
     }
 }

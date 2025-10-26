@@ -1,3 +1,5 @@
+package com.savioroflogic.ui;
+
 import java.awt.Graphics;
 
 import java.util.ArrayList;
@@ -6,24 +8,28 @@ import java.util.ArrayList;
 /**TODO: Class description. */
 public class Inventory extends SubWindow{
 
-    public ArrayList<Item> items = new ArrayList<>();
+    public ArrayList<com.savioroflogic.items.Item> items = new ArrayList<>();
     private int invWidth;
     private int invHeight;  
     private final int slotOffset = 35;
-    private Item draggedItem = null;
+    private com.savioroflogic.items.Item draggedItem = null;
     
-
+    
+    /**
+     * Draw inventory window and items inside it.
+     * Places items in rows and moves to next row when full.
+     */
     public void draw(Graphics g){
 
-        drawSubWindowXY(g, 25, 25, Game.WIDTH / 2 - (Game.TILE_SIZE), Game.HEIGHT - 50); //i dont understan this fucking hell why is it not -50
-        invWidth = Game.WIDTH / 2 - (Game.TILE_SIZE) - 25;
-        invHeight = Game.HEIGHT - 75;
+        drawSubWindowXY(g, 25, 25, com.savioroflogic.core.Game.WIDTH / 2 - (com.savioroflogic.core.Game.TILE_SIZE), com.savioroflogic.core.Game.HEIGHT - 50); //i dont understan this fucking hell why is it not -50
+        invWidth = com.savioroflogic.core.Game.WIDTH / 2 - (com.savioroflogic.core.Game.TILE_SIZE) - 25;
+        invHeight = com.savioroflogic.core.Game.HEIGHT - 75;
         int remainingWidth = invWidth;
         int remainingHeight = invHeight;
         int x = 60;
         int y = 55;
 
-        for (Item item: items){
+        for (com.savioroflogic.items.Item item: items){
             int itemSlotSize = item.getInvWidth() + slotOffset;
             if (itemSlotSize < remainingWidth){
                 remainingWidth -= itemSlotSize;
@@ -45,13 +51,19 @@ public class Inventory extends SubWindow{
         }
     }
 
-    public void addItem(Item item){
+    public void addItem(com.savioroflogic.items.Item item){
         items.add(item);
     }
     
+    /**
+     * Let user pick up an item by clicking and drag it.
+     * First click tries to find an item near mouse start.
+     * If found, remove it from list and keep it as draggedItem.
+     * If already dragging, draw the dragged item following mouse.
+     */
     public void dragItem(Graphics g, int mouseStartX, int mouseStartY, int mouseX, int mouseY){
         if (draggedItem == null) {
-            for (Item item: items) {
+            for (com.savioroflogic.items.Item item: items) {
                 int itemWidth = item.getInvWidth() / 2; 
                 int itemHeight = item.getInvHeight() / 2;   
                 int itemX = item.getX() + itemWidth; 
@@ -69,11 +81,11 @@ public class Inventory extends SubWindow{
     }
 
 
-    public Item getDragItem() {
+    public com.savioroflogic.items.Item getDragItem() {
         return this.draggedItem;
     }
 
-    public void setDragItem(Item item) {
+    public void setDragItem(com.savioroflogic.items.Item item) {
         this.draggedItem = item;
     }
 

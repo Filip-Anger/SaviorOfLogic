@@ -1,3 +1,5 @@
+package com.savioroflogic.util;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -5,7 +7,8 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
-
+/** Helper class to convert string into image, 
+ * that can be used as sprite for proposition items. */
 public class TextToGraphics {
     
     private int width;
@@ -16,7 +19,9 @@ public class TextToGraphics {
         this.font = new Font(fontName, Font.PLAIN, size);
     }
 
-
+    /** Creates an temporary BufferedImage to get the dimenisons of the text,
+     * and afterwards creates the final image with the correct size.
+     */
     public BufferedImage convert(String text) {
         BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = img.createGraphics();
@@ -35,6 +40,7 @@ public class TextToGraphics {
         return img;
     }
 
+    /** Same as convert, but adds a dash at the beginning of the text. */
     public BufferedImage convertWithDash(String text) {
         text = "- " + text;
         BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);

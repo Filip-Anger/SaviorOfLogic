@@ -1,3 +1,4 @@
+package com.savioroflogic.input;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -7,7 +8,7 @@ import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.KeyStroke;
 
-/**TODO: Class description. */
+/** Class that handles all input mappings and mouse events. */
 public class AllInputHandler {
     InputMap inputMap;
     ActionMap actionMap;

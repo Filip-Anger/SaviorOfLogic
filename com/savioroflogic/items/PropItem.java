@@ -1,7 +1,15 @@
+package com.savioroflogic.items;
+
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import com.savioroflogic.ui.SubWindow;
+import com.savioroflogic.util.TextToGraphics;
+import com.savioroflogic.core.Game;
 
+/** Subclass of Item, used for the parts of the final proof, 
+ * its coordinates are either random or set.
+ */
 public class PropItem extends Item {
 
     private BufferedImage sprite;
@@ -26,6 +34,10 @@ public class PropItem extends Item {
         this.setSprite(content);
     }
 
+    /**
+     * Sets a sprite of item to be drawn from text using TextToGraphics Class.
+     * Has 2 sprites, one for inventory and one for world.
+     */
     @Override
     public void setSprite(Object sprite) {
         
@@ -38,8 +50,7 @@ public class PropItem extends Item {
     }
 
     @Override
-    public void draw(Graphics g, Pair offset) {
-        //this.sw.drawSubWindow(g, getX()-20, getY()-20, this.sprite.getWidth()+40, this.sprite.getHeight()+40);
+    public void draw(Graphics g, com.savioroflogic.util.Pair offset) {
         this.sw.drawSubWindow(g, getX() - offset.x(), getY() - offset.y(), subWidth, subHeight);
         g.drawImage(sprite, getX() - offset.x() +Game.SUBWINDOW_BONUS_SIZE/2, getY() - offset.y() + Game.SUBWINDOW_BONUS_SIZE/2, null);
     }

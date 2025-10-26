@@ -1,3 +1,4 @@
+package com.savioroflogic.world;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -11,12 +12,16 @@ import java.util.Scanner;
 import java.util.Set;
 import javax.imageio.ImageIO;
 
-/** This class is a bit bigger, but all the fucntionality depends on tileMapMatrix so 
- * I think it must be here. Constructor loads in tiles, maps funcionality to action tiles,
- * and scales them. Collision is handeled by tryAndMove() methods. Map rendering is handeled
+import com.savioroflogic.core.Game;
+import com.savioroflogic.util.Pair;
+import com.savioroflogic.items.ActionItem;
+import com.savioroflogic.items.Item;
+
+/** This class is a bit bigger, but all the functionality depends on tileMapMatrix so
+ * I think it must be here. Constructor loads in tiles, maps functionality to action tiles,
+ * and scales them. Collision is handled by tryAndMove() methods. Map rendering is handled
  * by draw.
  */
-/** Tiles are loaded here, returned on request. */
 public class TileMap {
     private Image[] tiles; // grass, path, tree, water, enemy
     private int[][] tileMapMatrix;
@@ -190,13 +195,13 @@ public class TileMap {
     public void actionUsed(Item item) {
         switch (item.getContent()) {
             case "Lever":
-                this.leverPress(item.xCord, item.yCord);
+                this.leverPress(item.getTileX(), item.getTileY());
                 break;
             case "Chest":
-                this.openChest(item.xCord, item.yCord);
+                this.openChest(item.getTileX(), item.getTileY());
                 break;
             case "Mimic":
-                this.mimic(item.xCord, item.yCord);
+                this.mimic(item.getTileX(), item.getTileY());
             default:
                 throw new AssertionError();
         }

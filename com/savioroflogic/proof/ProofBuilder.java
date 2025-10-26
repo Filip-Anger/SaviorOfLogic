@@ -1,3 +1,5 @@
+package com.savioroflogic.proof;
+
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.awt.Graphics;
@@ -5,6 +7,13 @@ import java.awt.Graphics2D;
 import java.awt.BasicStroke;
 import java.awt.Color;
 
+import com.savioroflogic.core.Game;
+import com.savioroflogic.items.Item;
+
+/** Class that handles the proof building window.
+ * Reads instruction file and makes proof lines.
+ * Draws the proof lines and checks correctness.
+ */
 public class ProofBuilder {
 
     private ProofLine[] proofLines;
@@ -13,9 +22,16 @@ public class ProofBuilder {
     private int rowHeight;
     private int lineCount;
     
+    /** Read the instruction text file.
+     *  Each line is one proof row.
+     *  Characters: 'F' draws a box representing flag, '|' draws a vertical line.
+     *  The last line reserved for statement that needs to be proven.
+     *  Make a ProofLine for every row and store them in an array.
+     */
     public ProofBuilder() {
+        
         try {
-        InputStreamReader isr = new InputStreamReader(new FileInputStream("ProofBuilderInstruct.txt"), "UTF-8");
+        InputStreamReader isr = new InputStreamReader(new FileInputStream("com\\savioroflogic\\proof\\ProofBuilderInstruct.txt"), "UTF-8");
         int ch;
         while ((ch = isr.read()) != -1 ) {
             tempInputString += (char)ch;

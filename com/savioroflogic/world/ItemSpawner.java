@@ -1,19 +1,27 @@
+package com.savioroflogic.world;
+
 import java.awt.Graphics;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
+import com.savioroflogic.items.PropItem;
+
+/** Class that handles spawning items in the game.
+ * Read item database file and make items list.
+ * File lines look like: type;id;content;x;y.
+ */
 public class ItemSpawner {
 
     private String[] inputStrings;
-    public ArrayList<Item> allItems = new ArrayList<Item>();
-    public ArrayList<Item> visibleItems = new ArrayList<Item>();
+    public ArrayList<com.savioroflogic.items.Item> allItems = new ArrayList<>();
+    public ArrayList<com.savioroflogic.items.Item> visibleItems = new ArrayList<>();
     private String tempInputString = "";
 
     public ItemSpawner() {
         try {
-            InputStreamReader isr = new InputStreamReader(new FileInputStream("ItemDatabase.txt"), 
+            InputStreamReader isr = new InputStreamReader(new FileInputStream("com\\savioroflogic\\items\\ItemDatabase.txt"), 
             StandardCharsets.UTF_8);
             int ch;
             while ((ch = isr.read()) != -1) {
@@ -35,20 +43,21 @@ public class ItemSpawner {
                 String content = line[2];
                 int x = Integer.parseInt(line[3]);
                 int y = Integer.parseInt(line[4]);
-                Item newI = new PropItem(type, id, content, x, y);
+                com.savioroflogic.items.Item newI = new PropItem(type, id, content, x, y);
                 this.addItem(newI);
             }
         }
     }
 
 
-    public void drawItems(Graphics g, Pair offset) {
-        for (Item i : this.visibleItems) {
+    public void drawItems(Graphics g, com.savioroflogic.util.Pair offset) {
+        for (com.savioroflogic.items.Item i : this.visibleItems) {
             i.draw(g, offset);
         }
     }
     
-    public void addItem(Item item) {
+
+    public void addItem(com.savioroflogic.items.Item item) {
         if (item.getType().equals("Prop")) {
             this.allItems.add(item);
             this.visibleItems.add(item);
@@ -58,12 +67,16 @@ public class ItemSpawner {
         }
     }
     
-    public void removeItem(Item item) {
+    public void removeItem(com.savioroflogic.items.Item item) {
         this.visibleItems.remove(item); 
     }
 
-    public Item getItem (Pair playerPos, Pair size) {
-        for (Item item : visibleItems) {
+    /**
+     * Find item near player and return it using center point distance check.
+     * If found, remove from visible list and return that item.
+     */
+    public com.savioroflogic.items.Item getItem (com.savioroflogic.util.Pair playerPos, com.savioroflogic.util.Pair size) {
+        for (com.savioroflogic.items.Item item : visibleItems) {
             int itemWidth = item.getSubWidth() / 2; 
             int itemHeight = item.getSubHeight() / 2;
             int itemX = item.getX() + itemWidth; 
