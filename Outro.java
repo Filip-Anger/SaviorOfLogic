@@ -13,8 +13,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 
 
-public class Intro extends JTextPane{
-    Image introImage;
+public class Outro extends JTextPane{
+    Image OutroImage;
     int storyTextCounter = 0;
     int x;
     int y;
@@ -26,10 +26,10 @@ public class Intro extends JTextPane{
     SubWindow sb;
     private JTextArea textArea;
 
-    public Intro() {
+    public Outro() {
         try{
-            this.introImage = ImageIO.read(new File("Tileset/atlas.jpg"));
-            this.sc = new Scanner(new File("IntroStoryText.txt"));
+            this.OutroImage = ImageIO.read(new File("Tileset/Baas.jpg"));
+            this.sc = new Scanner(new File("OutroStoryText.txt"));
         } catch (IOException e){
             e.getStackTrace();
         }
@@ -62,35 +62,35 @@ public class Intro extends JTextPane{
         
 
     }
-    public JTextArea getIntroStoryTextComp(){
+    public JTextArea getOutroStoryTextComp(){
         return this.textArea;
     }
     public Integer getStoryCounter(){
         return this.textPragraphs.size()-1;
     }
-    public void setIntroStoryText(int i){
+    public void setOutroStoryText(int i){
         this.textArea.setText(this.textPragraphs.get(i));
     }
-    public void hideIntroStoryTextComp(){
+    public void hideOutroStoryTextComp(){
         this.textArea.setVisible(false);
     }
     
     
     
-    public void drawStartScreen(Graphics g, PlayerSprite player){
+    public void drawEndScreen(Graphics g, PlayerSprite player){
         g.setFont(g.getFont().deriveFont(Font.BOLD,96));
-        String text = "Saviour of Logic";
+        String text = "You have won!";
         g.setColor(Color.GRAY);
-        g.drawString(text, 22, 105);
+        g.drawString(text, 27, 105);
         g.setColor(Color.WHITE);
-        g.drawString(text, 17, 100);
+        g.drawString(text, 22, 100);
         
         BufferedImage playerImage =  player.getIdleImage();
         int loadScale = 2;
         Pair size = new Pair(playerImage.getWidth() * loadScale,  playerImage.getHeight() * loadScale);
         g.drawImage(playerImage, (Game.WIDTH - size.x()) / 2, (Game.HEIGHT - size.y()) / 2, size.x(), size.y(), null);
         g.setFont(g.getFont().deriveFont(Font.BOLD,52));
-        text = "Press E to start a game";
+        text = "Press E to close the game";
         g.setColor(Color.WHITE);
         g.drawString(text, 105, 500);
     }
@@ -98,8 +98,8 @@ public class Intro extends JTextPane{
 
         
 
-    public void drawIntroStoryScreen(Graphics g) {
-        g.drawImage(this.introImage, 0, 0, Game.WIDTH, Game.HEIGHT, null);
+    public void drawOutroStoryScreen(Graphics g) {
+        g.drawImage(this.OutroImage, 0, 0, Game.WIDTH, Game.HEIGHT, null);
         this.sb = new SubWindow();
         this.x = 20;
         this.y = Game.HEIGHT/2 - 50;

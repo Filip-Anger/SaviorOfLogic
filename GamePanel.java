@@ -1,17 +1,13 @@
-import com.sun.source.tree.YieldTree;
+
 
 import java.awt.Color;
-import java.awt.Container;
-import java.awt.Font;
-import java.awt.FontMetrics;
+
 import java.awt.Graphics;
-import java.awt.TextArea;
 import java.util.ArrayList;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.Timer;
 
 /**MODEL. DATA without BEHAVIOUR should be here.
@@ -28,8 +24,7 @@ public class GamePanel extends JPanel {
     private AllInputHandler inputHandler;
     private ProofSubmitter proofSubmitter;
     private Intro intro;
-    private boolean displayNextText = false;
-    private boolean lastParagraph =false;
+    private Outro outro;
     // private DebugDrawer debugDrawer;
     private Pair newPlayerPos;
     private boolean wasDragging = false;
@@ -74,8 +69,13 @@ public class GamePanel extends JPanel {
 
         this.proofSubmitter = new ProofSubmitter(this.inventory);
         this.intro = new Intro();
-        this.intro.setStoryText(this.storyTextCounter);
-        this.add(this.intro.getStoryTextComp());
+        this.intro.setIntroStoryText(this.storyTextCounter);
+        this.add(this.intro.getIntroStoryTextComp());
+
+        this.outro = new Outro();
+        this.outro.setOutroStoryText(this.storyTextCounter);
+        this.add(this.outro.getOutroStoryTextComp());
+
 
         
         
@@ -106,15 +106,16 @@ public class GamePanel extends JPanel {
                 this.intro.drawStartScreen(g, this.player);
                 break;
             case 1:
-                this.intro.drawStoryScreen(g);
-                //storyScreen(g);
+                this.intro.drawIntroStoryScreen(g);
                 break;
             case 2:
                 drawPlayScreen(g);
                 break;
             case 3:
-                //drawEndScreen
+                this.outro.drawOutroStoryScreen(g);
                 break;
+            case 4:
+                this.outro.drawEndScreen(g, this.player);
             default:
                 drawPlayScreen(g);
                 break;
@@ -186,14 +187,33 @@ public class GamePanel extends JPanel {
             if (this.gameState == 1){
                 if (this.storyTextCounter < this.intro.getStoryCounter()){
                     this.storyTextCounter +=1;
-                    this.intro.setStoryText(this.storyTextCounter);
+                    this.intro.setIntroStoryText(this.storyTextCounter);
                 }
                 else{
-                    this.intro.hideStoryTextComp();
+                    this.intro.hideIntroStoryTextComp();
+                    this.storyTextCounter = 0;
                     gameState += 1;
                 }
                 this.player.pickUpFalse();
                 return;
+            }
+            if (gameState == 3){
+                if (this.storyTextCounter < this.outro.getStoryCounter()){
+                    this.storyTextCounter +=1;
+                    this.outro.setOutroStoryText(this.storyTextCounter);
+                    
+                }
+                else{
+                    this.outro.hideOutroStoryTextComp();
+                    this.storyTextCounter = 0;
+                    gameState += 1;
+                }
+                this.player.pickUpFalse();
+                return;
+            }
+            if (this.gameState == 4){
+                System.exit(0);
+                
             }
             PickUpItem();
             this.player.pickUpFalse();
@@ -240,6 +260,7 @@ public class GamePanel extends JPanel {
     }
     private void openDoor(){
         System.out.println("DOOR OPENED!");
+        this.gameState = 3;
     }
     private void Drag(Graphics g){
         if (this.inputHandler.isDragging()){
