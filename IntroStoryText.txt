@@ -24,16 +24,8 @@ Now the future of logic is in danger.
 <linebreak>
 
 You are the last hope.
-To free him, you must complete the final challenge:
-Rebuild the missing proof fragments scattered across the map.
+PROVE that professor Baas Luutik must be saved!
+Rebuild the flagstyle proof scattered across the map.
 Only a perfectly constructed proof will unlock the dungeon door.
 
 <linebreak>
-
-Prepare your brain.
-Sharpen your reasoning.
-Every symbol matters.
-
-<linebreak>
-
-PROVE that professor Baas Luutik must be saved!

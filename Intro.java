@@ -10,9 +10,10 @@ import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 
-/**TODO: Class description. */
-public class Intro{
+
+public class Intro extends JTextPane{
     Image introImage;
     int storyTextCounter = 0;
     int x;
@@ -21,12 +22,13 @@ public class Intro{
     int height;
     Scanner sc;
     ArrayList<String> textPragraphs;
+    JTextPane pane;
     SubWindow sb;
     private JTextArea textArea;
 
     public Intro() {
         try{
-            this.introImage = ImageIO.read(new File("Tileset/atlas.jpg"));
+            this.introImage = ImageIO.read(new File("Tileset/Dung.png"));
             this.sc = new Scanner(new File("IntroStoryText.txt"));
         } catch (IOException e){
             e.getStackTrace();
@@ -52,6 +54,7 @@ public class Intro{
         this.textArea.setLineWrap(true);
         this.textArea.setWrapStyleWord(true);
         this.textArea.setOpaque(false);     
+        //this.textArea.setFocusable(false);  
         this.textArea.setBorder(null);      
         this.textArea.setForeground(Color.WHITE);
         this.textArea.setFont(new Font("Arial Unicode MS", Font.PLAIN, 30));
