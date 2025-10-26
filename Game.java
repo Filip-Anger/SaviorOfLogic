@@ -2,9 +2,9 @@ import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-/**PUPET MASTER.
- * Creates a MODEL - GamePanel
- * Calls 
+/**Here only the frame and GamePanel are created,
+ * everything really happens in GamePanel.
+ * Constants are set here
  */
 class Game implements Runnable{
     public static final int SCALE = 2;

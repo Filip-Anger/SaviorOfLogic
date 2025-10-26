@@ -1,6 +1,6 @@
 It is the first quartile at TU/e - and the legendary course 
 Logic & Sets has returned. Every year, countless students face this challenge
-and many barely survive the final exam.
+and many barely survive the final exam. (press E)
 
 <linebreak>
 
@@ -26,6 +26,6 @@ Now the future of logic is in danger.
 You are the last hope.
 PROVE that professor Baas Luutik must be saved!
 Rebuild the flagstyle proof scattered across the map.
-Only a perfectly constructed proof will unlock the dungeon door.
+Only a perfectly constructed proof will unlock the dungeon door. (F to sumbit)
 
 <linebreak>

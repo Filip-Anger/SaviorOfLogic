@@ -1,3 +1,4 @@
+/**Helper class to group multitile structures */
 public class MutliTile {
     String name;
     int start;

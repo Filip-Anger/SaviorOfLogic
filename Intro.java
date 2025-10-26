@@ -12,7 +12,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 
-
+/**Handles intro display when game stata is 0 and 1.*/
 public class Intro extends JTextPane{
     Image introImage;
     int storyTextCounter = 0;
@@ -28,8 +28,8 @@ public class Intro extends JTextPane{
 
     public Intro() {
         try{
-            this.introImage = ImageIO.read(new File("Tileset/Dung.png"));
-            this.sc = new Scanner(new File("IntroStoryText.txt"));
+            this.introImage = ImageIO.read(new File("Static/Intro/Dung.png"));
+            this.sc = new Scanner(new File("Static/Intro/IntroStoryText.txt"));
         } catch (IOException e){
             e.getStackTrace();
         }

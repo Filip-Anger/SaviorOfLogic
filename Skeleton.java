@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
+/**Demo of enemie, extends entiti, collisions work the same input is 
+ * based on follow method - tries to go straight towards player
+ */
 public class Skeleton extends Entiti {
     Image sprite;
     public Skeleton(int velocity, Pair absolutePosition) {

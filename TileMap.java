@@ -11,6 +11,11 @@ import java.util.Scanner;
 import java.util.Set;
 import javax.imageio.ImageIO;
 
+/** This class is a bit bigger, but all the fucntionality depends on tileMapMatrix so 
+ * I think it must be here. Constructor loads in tiles, maps funcionality to action tiles,
+ * and scales them. Collision is handeled by tryAndMove() methods. Map rendering is handeled
+ * by draw.
+ */
 /** Tiles are loaded here, returned on request. */
 public class TileMap {
     private Image[] tiles; // grass, path, tree, water, enemy
@@ -21,22 +26,19 @@ public class TileMap {
     private final int widthPixels;
     private final int heightPixels;
     private final File mapFile;
-    // private Pair offset;
     private  Scanner sc;
     private Set<Integer> forbiddenTiles;
     private int basicFloor = 43;
     private int[] brokenFloors = new int[]{17, 18, 19, 20, 21};;
     private Random random = new Random();
     private ArrayList<Pair> spikes = new ArrayList<>();
-    private Set<Integer> actionTiles;
+    private final Set<Integer> actionTiles;
     private ArrayList<Pair> door = new ArrayList<>();
 
-    // private Set<Integer>  = new HashMap<>();
-    // Ked si v tejto lokacii a stalcis E tak posli niekam info ze sa pouzil ten item
 
     public TileMap(ItemSpawner itemSpawner) {
         // this.offset = offset;
-        this.mapFile = new File("Tileset/DungeonMap.txt");
+        this.mapFile = new File("Static/Dungeon/DungeonMap.txt");
                 try {
             this.sc = new Scanner(this.mapFile);
         } catch (IOException e) {
@@ -60,17 +62,16 @@ public class TileMap {
      * @param end Excluding
      * @param forbidden Collision on tiles
      */
+
+     /**Load group of tile forming a structure (doors, pillar, etc.) */
     private void loadStructure(MutliTile tileStructure) {
         int end = tileStructure.getStrat() + tileStructure.getLength();
         Set<Integer> nums = new HashSet<>();
-        // System.out.print(tileStructure.getName()+ ": ");
         try {
             for (int i = tileStructure.getStrat(); i < end; i++) {
-                this.tiles[i] = ImageIO.read(new File("Tileset/Dungeon/" + String.format("%03d", i) + ".png"));
+                this.tiles[i] = ImageIO.read(new File("Static/Dungeon/" + String.format("%03d", i) + ".png"));
                 nums.add(i);
-                // System.out.print(i + " ");
             }
-            // System.out.println();
             if (tileStructure.getCollision()) {
                 this.forbiddenTiles.addAll(nums);
             }
@@ -78,12 +79,11 @@ public class TileMap {
             e.getStackTrace();
         }
     }
-    /** Load in all tiles. */
+    /** Load in all used tiles. */
     private void loadTiles() {
         this.forbiddenTiles = new HashSet<>();
         this.tiles = new Image[144];
         this.mutliTiles = new ArrayList<>();
-        // this.mutliTiles.add(new MutliTile("gateClosed", 0, 8, true));
         this.mutliTiles.add(new MutliTile("gateEdge1", 0, 1, false));
         this.mutliTiles.add(new MutliTile("gateEdge1", 3, 1, false));
         this.mutliTiles.add(new MutliTile("gateClosed1", 1, 2, true));
@@ -101,13 +101,11 @@ public class TileMap {
         this.mutliTiles.add(new MutliTile("pluvace", 30, 5, true));
         this.mutliTiles.add(new MutliTile("potionBlueGreen", 23, 2, false));
         this.mutliTiles.add(new MutliTile("pillar", 27, 3, true));
-        // this.mutliTiles.add(new MutliTile("bomb", 44, 3, false));
         this.mutliTiles.add(new MutliTile("walls", 35, 7, true));
         this.mutliTiles.add(new MutliTile("heart", 77, 3, false));
         this.mutliTiles.add(new MutliTile("lever", 105, 2, false));
 
         for (MutliTile structure : this.mutliTiles) {
-            
             this.loadStructure(structure);
         }
     }
@@ -177,7 +175,7 @@ public class TileMap {
         }
     }
     public void openDoor() {
-        if (this.door.size() == 0) {
+        if (this.door.isEmpty()) {
             System.out.println("BAD");
             return;
         }
@@ -188,6 +186,7 @@ public class TileMap {
         }
     }
 
+    /**Decides which action to do when action tile used. */
     public void actionUsed(Item item) {
         switch (item.getContent()) {
             case "Lever":
@@ -247,6 +246,7 @@ public class TileMap {
 
     /**@param deltaY NOT ZERO
      * @return max possible deltaY
+     * Moves sprite to the as far as possible - based on collisions and delta.
     */
     private Pair tryAndMoveY(Pair position, int deltaY, Pair size) {
         int cordXLeft = (position.x()) / Game.TILE_SIZE;
@@ -300,6 +300,7 @@ public class TileMap {
         return position;
     }
 
+    /**Renders visible part of map.*/
     public void draw(Graphics g, Pair offset) {
         int yMatrixOff = offset.y() / Game.TILE_SIZE;
         int xMatrixOff = offset.x() / Game.TILE_SIZE;

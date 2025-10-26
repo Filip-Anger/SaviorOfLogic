@@ -7,7 +7,10 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
-
+/**Extends entiti but also maps keybinding actions - movment and pickup.
+ * Draw method handels animation - when player changes direction 
+ * animation progression resetes...
+ */
 public class PlayerSprite extends Entiti {
     BufferedImage[][] animationFrames; // 0, 1, 2, 3 UP LEFT DOWN RIGHT
     int frames;
@@ -41,7 +44,7 @@ public class PlayerSprite extends Entiti {
         this.lastAnimationFrame = 0;
         this.frames = 8;
         this.animationFrames = new BufferedImage[4][this.frames];
-        String pathStart = "Tileset/Player/";
+        String pathStart = "Static/Player/";
         String pathEnd = ".png";
         BufferedImage originalT;
         for (int i = 0; i < frames * 4; i++) {

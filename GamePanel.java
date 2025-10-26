@@ -13,7 +13,21 @@ import javax.swing.Timer;
 /**MODEL. DATA without BEHAVIOUR should be here.
  * Collect data from Player and provides it for TileMap
  * Everything is drawn by paintComponent - using helper classes
-*/
+
+This is the "Puppet Master". We trid to not define functionality here, 
+just call it from here. Relevant information are gathered here and 
+injected into other methods.
+The "gameloop" or the Timer is initialized here and calls from here.
+In the timer 2 methods are called:
+    1. Logic update - checks player input - 
+        a) Movment - asks TileMap whether player can 
+        acually move
+        b) Item pickup - asks inventory if there is any item which can
+        be picked up
+    2. Repaint - in componentPaint there is a switch based on which
+        helper functions are called, note that Graphics g in only passed from 
+        and not artificially generated.*/
+        
 /**TODO: Class description. */
 public class GamePanel extends JPanel {
     private int gameState = 0;
