@@ -1,6 +1,6 @@
 You did it! You saved me with pure logic.
 <linebreak>
-I had almost lost hope in logic after the rise of text-bots.
+I had almost lost hope in logic after the rise of LLMs.
 <linebreak>
 Thanks.
 <linebreak>
