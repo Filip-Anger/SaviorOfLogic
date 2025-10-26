@@ -81,9 +81,9 @@ public class Outro extends JTextPane{
         g.setFont(g.getFont().deriveFont(Font.BOLD,96));
         String text = "You have won!";
         g.setColor(Color.GRAY);
-        g.drawString(text, 27, 105);
+        g.drawString(text, 62, 105);
         g.setColor(Color.WHITE);
-        g.drawString(text, 22, 100);
+        g.drawString(text, 57, 100);
         
         BufferedImage playerImage =  player.getIdleImage();
         int loadScale = 2;
@@ -92,7 +92,7 @@ public class Outro extends JTextPane{
         g.setFont(g.getFont().deriveFont(Font.BOLD,52));
         text = "Press E to close the game";
         g.setColor(Color.WHITE);
-        g.drawString(text, 105, 500);
+        g.drawString(text, 95, 500);
     }
     
 

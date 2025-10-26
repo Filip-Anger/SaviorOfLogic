@@ -116,6 +116,7 @@ public class GamePanel extends JPanel {
                 break;
             case 4:
                 this.outro.drawEndScreen(g, this.player);
+                break;
             default:
                 drawPlayScreen(g);
                 break;
