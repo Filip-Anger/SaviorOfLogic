@@ -92,7 +92,7 @@ public class Outro extends JTextPane{
         g.setFont(g.getFont().deriveFont(Font.BOLD,52));
         text = "Press E to close the game";
         g.setColor(Color.WHITE);
-        g.drawString(text, 95, 500);
+        g.drawString(text, 80, 500);
     }
     
 
