@@ -49,7 +49,7 @@ public class PlayerSprite extends Entiti {
         this.lastAnimationFrame = 0;
         this.frames = 8;
         this.animationFrames = new BufferedImage[4][this.frames];
-        String pathStart = "Static/Player/";
+        String pathStart = "com\\Static\\Player\\";
         String pathEnd = ".png";
         BufferedImage originalT;
         for (int i = 0; i < frames * 4; i++) {

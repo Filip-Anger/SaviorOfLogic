@@ -35,8 +35,8 @@ public class Intro {
 
     public Intro() {
         try{
-            this.introImage = ImageIO.read(new File("Static/Intro/Dung.png"));
-            this.sc = new Scanner(new File("Static/Intro/IntroStoryText.txt"));
+            this.introImage = ImageIO.read(new File("com\\Static\\Intro\\Dung.png"));
+            this.sc = new Scanner(new File("com\\Static\\Intro\\IntroStoryText.txt"));
         } catch (IOException e){
             e.getStackTrace();
         }

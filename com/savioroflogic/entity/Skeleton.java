@@ -19,7 +19,7 @@ public class Skeleton extends Entiti {
         this.setAbsotulePosition(absolutePosition);
         this.velocity = velocity;
         try {
-            this.sprite = ImageIO.read(new File("Static\\Player\\whiteSkull.png"));  
+            this.sprite = ImageIO.read(new File("com\\Static\\Player\\whiteSkull.png"));  
             this.sprite = this.sprite.getScaledInstance(com.savioroflogic.core.Game.TILE_SIZE * 2, com.savioroflogic.core.Game.TILE_SIZE * 2, Image.SCALE_DEFAULT);
         } catch (IOException e) {
             e.getStackTrace();

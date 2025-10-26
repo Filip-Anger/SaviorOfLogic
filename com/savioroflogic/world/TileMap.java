@@ -43,7 +43,7 @@ public class TileMap {
 
     public TileMap(ItemSpawner itemSpawner) {
         // this.offset = offset;
-        this.mapFile = new File("Static/Dungeon/DungeonMap.txt");
+        this.mapFile = new File("com\\Static\\Dungeon\\DungeonMap.txt");
                 try {
             this.sc = new Scanner(this.mapFile);
         } catch (IOException e) {
@@ -74,7 +74,7 @@ public class TileMap {
         Set<Integer> nums = new HashSet<>();
         try {
             for (int i = tileStructure.getStrat(); i < end; i++) {
-                this.tiles[i] = ImageIO.read(new File("Static/Dungeon/" + String.format("%03d", i) + ".png"));
+                this.tiles[i] = ImageIO.read(new File("com\\Static\\Dungeon\\" + String.format("%03d", i) + ".png"));
                 nums.add(i);
             }
             if (tileStructure.getCollision()) {

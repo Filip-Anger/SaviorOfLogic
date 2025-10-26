@@ -34,8 +34,8 @@ public class Outro extends JTextPane {
 
     public Outro() {
         try{
-            this.OutroImage = ImageIO.read(new File("Static/Intro/Baas.jpg"));
-            this.sc = new Scanner(new File("Static/Intro/OutroStoryText.txt"));
+            this.OutroImage = ImageIO.read(new File("com\\Static\\Intro\\Baas.jpg"));
+            this.sc = new Scanner(new File("com\\Static\\Intro\\OutroStoryText.txt"));
         } catch (IOException e){
             e.getStackTrace();
         }
